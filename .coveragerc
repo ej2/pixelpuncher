@@ -1,0 +1,5 @@
+[run]
+include = pixelpuncher/*
+omit = *migrations*, *tests*
+plugins =
+    django_coverage_plugin
