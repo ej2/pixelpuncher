@@ -1,0 +1,20 @@
+<h4>Inventory</h4>
+
+ <table class="table table-striped">
+   {% for item in items %}
+    <tr>
+      <td class="item-name">
+        {{ item }}
+        {% if item.item_type.stackable %}
+          (x{{ item.remaining_uses }})
+        {% endif %}
+      </td>
+      <td class="item-options">
+        [
+          <a href="{% url "player:use" item.id %}">{{ item.display_verb|title }}</a> |
+          <a href="{% url "player:drop" item.id %}">Drop</a>
+        ]
+      </td>
+    </tr>
+  {% endfor %}
+ </table>

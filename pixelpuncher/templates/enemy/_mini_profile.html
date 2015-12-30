@@ -1,0 +1,15 @@
+{% load staticfiles i18n %}
+
+<div>
+  <div class="pull-right player-data well">
+    <div class="pull-left player-avatar"><img src="{% static 'images/avatar-male-large.png' %}" height="64"> </div>
+    <div class="player-name">{{ enemy|title }}</div>
+    <div class="player-title">Level {{ enemy.level }}</div>
+
+    <div class="player-bar-label pull-left">Health:</div>
+    <div class="progress status-bar">
+      <div class="progress-bar progress-bar-warning" style="width: {{ health_bar_percent }}%;"></div>
+    </div>
+
+  </div>
+</div>

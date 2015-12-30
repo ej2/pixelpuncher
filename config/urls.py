@@ -20,6 +20,8 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
 
     # Your stuff: custom urls includes go here
+    url(r'^player/', include("pixelpuncher.player.urls", namespace="player")),
+    url(r'^game/', include("pixelpuncher.game.urls", namespace="game")),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

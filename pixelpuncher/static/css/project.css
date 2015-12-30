@@ -36,3 +36,92 @@
 [hidden][style="display: block;"] {
   display: block !important;
 }
+
+.xp {
+  color: green;
+}
+
+.health {
+  color: red;
+}
+
+.energy {
+  color: #449d44;
+}
+
+.game-actions {
+  text-align: center;
+}
+
+.player-data {
+  color: #ebebeb;
+  width: 250px;
+  padding: 5px;
+  margin: 5px;
+}
+
+.player-avatar {
+  margin: 0px 8px 10px 0px;
+  padding: 2px 5px 0px 5px;
+  background-color: #2b3e50;
+}
+
+.player-name {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.player-title {
+  margin-bottom: 15px;
+}
+
+.player-bar-label {
+  margin-top: 2px;
+  font-size: smaller;
+}
+
+.status-bar {
+   background-color: #2b3e50;
+}
+
+.press-start {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.victory {
+  color: #449d44;
+}
+
+.miss {
+
+}
+
+.critial {
+  color: #269abc;
+  font-weight: bold;
+}
+
+.hit {
+
+}
+
+.level-up {
+  color: #269abc;
+  font-weight: bold;
+}
+
+
+.item-name {
+
+}
+
+.item-options {
+  text-align: right;
+}
+
+.player-stats-title {
+
+}
+
+.player-stats-numbers {
+  text-align: right;
+}

@@ -1,9 +1,12 @@
-{% load staticfiles i18n %}<!DOCTYPE html>
+{% load staticfiles i18n %}
+{% load apps_player %}
+
+<!DOCTYPE html>
 <html lang="en" ng-app>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}pixelpuncher{% endblock title %}</title>
+    <title>{% block title %}Pixel Puncher{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -17,9 +20,12 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
 
+
     <!-- Your stuff: Third-party css libraries go here -->
+    <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
 
     <!-- This file store project specific CSS -->
+    <link href="{% static 'css/spacelab.css' %}" rel="stylesheet">
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
     {% endblock %}
 
@@ -30,11 +36,59 @@
   </head>
 
   <body>
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand"><img src="{% static 'images/logo.png' %}"></a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="/">Top Punchers</a>
+            </li>
+
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            {% if request.user.is_authenticated %}
+              <li>
+                <a href="{% url "game:play" %}">Punch!</a>
+              </li>
+              <li>
+                <a href="{% url "game:reset" %}">Punches: {{ player.punches }}</a>
+              </li>
+              <li>
+                <a href="{% url 'users:detail' request.user.username  %}">{% trans "Profile" %}</a>
+              </li>
+
+              <li>
+                <a href="{% url 'account_logout' %}">{% trans "Logout" %}</a>
+              </li>
+            {% else %}
+                <li>
+                  <a id="sign-up-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+                </li>
+                <li>
+                  <a id="log-in-link" href="{% url 'account_login' %}">{% trans "Log In" %}</a>
+                </li>
+              {% endif %}
+
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
 
     <div class="m-b">
       <nav class="navbar navbar-dark navbar-static-top bg-inverse">
         <div class="container">
-          <a class="navbar-brand" href="/">pixelpuncher</a>
+          <a class="navbar-brand" href="/">Pixel Puncher</a>
           <button type="button" class="navbar-toggler hidden-sm-up pull-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
             &#9776;
           </button>
@@ -52,6 +106,11 @@
 
             <ul class="nav navbar-nav pull-right">
               {% if request.user.is_authenticated %}
+
+                <li class="nav-item">
+                  {% current_punches request.user %}
+                </li>
+
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
                 </li>
@@ -81,7 +140,7 @@
       {% endif %}
 
       {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
+        <p></p>
       {% endblock content %}
 
     </div> <!-- /container -->
@@ -105,4 +164,4 @@
     {% endblock javascript %}
   </body>
 </html>
- 
+

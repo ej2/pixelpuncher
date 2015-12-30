@@ -1,0 +1,22 @@
+{% load staticfiles i18n %}
+
+<div>
+  <div class="pull-right player-data well">
+    <div class="pull-left player-avatar"><img src="{% static 'images/avatar-male-large.png' %}" height="64"> </div>
+    <div class="player-name">
+      <a href="{% url "player:detail" player.pk %}">{{ player.name }}</a>
+    </div>
+    <div class="player-title">Level {{ player.level }}</div>
+
+    <div class="player-bar-label pull-left">Health</div>
+    <div class="progress status-bar">
+      <div class="progress-bar progress-bar-danger" style="width: {{ player.health_percentage }}%;"></div>
+    </div>
+
+    <div class="player-bar-label pull-left">Energy</div>
+    <div class="progress status-bar">
+      <div class="progress-bar progress-bar-success" style="width: {{ player.energy_percentage }}%;"></div>
+    </div>
+
+  </div>
+</div>

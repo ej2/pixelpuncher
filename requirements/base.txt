@@ -40,3 +40,4 @@ redis>=2.10.0
 
 
 # Your custom requirements go here
+django-annoying==0.8.5

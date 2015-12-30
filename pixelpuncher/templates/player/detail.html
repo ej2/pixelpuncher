@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load staticfiles i18n %}
+{% load apps_item %}
+{% load apps_player %}
+
+{% block content %}
+<section class="" id="create">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-2">
+      {% for game_message in game_messages %}
+        <div>
+          <h3>{{ game_message|safe }}</h3>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+        <div class="pull-left player-avatar"><img src="{% static 'images/avatar-male-large.png' %}"> </div>
+      </div>
+      <div class="col-md-4">
+
+        <h3>{{ player.name }}</h3>
+        <h4>Level {{ player.level }}</h4>
+        <table class="table table-striped">
+          <tr>
+            <td class="player-stats-title">XP:</td>
+            <td class="player-stats-numbers">{% display_current_next_xp player %}</td>
+          </tr>
+
+          <tr>
+            <td class="player-stats-title">Power:</td>
+            <td class="player-stats-numbers">{{ player.effect_power }} ({{ player.power }})</td>
+          </tr>
+          <tr>
+            <td class="player-stats-title">Technique:</td>
+            <td class="player-stats-numbers">{{ player.effect_technique }} ({{ player.technique }})</td>
+          </tr>
+          <tr>
+            <td class="player-stats-title">Endurance:</td>
+            <td class="player-stats-numbers">{{ player.effect_endurance }} ({{ player.endurance }})</td>
+          </tr>
+
+          <tr>
+            <td class="player-stats-title">Energy:</td>
+            <td class="player-stats-numbers">{{ player.current_energy }} / {{ player.total_energy }}</td>
+          </tr>
+
+          <tr>
+            <td class="player-stats-title">Health:</td>
+            <td class="player-stats-numbers">{{ player.current_health }} / {{ player.total_health }}</td>
+          </tr>
+        </table>
+
+      </div>
+      <div class="col-md-3">
+        <h3>&nbsp;</h3>
+        <h4>Armor</h4>
+        <table class="table table-striped">
+          <tr>
+            <td>Head</td>
+            <td>{{ player.head }}</td>
+          </tr>
+          <tr>
+            <td>Gloves</td>
+            <td>{{ player.gloves|default_if_none:"-" }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        {% inventory_list player %}
+      </div>
+    </div>
+  </div>
+
+</section>
+
+{% endblock content %}
