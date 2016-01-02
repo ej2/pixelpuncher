@@ -9,4 +9,5 @@ urlpatterns = patterns(
     url(r'^taunt$', views.taunt, name="taunt"),
     url(r'^play$', views.play, name="play"),
     url(r'^reset$', views.reset, name="reset"),
+    url(r'^levels$', views.level_requirements, name="levels"),
 )

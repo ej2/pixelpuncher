@@ -38,11 +38,11 @@
 }
 
 .xp {
-  color: green;
+  color: #449d44;
 }
 
 .health {
-  color: red;
+  color: #b94a48;
 }
 
 .energy {
@@ -50,7 +50,11 @@
 }
 
 .game-actions {
-  text-align: center;
+  text-align: left;
+}
+
+.btn-game-action {
+  margin: 2px 0 2px 0;
 }
 
 .player-data {
@@ -79,6 +83,18 @@
   font-size: smaller;
 }
 
+.enemy-name {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.enemy-category {
+
+}
+
+.enemy-level {
+  margin-bottom: 15px;
+}
+
 .status-bar {
    background-color: #2b3e50;
 }
@@ -101,7 +117,7 @@
 }
 
 .hit {
-
+  color: #b94a48;
 }
 
 .level-up {
@@ -125,3 +141,12 @@
 .player-stats-numbers {
   text-align: right;
 }
+
+.progress-bar-text {
+  padding-left: 5px;
+  position: absolute;
+  text-align: left;
+  display: block;
+  width: 100%;
+  color: #ebebeb;
+ }

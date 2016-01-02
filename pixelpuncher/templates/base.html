@@ -23,6 +23,7 @@
 
     <!-- Your stuff: Third-party css libraries go here -->
     <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <!-- This file store project specific CSS -->
     <link href="{% static 'css/spacelab.css' %}" rel="stylesheet">
@@ -51,11 +52,21 @@
             <li>
               <a href="/">Top Punchers</a>
             </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="cheats">Cheats</a>
+              <ul class="dropdown-menu" aria-labelledby="cheats">
+                <li><a href="{% url "game:reset" %}">Reset Health/Energy/Turns</a></li>
+                <li class="divider"></li>
+                <li><a href="{% url "game:levels" %}">Level XP Breakdown</a></li>
+              </ul>
+            </li>
 
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
             {% if request.user.is_authenticated %}
+              {% if player %}
+
               <li>
                 <a href="{% url "game:play" %}">Punch!</a>
               </li>
@@ -65,7 +76,7 @@
               <li>
                 <a href="{% url 'users:detail' request.user.username  %}">{% trans "Profile" %}</a>
               </li>
-
+              {% endif %}
               <li>
                 <a href="{% url 'account_logout' %}">{% trans "Logout" %}</a>
               </li>
@@ -78,9 +89,7 @@
                 </li>
               {% endif %}
 
-
           </ul>
-
         </div>
       </div>
     </div>
@@ -106,11 +115,11 @@
 
             <ul class="nav navbar-nav pull-right">
               {% if request.user.is_authenticated %}
-
+                {% if player %}
                 <li class="nav-item">
                   {% current_punches request.user %}
                 </li>
-
+                {% endif %}
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
                 </li>

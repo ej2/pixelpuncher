@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load apps_player %}
+{% load apps_enemy %}
+
+{% block title %}Leveling{% endblock title %}
+{% block content %}
+<section class="" id="create">
+    <div class="container-fluid">
+      <div class="row" style="padding-top: 10px;">
+        <div class="col-md-3">
+          {% mini_profile request.user %}
+        </div>
+        <div class="col-md-6">
+          {% for level in levels %}
+            <div>
+              <h3>Level {{ level.level }}: {{ level.xp }}XP (difference: {{ level.diff }})</h3>
+            </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}

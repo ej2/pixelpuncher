@@ -7,6 +7,7 @@ from pixelpuncher.game.utils import game_settings
 from pixelpuncher.game.utils.combat import perform_skip, perform_skill, perform_taunt
 from pixelpuncher.game.utils.encounter import get_enemy
 from pixelpuncher.game.utils.game import can_punch
+from pixelpuncher.game.utils.leveling import xp_required_for_level
 from pixelpuncher.game.utils.message import get_game_messages
 from pixelpuncher.player.decorators import player_required
 from pixelpuncher.player.models import PlayerSkill, VICTORY, COMBAT, PASSIVE
@@ -18,18 +19,19 @@ def play(request, player):
 
     enemy = None
 
-    if player.status == VICTORY:
-        player.status = PASSIVE
-        player.save()
-
-    elif player.status == PASSIVE:
-        if can_punch_flag:
-            enemy = get_enemy(player)
-            player.status = COMBAT
+    if can_punch_flag:
+        if player.status == VICTORY:
+            player.status = PASSIVE
             player.save()
 
-    elif player.status == COMBAT:
-        enemy = get_enemy(player)
+        elif player.status == PASSIVE:
+            if can_punch_flag:
+                enemy = get_enemy(player)
+                player.status = COMBAT
+                player.save()
+
+        elif player.status == COMBAT:
+            enemy = get_enemy(player)
 
     game_messages = get_game_messages(player)
 
@@ -48,8 +50,7 @@ def play(request, player):
 @player_required
 def skill(request, player, player_skill_id):
     player_skill = get_object_or_404(PlayerSkill, id=player_skill_id)
-    enemy = get_enemy(player)
-    perform_skill(player, enemy, player_skill)
+    perform_skill(player, player_skill)
 
     return redirect(reverse("game:play"))
 
@@ -74,3 +75,26 @@ def reset(request, player):
     player.save()
 
     return redirect(reverse("game:play"))
+
+@player_required
+def level_requirements(request, player):
+    levels = []
+    previous = 0
+
+    for x in range(1, 21):
+        xp = int(xp_required_for_level(x))
+        levels.append({
+            "level": x,
+            "xp": xp,
+            "diff": xp - previous
+        })
+
+        previous = xp
+
+    context = {
+        "levels": levels,
+        "player": player
+    }
+
+    return TemplateResponse(
+        request, "game/levels.html", RequestContext(request, context))

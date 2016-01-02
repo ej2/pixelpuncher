@@ -11,13 +11,19 @@
               {% csrf_token %}
 
                 <div class="form-group">
-                  <label for="text" class="col-sm-2 control-label form-text">Name</label>
+                  <label for="text" class="col-sm-4 control-label form-text">Name</label>
                   <div class="col-sm-6">
                   {{ form.name }}
                   </div>
                 </div>
+                <div class="form-group">
+                  <label for="text" class="col-sm-4 control-label form-text">Previous Occupation</label>
+                  <div class="col-sm-6">
+                  {{ form.previous_occupation }}
+                  </div>
+                </div>
 
-              <input type="submit" value="Post" class="btn btn-default btn-lg btn-declaration" />
+              <input type="submit" value="Create" class="btn btn-default btn-lg btn-declaration" />
             </form>
 
             </div>

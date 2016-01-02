@@ -1,4 +1,5 @@
 {% load staticfiles i18n %}
+{% load apps_game %}
 
 <div>
   <div class="pull-right player-data well">
@@ -8,15 +9,9 @@
     </div>
     <div class="player-title">Level {{ player.level }}</div>
 
-    <div class="player-bar-label pull-left">Health</div>
-    <div class="progress status-bar">
-      <div class="progress-bar progress-bar-danger" style="width: {{ player.health_percentage }}%;"></div>
-    </div>
 
-    <div class="player-bar-label pull-left">Energy</div>
-    <div class="progress status-bar">
-      <div class="progress-bar progress-bar-success" style="width: {{ player.energy_percentage }}%;"></div>
-    </div>
-
+    {% status_bar 'Health' player.current_health player.total_health 'progress-bar-danger' %}
+    {% status_bar 'Energy' player.current_energy player.total_energy 'progress-bar-success' %}
+    {% status_bar 'XP' player.xp player.xp_to_next_level 'progress-bar-info' %}
   </div>
 </div>

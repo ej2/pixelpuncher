@@ -1,1 +1,18 @@
 {% extends "base.html" %}
+{% load staticfiles i18n %}
+
+{% block content %}
+  <div class="row">
+
+    <div class="well well-lg col-lg-7">
+      <h1>PUNCH!</h1>
+    </div>
+    <div class="well well-lg col-lg-3 col-lg-offset-1">
+      <h2 class="text-warning">Warning!</h2>
+      <p>
+        This game depicts extreme violence against inanimate objects.
+        No vegetables were harmed in the making of this game.
+      </p>
+    </div>
+  </div>
+{% endblock content %}

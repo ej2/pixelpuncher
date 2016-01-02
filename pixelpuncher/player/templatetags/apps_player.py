@@ -27,6 +27,6 @@ def mini_profile(user):
 
 @register.simple_tag()
 def display_current_next_xp(player):
-    xp_next = int(xp_required_for_level(player.level + 1))
+    xp_next = int(xp_required_for_level(player.level))
 
     return "{0} / {1}".format(player.xp, xp_next)

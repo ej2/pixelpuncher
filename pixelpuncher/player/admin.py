@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from pixelpuncher.player.models import Player, Skill, PlayerSkill
+from pixelpuncher.player.models import Player, Skill, PlayerSkill, Occupation
 
 
 class PlayerModelAdmin(admin.ModelAdmin):
@@ -23,6 +23,13 @@ class PlayerSkillModelAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 
+class OccupationModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "active", )
+    search_fields = ("id", "name", )
+    list_per_page = 25
+
+
 admin.site.register(Player, PlayerModelAdmin)
 admin.site.register(Skill, SkillModelAdmin)
 admin.site.register(PlayerSkill, PlayerSkillModelAdmin)
+admin.site.register(Occupation, OccupationModelAdmin)

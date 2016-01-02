@@ -3,6 +3,7 @@ from __future__ import division
 from django.db import models
 from django_extensions.db import fields
 
+from pixelpuncher.game.utils import game_settings
 from pixelpuncher.users.models import User
 
 
@@ -28,10 +29,18 @@ SKILL_TYPE = (
 )
 
 
+class Occupation(models.Model):
+    name = models.CharField(max_length=50)
+    active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Player(models.Model):
     user = models.ForeignKey(User, related_name="player")
     name = models.CharField(max_length=25)
-    title = models.CharField(max_length=30)
+    title = models.CharField(max_length=30, null=True, blank=True)
     level = models.IntegerField(default=1)
     xp = models.IntegerField(default=0)
     punches = models.IntegerField(default=0)  # Number of Actions or turns
@@ -51,10 +60,15 @@ class Player(models.Model):
     technique = models.IntegerField(default=1)
     endurance = models.IntegerField(default=1)
 
+    attribute_points = models.IntegerField(default=0)
     status = models.CharField(max_length=1, choices=PLAYER_STATUS, default=PASSIVE)
 
     head = models.ForeignKey('item.Item', null=True, blank=True, related_name="+")
     gloves = models.ForeignKey('item.Item', null=True, blank=True, related_name="+")
+    torso = models.ForeignKey('item.Item', null=True, blank=True, related_name="+")
+
+    motto = models.CharField(max_length=200, null=True, blank=True)
+    previous_occupation = models.CharField(max_length=50, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -94,6 +108,14 @@ class Player(models.Model):
     @property
     def energy_percentage(self):
         return (self.current_energy / self.total_energy) * 100
+
+    @property
+    def xp_to_next_level(self):
+        return int(game_settings.XP_BASE_AMOUNT * (self.level * (self.level + 1)) / 2)
+
+    @property
+    def percentage_to_next_level(self):
+        return (self.xp / self.xp_to_next_level) * 100
 
     @property
     def effect_power(self):
@@ -141,6 +163,7 @@ class Skill(models.Model):
     name = models.CharField(max_length=25)
     description = models.TextField()
     skill_type = models.CharField(max_length=4, choices=SKILL_TYPE)
+    level = models.IntegerField(default=1)
 
     number_of_dice = models.IntegerField(default=1)
     dice_sides = models.IntegerField(default=0)

@@ -1,25 +1,38 @@
-
 from __future__ import division
 
 import random
 
 from pixelpuncher.game.utils.calculations import calculate_hit, calculate_critial_hit, calculate_critial_damage, \
-    calculate_damage, calculate_enemy_damage, calculate_enemy_hit
+    calculate_damage, calculate_enemy_damage, calculate_enemy_hit, percentage_roll, dice_roll
 from pixelpuncher.game.utils.encounter import get_current_enemy
 from pixelpuncher.game.utils.leveling import can_level_up, level_up
 from pixelpuncher.game.utils.loot import generate_loot
 from pixelpuncher.game.utils.message import add_game_message
 from pixelpuncher.game.utils.messages import successful_critical_message, successful_hit_message, low_energy_message, \
-    hit_failure_message, player_damage_message
+    hit_failure_message, player_damage_message, successful_heal_message, failed_heal_message
+from pixelpuncher.player.models import VICTORY
 
 
-def perform_skill(player, enemy, player_skill):
+def perform_skill(player, player_skill):
     victory = False
+    enemy = get_current_enemy(player)
 
     if can_use_skill(player, player_skill):
 
         if player_skill.skill.skill_type == "ATTK":
             results = perform_attack_skill(player, enemy, player_skill)
+
+            # Process results
+            if results['hit']:
+                enemy.hits += 1
+                if results['critical']:
+                    enemy.adjust_health(-results['critical_damage'])
+                    add_game_message(
+                        player, successful_critical_message(player_skill.skill, enemy, results['critical_damage']))
+                else:
+                    enemy.adjust_health(-results['damage'])
+                    add_game_message(
+                        player, successful_hit_message(player_skill.skill, enemy, results['damage']))
 
         elif player_skill.skill.skill_type == "SPCL":
             results = perform_special_skill(player, enemy, player_skill)
@@ -27,27 +40,27 @@ def perform_skill(player, enemy, player_skill):
         elif player_skill.skill.skill_type == "HEAL":
             results = perform_heal_skill(player, enemy, player_skill)
 
-        # Process results
-        if results['hit']:
-            enemy.hits += 1
-            if results['critical']:
-                enemy.adjust_health(-results['critical_damage'])
+            # Process results
+            if results['success']:
+                player.adjust_health(results['amount'])
                 add_game_message(
-                    player, successful_critical_message(player_skill.skill, enemy, results['critical_damage']))
+                    player, successful_heal_message(player_skill.skill, results['amount']))
             else:
-                enemy.adjust_health(-results['damage'])
                 add_game_message(
-                    player, successful_hit_message(player_skill.skill, enemy, results['damage']))
+                    player, failed_heal_message(player_skill.skill))
 
         else:
             add_game_message(player, hit_failure_message(player_skill.skill, enemy))
 
         if enemy.is_defeated:
-            pass
+            victory = True
+            player.status = VICTORY
         else:
             attack_results = perform_enemy_attack(player, enemy)
-            player.adjust_health(-attack_results['damage'])
-            add_game_message(player, player_damage_message(attack_results['damage']))
+
+            if attack_results['hit']:
+                player.adjust_health(-attack_results['damage'])
+                add_game_message(player, player_damage_message(attack_results['damage']))
 
         # Apply player changes
         player.adjust_energy(-player_skill.energy_cost)
@@ -96,18 +109,15 @@ def perform_special_skill(player, enemy, player_skill):
 
 
 def perform_heal_skill(player, enemy, player_skill):
-    # TODO: Finish
-    damage = 0
-    critical_damage = 0
+    heal_amount = 0
 
-    hit = False
-    critical = False
+    success = percentage_roll(player_skill.hit_percentage)
+    if success:
+        heal_amount = dice_roll(player_skill.number_of_dice, player_skill.dice_sides, player_skill.bonus)
 
     return {
-        "hit": hit,
-        "damage": damage,
-        "critical": critical,
-        "critical_damage": critical_damage,
+        "success": success,
+        "amount": heal_amount,
     }
 
 
@@ -137,7 +147,7 @@ def perform_attack_skill(player, enemy, player_skill):
 
 
 def can_use_skill(player, player_skill):
-    if player.current_energy < player_skill.energy_cost:
+    if player.current_energy >= player_skill.energy_cost:
         return True
     return False
 

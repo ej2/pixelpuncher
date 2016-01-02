@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+ <section class="" id="create">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+              <h3 style="padding-bottom: 20px;">Spend Attribute Points</h3>
+              <form action="" method="post" class="form-horizontal">
+              {% csrf_token %}
+
+                <div class="form-group">
+                  <label for="text" class="col-sm-4 control-label form-text">Points remaining:</label>
+                  <div class="col-sm-6">
+                    <input id="id_attribute_points" class="disabled" type="text" value="{{ player.attribute_points }}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="text" class="col-sm-4 control-label form-text">Power</label>
+                  <div class="col-sm-6">
+                  {{ form.power }}
+                    <input type="button" onclick="increase('id_power')" value="+">
+                    <input type="button" onclick="decrease('id_power', {{ player.power }})" value="-">
+                  </div>
+                </div>
+                 <div class="form-group">
+                  <label for="text" class="col-sm-4 control-label form-text">Endurance</label>
+                  <div class="col-sm-6">
+                  {{ form.endurance }}
+                    <input type="button" onclick="increase('id_endurance')" value="+">
+                    <input type="button" onclick="decrease('id_endurance', {{ player.endurance }})" value="-">
+                  </div>
+                </div>
+                 <div class="form-group">
+                  <label for="text" class="col-sm-4 control-label form-text">Technique</label>
+                  <div class="col-sm-6">
+                  {{ form.technique }}
+                    <input type="button" onclick="increase('id_technique')" value="+">
+                    <input type="button" onclick="decrease('id_technique', {{ player.technique }})" value="-">
+                  </div>
+
+                   <input id="id_points" type="hidden" value="{{ player.attribute_points }}">
+                </div>
+
+              <input type="submit" value="Save" class="btn btn-success" />
+                <a class="btn btn-danger" href="{% url "player:detail" player.id %}">Cancel</a>
+            </form>
+
+            </div>
+        </div>
+    </div>
+  </section>
+
+{% endblock content %}

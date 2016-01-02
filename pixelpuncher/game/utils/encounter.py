@@ -27,7 +27,7 @@ def get_current_enemy(player):
 
 
 def random_encounter(player):
-    enemy_types = EnemyType.objects.all()
+    enemy_types = EnemyType.objects.filter(base_level__lte=player.level)
     enemy_type = random.choice(enemy_types)
 
     enemy = create_enemy(enemy_type, player)
@@ -37,14 +37,22 @@ def random_encounter(player):
 def create_enemy(enemy_type, player):
     enemy = Enemy()
 
-    enemy.player = player
-    enemy.enemy_type = enemy_type
-    enemy.hits = 0
-    enemy.level = enemy_type.base_level + random.randint(0, 2)
+    level_bonus = random.randint(0, 2)  # increases difficultly slightly
+    enemy.level = enemy_type.base_level + level_bonus
 
-    enemy.total_health = random.randint(enemy_type.minimum_health, enemy_type.maximum_health)
+    enemy.enemy_type = enemy_type
+    enemy.player = player
+
+    enemy.total_health = random.randint(enemy_type.minimum_health, enemy_type.maximum_health) + (level_bonus * 5)
     enemy.current_health = enemy.total_health
-    enemy.damage = enemy_type.base_damage
+
+    enemy.attack = enemy_type.attack + (level_bonus * 2)
+    enemy.defense = enemy_type.defense + (level_bonus * 2)
+
+    enemy.number_of_dice = enemy_type.number_of_dice
+    enemy.dice_sides = enemy_type.dice_sides
+    enemy.bonus = enemy_type.bonus + level_bonus
+
     enemy.save()
 
     return enemy

@@ -32,6 +32,8 @@ class EnemyType(models.Model):
     dice_sides = models.IntegerField(default=0)
     bonus = models.IntegerField(default=0)
 
+    image_name = models.CharField(max_length=100, null=True, blank=True)
+
     def __unicode__(self):
         return self.name
 

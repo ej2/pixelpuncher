@@ -1,15 +1,14 @@
 {% load staticfiles i18n %}
+{% load apps_enemy %}
+{% load apps_game %}
 
 <div>
   <div class="pull-right player-data well">
-    <div class="pull-left player-avatar"><img src="{% static 'images/avatar-male-large.png' %}" height="64"> </div>
-    <div class="player-name">{{ enemy|title }}</div>
-    <div class="player-title">Level {{ enemy.level }}</div>
+    <div class="pull-left player-avatar"><img src="{% enemy_image_path enemy %}" height="64"> </div>
+    <div class="enemy-name">{{ enemy|title }}</div>
+    <div class="enemy-category">{{ enemy.enemy_type.category }}</div>
+    <div class="enemy-level">Level {{ enemy.level }}</div>
 
-    <div class="player-bar-label pull-left">Health:</div>
-    <div class="progress status-bar">
-      <div class="progress-bar progress-bar-warning" style="width: {{ health_bar_percent }}%;"></div>
-    </div>
-
+    {% status_bar 'Health' enemy.current_health enemy.total_health 'progress-bar-danger' %}
   </div>
 </div>
