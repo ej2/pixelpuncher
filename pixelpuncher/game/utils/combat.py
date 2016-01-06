@@ -33,6 +33,9 @@ def perform_skill(player, player_skill):
                     enemy.adjust_health(-results['damage'])
                     add_game_message(
                         player, successful_hit_message(player_skill.skill, enemy, results['damage']))
+            else:
+                add_game_message(
+                    player, hit_failure_message(player_skill.skill, enemy))
 
         elif player_skill.skill.skill_type == "SPCL":
             results = perform_special_skill(player, enemy, player_skill)
@@ -64,7 +67,6 @@ def perform_skill(player, player_skill):
 
         # Apply player changes
         player.adjust_energy(-player_skill.energy_cost)
-        player.punches -= 1  # Should each attack cost one punch or each combat?
 
         player.save()
         enemy.save()

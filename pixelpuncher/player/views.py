@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.views.generic import CreateView, DetailView, UpdateView
 
 from pixelpuncher.game.utils.message import add_game_message, get_game_messages
-from pixelpuncher.item.utils import use_item, drop_item
+from pixelpuncher.item.utils import use_item, drop_item, examine_item
 from pixelpuncher.player.decorators import player_required
 from pixelpuncher.player.forms import PlayerForm, AttributeForm
 from pixelpuncher.player.models import Player
@@ -72,6 +72,14 @@ def drop(request, player, item_id):
 @player_required
 def use(request, player, item_id):
     result = use_item(item_id)
+    add_game_message(player, result)
+
+    return redirect(reverse("player:detail", args=[player.id]))
+
+
+@player_required
+def examine(request, player, item_id):
+    result = examine_item(item_id)
     add_game_message(player, result)
 
     return redirect(reverse("player:detail", args=[player.id]))

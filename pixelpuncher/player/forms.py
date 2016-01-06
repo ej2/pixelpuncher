@@ -4,12 +4,14 @@ from django.forms import model_to_dict
 
 from pixelpuncher.game.utils import game_settings
 from pixelpuncher.game.utils.skills import add_starting_skills
-from pixelpuncher.player.models import Player, Occupation
+from pixelpuncher.player.models import Player, Occupation, GENDER
 
 
 class PlayerForm(forms.Form):
-    name = forms.CharField(required=True, max_length=25, widget=forms.TextInput())
-    previous_occupation = forms.ModelChoiceField(queryset=Occupation.objects.filter(active=True))
+    name = forms.CharField(required=True, max_length=25, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    gender = forms.ChoiceField(required=True, choices=GENDER, widget=forms.Select(attrs={'class': 'form-control'}))
+    previous_occupation = forms.ModelChoiceField(
+        queryset=Occupation.objects.filter(active=True), widget=forms.Select(attrs={'class': 'form-control'}))
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("instance", None)
@@ -27,6 +29,7 @@ class PlayerForm(forms.Form):
         player.user = self.user
 
         player.name = data.get("name")
+        player.gender = data.get("gender")
 
         occupation = data.get("previous_occupation")
         player.previous_occupation = occupation.name
@@ -52,9 +55,9 @@ class PlayerForm(forms.Form):
 
 
 class AttributeForm(forms.Form):
-    power = forms.IntegerField(required=True, widget=forms.TextInput())
-    technique = forms.IntegerField(required=True, widget=forms.TextInput())
-    endurance = forms.IntegerField(required=True, widget=forms.TextInput())
+    power = forms.IntegerField(required=True, widget=forms.TextInput(attrs={"class": "form-attribute-field" }))
+    technique = forms.IntegerField(required=True, widget=forms.TextInput(attrs={"class": "form-attribute-field" }))
+    endurance = forms.IntegerField(required=True, widget=forms.TextInput(attrs={"class": "form-attribute-field" }))
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("instance", None)

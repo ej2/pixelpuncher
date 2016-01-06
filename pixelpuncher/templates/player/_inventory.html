@@ -17,6 +17,7 @@
       </td>
       <td class="item-options">
         [
+          <a href="{% url "player:examine" item.id %}">Examine</a> |
           <a href="{% url "player:use" item.id %}">{{ item.display_verb|title }}</a> |
           <a href="{% url "player:drop" item.id %}">Drop</a>
         ]

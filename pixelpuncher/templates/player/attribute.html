@@ -1,23 +1,32 @@
 {% extends "base.html" %}
+{% load staticfiles i18n %}
 
 {% block content %}
 
  <section class="" id="create">
     <div class="container-fluid">
         <div class="row">
+          <div class="col-md-3" style="text-align: center;">
+            <div class="player-avatar">
+              <img src="{% static 'images/avatar-male-large.png' %}">
+            </div>
+              <div>
+                <h3>{{ player.name }}</h3>
+              </div>
+            </div>
             <div class="col-md-6">
               <h3 style="padding-bottom: 20px;">Spend Attribute Points</h3>
               <form action="" method="post" class="form-horizontal">
               {% csrf_token %}
 
                 <div class="form-group">
-                  <label for="text" class="col-sm-4 control-label form-text">Points remaining:</label>
-                  <div class="col-sm-6">
-                    <input id="id_attribute_points" class="disabled" type="text" value="{{ player.attribute_points }}">
+                  <label for="id_attribute_points" class="col-sm-4 control-label form-text">Points remaining:</label>
+                  <div class="col-sm-1">
+                    <input id="id_attribute_points" class="form-attribute-field" disabled=""  type="text" value="{{ player.attribute_points }}">
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="text" class="col-sm-4 control-label form-text">Power</label>
+                  <label for="power" class="col-sm-4 control-label form-text">Power</label>
                   <div class="col-sm-6">
                   {{ form.power }}
                     <input type="button" onclick="increase('id_power')" value="+">
@@ -25,7 +34,7 @@
                   </div>
                 </div>
                  <div class="form-group">
-                  <label for="text" class="col-sm-4 control-label form-text">Endurance</label>
+                  <label for="endurance" class="col-sm-4 control-label form-text">Endurance</label>
                   <div class="col-sm-6">
                   {{ form.endurance }}
                     <input type="button" onclick="increase('id_endurance')" value="+">
@@ -33,7 +42,7 @@
                   </div>
                 </div>
                  <div class="form-group">
-                  <label for="text" class="col-sm-4 control-label form-text">Technique</label>
+                  <label for="technique" class="col-sm-4 control-label form-text">Technique</label>
                   <div class="col-sm-6">
                   {{ form.technique }}
                     <input type="button" onclick="increase('id_technique')" value="+">

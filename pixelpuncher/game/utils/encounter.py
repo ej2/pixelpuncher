@@ -13,6 +13,7 @@ def get_enemy(player):
     if enemy is None:
         enemy = random_encounter(player)
         player.status = COMBAT
+        player.punches -= 1  # Should each attack cost one punch or each combat?
         player.save()
 
         add_game_message(player, "You see a {0}.".format(enemy))

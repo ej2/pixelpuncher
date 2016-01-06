@@ -54,6 +54,11 @@ def drop_item(item_id):
     return result
 
 
+def examine_item(item_id):
+    item = get_object_or_None(Item, id=item_id)
+    return item.item_type.description
+
+
 def use_item(item_id):
     item = get_object_or_None(Item, id=item_id)
 
@@ -103,6 +108,10 @@ def use_armor(item):
         item.player.gloves = item
         item.player.save()
         result = "You put the {0} on your hands.".format(item.item_type.name)
+    elif item.item_type.classification == "TORSO":
+        item.player.torso = item
+        item.player.save()
+        result = "You put the {0} on your torso.".format(item.item_type.name)
     else:
         result = "You cannot wear that."
 

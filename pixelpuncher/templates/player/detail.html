@@ -58,6 +58,14 @@
                 <td class="player-stats-title">Previous Occupation:</td>
                 <td class="player-stats-numbers">{{ player.previous_occupation }}</td>
               </tr>
+              <tr>
+                <td class="player-stats-title">Adventures:</td>
+                <td class="player-stats-numbers">{{ player.punches }}</td>
+              </tr>
+              <tr>
+                <td class="player-stats-title">Gender:</td>
+                <td class="player-stats-numbers">{{ player.get_gender_display }}</td>
+              </tr>
             </table>
           </div>
         </div>

@@ -11,6 +11,11 @@ VICTORY = 'v'
 COMBAT = 'c'
 PASSIVE = 'p'
 
+GENDER = (
+    ("M", "Male",),
+    ("F", "Female",),
+)
+
 PLAYER_STATUS = (
     ("p", "Passive",),
     ("c", "Combat",),
@@ -37,13 +42,23 @@ class Occupation(models.Model):
         return self.name
 
 
+class Avatar(models.Model):
+    image_path = models.CharField(max_length=200)
+    active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.image_path
+
+
 class Player(models.Model):
     user = models.ForeignKey(User, related_name="player")
     name = models.CharField(max_length=25)
+    gender = models.CharField(max_length=1, default="M", choices=GENDER)
     title = models.CharField(max_length=30, null=True, blank=True)
     level = models.IntegerField(default=1)
     xp = models.IntegerField(default=0)
     punches = models.IntegerField(default=0)  # Number of Actions or turns
+    avatar = models.ForeignKey(Avatar, null=True, blank=True)
 
     total_health = models.IntegerField(default=1)
     current_health = models.IntegerField(default=1)
@@ -63,9 +78,9 @@ class Player(models.Model):
     attribute_points = models.IntegerField(default=0)
     status = models.CharField(max_length=1, choices=PLAYER_STATUS, default=PASSIVE)
 
-    head = models.ForeignKey('item.Item', null=True, blank=True, related_name="+")
-    gloves = models.ForeignKey('item.Item', null=True, blank=True, related_name="+")
-    torso = models.ForeignKey('item.Item', null=True, blank=True, related_name="+")
+    head = models.ForeignKey('item.Item', null=True, blank=True, related_name="+", on_delete=models.SET_NULL)
+    gloves = models.ForeignKey('item.Item', null=True, blank=True, related_name="+", on_delete=models.SET_NULL)
+    torso = models.ForeignKey('item.Item', null=True, blank=True, related_name="+", on_delete=models.SET_NULL)
 
     motto = models.CharField(max_length=200, null=True, blank=True)
     previous_occupation = models.CharField(max_length=50, null=True, blank=True)
@@ -127,6 +142,9 @@ class Player(models.Model):
         if self.head:
             bonus += self.head.item_type.power_bonus
 
+        if self.torso:
+            bonus += self.torso.item_type.power_bonus
+
         return self.power + bonus
 
     @property
@@ -138,6 +156,9 @@ class Player(models.Model):
 
         if self.head:
             bonus += self.head.item_type.technique_bonus
+
+        if self.torso:
+            bonus += self.torso.item_type.technique_bonus
 
         return self.technique + bonus
 
@@ -151,12 +172,25 @@ class Player(models.Model):
         if self.head:
             bonus += self.head.item_type.endurance_bonus
 
+        if self.torso:
+            bonus += self.torso.item_type.endurance_bonus
+
         return self.endurance + bonus
 
     @property
     def effective_armor(self):
-        # TODO: finish armor calculation
-        return 0
+        armor_rating = 0
+
+        if self.gloves:
+            armor_rating += self.gloves.item_type.armor_rating
+
+        if self.head:
+            armor_rating += self.head.item_type.armor_rating
+
+        if self.torso:
+            armor_rating += self.torso.item_type.armor_rating
+
+        return armor_rating
 
 
 class Skill(models.Model):

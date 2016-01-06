@@ -15,6 +15,7 @@ BASE_TYPE = (
 CLASSIFICATION = (
     ("GLOVE", "Gloves",),
     ("HEAD", "Head",),
+    ("TORSO", "Torso",),
     ("FOOD", "Food",),
     ("DRINK", "Drink",),
 )
@@ -30,6 +31,7 @@ class ItemType(models.Model):
     min_damage = models.IntegerField(default=0)
     max_damage = models.IntegerField(default=0)
 
+    armor_rating = models.IntegerField(default=0)
     power_bonus = models.IntegerField(default=0)
     technique_bonus = models.IntegerField(default=0)
     endurance_bonus = models.IntegerField(default=0)
@@ -43,13 +45,14 @@ class ItemType(models.Model):
 
     action_verb = models.CharField(max_length=30, null=True, blank=True)
     stackable = models.BooleanField(default=False)
+    level_requirement = models.IntegerField(default=1)
 
     def __unicode__(self):
         return self.name
 
 
 class Item(models.Model):
-    player = models.ForeignKey(Player, related_name="items", null=True, blank=True)
+    player = models.ForeignKey(Player, related_name="items", null=True, blank=True, on_delete=models.SET_NULL)
     item_type = models.ForeignKey(ItemType, related_name="+", default=None, null=True)
     remaining_uses = models.IntegerField(default=0)
     date_created = fields.CreationDateTimeField(editable=True)
