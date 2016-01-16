@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load staticfiles i18n %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-lg-4">
+    <h2>Top Players by XP</h2>
+    <table class="table table-striped table-hover">
+      <tbody>
+      {% for top_player in players %}
+        <tr {% if top_player == player %}class="bg-primary"{% endif %}>
+          <td>
+            {% if top_player.avatar %}
+              <img src="{% static top_player.avatar.image_path %}" width="32">
+            {% endif %}
+          </td>
+          <td>
+
+            <h4>{{ top_player }}</h4>
+            <span class="label label-success">Level {{ top_player.level }}</span> &nbsp;
+            <span class="label label-info">{{ top_player.xp }} XP</span>
+
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+{% endblock content %}

@@ -1,7 +1,7 @@
 import random
 from annoying.functions import get_object_or_None
 
-from pixelpuncher.item.models import Item
+from pixelpuncher.item.models import Item, LevelEquipment
 
 
 def create_item(item_type):
@@ -26,18 +26,11 @@ def get_random_drop(drop_table):
 
 
 def add_item_type_to_player(item_type, player):
+    item = get_object_or_None(Item, player=player, item_type=item_type)
 
-    if item_type.stackable:
-        item = get_object_or_None(Item, player=player, item_type=item_type)
-
-        if item:
-            item.remaining_uses += 1
-            item.save()
-        else:
-            item = create_item(item_type)
-            item.player = player
-            item.save()
-
+    if item:
+        item.remaining_uses += 1
+        item.save()
     else:
         item = create_item(item_type)
         item.player = player
@@ -59,31 +52,31 @@ def examine_item(item_id):
     return item.item_type.description
 
 
-def use_item(item_id):
+def use_item(player, item_id):
     item = get_object_or_None(Item, id=item_id)
 
     if item:
         if item.item_type.base_type == "CON":
-            result = use_consumable(item)
+            result = use_consumable(player, item)
 
         elif item.item_type.base_type == "ARM":
-            result = use_armor(item)
+            result = use_armor(player, item)
         elif item.item_type.base_type == "WEA":
             pass
 
     return result
 
 
-def use_consumable(item):
+def use_consumable(player, item):
     result = "You {0} the {1}. ".format(item.item_type.action_verb, item.item_type.name)
 
     if item.item_type.current_energy_bonus != 0:
-        result += item.player.adjust_energy(item.item_type.current_energy_bonus)
+        result += player.adjust_energy(item.item_type.current_energy_bonus)
 
     if item.item_type.current_health_bonus != 0:
-        result += item.player.adjust_health(item.item_type.current_health_bonus)
+        result += player.adjust_health(item.item_type.current_health_bonus)
 
-    item.player.save()
+    player.save()
 
     if item.item_type.stackable:
         item.remaining_uses -= 1
@@ -98,21 +91,38 @@ def use_consumable(item):
     return result
 
 
-def use_armor(item):
-
+def use_armor(player, item):
     if item.item_type.classification == "HEAD":
-        item.player.head = item
-        item.player.save()
+        player.head = item
         result = "You put the {0} on your head.".format(item.item_type.name)
     elif item.item_type.classification == "GLOVE":
-        item.player.gloves = item
-        item.player.save()
+        player.gloves = item
         result = "You put the {0} on your hands.".format(item.item_type.name)
     elif item.item_type.classification == "TORSO":
-        item.player.torso = item
-        item.player.save()
+        player.torso = item
         result = "You put the {0} on your torso.".format(item.item_type.name)
     else:
         result = "You cannot wear that."
 
+    player.save()
     return result
+
+
+def give_level_equipment(player):
+
+    level_equipment = LevelEquipment.objects.filter(level=player.level)
+
+    for equip in level_equipment:
+        item = create_item(equip.item_type)
+        item.player = player
+        item.save()
+
+
+def auto_equip(player):
+    for item in player.items.all():
+        if item.item_type.base_type == "ARM":
+            use_armor(item)
+
+
+def get_combat_items(player):
+    return player.items.filter(item_type__combat_usable=True).order_by("item_type__name")

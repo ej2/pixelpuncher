@@ -4,7 +4,8 @@ from django.forms import model_to_dict
 
 from pixelpuncher.game.utils import game_settings
 from pixelpuncher.game.utils.skills import add_starting_skills
-from pixelpuncher.player.models import Player, Occupation, GENDER
+from pixelpuncher.item.utils import give_level_equipment, auto_equip
+from pixelpuncher.player.models import Player, Occupation, GENDER, Avatar
 
 
 class PlayerForm(forms.Form):
@@ -50,6 +51,8 @@ class PlayerForm(forms.Form):
         player.save()
 
         add_starting_skills(player)
+        give_level_equipment(player)
+        auto_equip(player)
 
         return player
 

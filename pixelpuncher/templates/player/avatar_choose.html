@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles i18n %}
+
+{% block content %}
+
+ <section class="" id="create">
+    <div class="container-fluid">
+      <div class="row">
+        <h3 style="padding-bottom: 20px;">Choose Avatar</h3>
+        {% for avatar in avatars %}
+          <div class="col-md-3 avatar-display">
+            <img src="{% static avatar.image_path %}">
+            <h3><a class="btn btn-primary" href="{% url "player:avatar_choose" avatar.pk %}">Choose</a></h3>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}

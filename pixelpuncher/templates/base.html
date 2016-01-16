@@ -24,6 +24,7 @@
     <!-- Your stuff: Third-party css libraries go here -->
     <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/1.4.57/css/materialdesignicons.min.css">
 
     <!-- This file store project specific CSS -->
     <link href="{% static 'css/superhero.css' %}" rel="stylesheet">
@@ -53,15 +54,25 @@
               <li>
                 <a href="{% url "game:play" %}">Play</a>
               </li>
-
             {% endif %}
             <li>
-              <a href="/">Top Punchers</a>
+              <a href="{% url "player:top_punchers" %}">Top Punchers</a>
             </li>
+            <li>
+              <a href="/">Training Room</a>
+            </li>
+          {% if player %}
+            <li>
+              <a href="{% url "player:detail" player.pk %}">Profile
+                {% if player.attribute_points > 0 %}<span class="badge">{{ player.attribute_points }}</span>{% endif %}
+              </a>
+            </li>
+          {% endif %}
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="cheats">Cheats</a>
               <ul class="dropdown-menu" aria-labelledby="cheats">
                 <li><a href="{% url "game:reset" %}">Reset Health/Energy/Turns</a></li>
+                <li><a href="{% url "game:daily_reset" %}">Daily reset</a></li>
                 <li class="divider"></li>
                 <li><a href="{% url "game:levels" %}">Level XP Breakdown</a></li>
               </ul>
@@ -112,7 +123,7 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
       <!-- Latest compiled and minified JavaScript -->
-      <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
       <!-- Your stuff: Third-party javascript libraries go here -->
 

@@ -1,0 +1,37 @@
+<div class="modal fade" id="skillModal{{ player_skill.pk }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     xmlns="http://www.w3.org/1999/html">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title pull-left" id="skillModal{{ player_skill.pk }}">{{ player_skill }}</h4>
+      </div>
+      <div class="modal-body">
+        <h5 class="skill-detail wy-text-large">
+          {{ player_skill.skill.description }}
+          <br><br>
+          <span class="label label-info ">
+            Hit Percentage: {{ player_skill.hit_percentage }}%
+          </span>
+          &nbsp;
+          <span class="label label-primary ">
+            Damage: {{ player_skill.display_damage }}
+          </span>
+          &nbsp;
+          {% if player_skill.critical_percentage > 0 %}
+          <span class="label label-success ">
+            Energy Cost: {{ player_skill.energy_cost }}
+          </span>
+          &nbsp;
+          {% endif %}
+          {% if player_skill.critical_percentage > 0 %}
+          <span class="label label-danger ">
+            Critical: {{ player_skill.critical_percentage }}%
+            X {{ player_skill.critical_multipler }}
+          </span>
+          {% endif %}
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>

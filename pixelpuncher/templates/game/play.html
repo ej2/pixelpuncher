@@ -18,6 +18,7 @@
 
 
           {% if player.status == 'c' %}
+            <form class="form-horizontal" method="post" action="">
 
             {% if can_punch %}
               <div class="game-actions">
@@ -25,10 +26,30 @@
                   <a class="btn btn-primary btn-game-action {% if player.current_energy < player_skill.skill.energy_cost %}disabled{% endif %}"
                      href="{% url "game:skill" player_skill.id %}">{{ player_skill }} ({{ player_skill.skill.energy_cost }} EP)</a>
                 {% endfor %}
+
                 <a class="btn btn-warning" href="{% url "game:taunt" %}">Taunt</a>
                 <a class="btn btn-danger" href="{% url "game:skip" %}">Leave</a>
               </div>
+
+              {% if combat_items.count > 0 %}
+                {% for item in combat_items %}
+                  <a class="btn btn-primary btn-game-action"
+                     href="{% url "game:use" item.id %}">{{ item }} (X{{ item.remaining_uses }})</a>
+                {% endfor %}
+              {% endif %}
+
+              {% if combat_items.count > 0 and 1 == 0 %}
+                <select id="item" class="form-control combat-items-field">
+                {% for item in combat_items %}
+                  <option>{{ item }} (X{{ item.remaining_uses }})</option>
+                {% endfor %}
+                </select>
+                <a class="btn btn-primary disable-onclick" href="#">Use</a>
+              {% endif %}
             {% endif %}
+
+            {% csrf_token %}
+            </form>
           {% else %}
             <a class="btn btn-warning" href="{% url "game:play" %}">Find something to punch</a>
           {% endif %}
@@ -37,8 +58,6 @@
           {% if enemy %}
             {% enemy_mini_profile enemy %}
           {% endif %}
-
-
         </div>
       </div>
     </div>

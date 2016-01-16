@@ -1,0 +1,74 @@
+<div class="modal fade" id="itemModal{{ item.pk }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     xmlns="http://www.w3.org/1999/html">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title pull-left" id="itemModal{{ item.pk }}">
+          <i class="mdi {{ item.item_type.icon }}"></i> {{ item }}
+          {% if item.remaining_uses > 0 %}
+            (x{{ item.remaining_uses }})
+          {% endif %}
+        </h4>
+      </div>
+      <div class="modal-body skill-detail">
+        <h5>
+          {{ item.item_type.description|title }}
+
+        </h5>
+        <div>{{ item.item_type.get_base_type_display }}</div>
+        <div style="padding-top: 5px;padding-bottom: 15px;">Required Level: {{ item.item_type.level_requirement }}</div>
+
+          {% if item.item_type.armor_rating > 0 %}
+            <span class="label label-primary ">
+              Armor Rating: {{ item.item_type.armor_rating }}
+            </span>
+            &nbsp;
+          {% endif %}
+
+          {% if item.item_type.power_bonus > 0 %}
+            <span class="label label-info ">
+              Power Bonus: {{ item.item_type.power_bonus }}
+            </span>
+            &nbsp;
+          {% endif %}
+
+          {% if item.item_type.technique_bonus > 0 %}
+            <span class="label label-success ">
+              Technique Bonus: {{ item.item_type.technique_bonus }}
+            </span>
+            &nbsp;
+          {% endif %}
+
+          {% if item.item_type.endurance_bonus > 0 %}
+            <span class="label label-warning ">
+              Endurance Bonus: {{ item.item_type.endurance_bonus }}
+            </span>
+            &nbsp;
+          {% endif %}
+
+           {% if item.item_type.total_health_bonus > 0 %}
+            <span class="label label-danger ">
+              Health Bonus: {{ item.item_type.total_health_bonus }}
+            </span>
+            &nbsp;
+          {% endif %}
+
+         {% if item.item_type.total_energy_bonus > 0 %}
+            <span class="label label-success ">
+              Energy Bonus: {{ item.item_type.total_energy_bonus }}
+            </span>
+            &nbsp;
+          {% endif %}
+
+          {% if item.item_type.combat_usable %}
+          <span class="label label-danger ">
+            Combat Usable
+          </span>
+          {% endif %}
+
+
+      </div>
+    </div>
+  </div>
+</div>

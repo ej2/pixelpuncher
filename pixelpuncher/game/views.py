@@ -4,13 +4,27 @@ from django.template import RequestContext
 from django.template.response import TemplateResponse
 
 from pixelpuncher.game.utils import game_settings
-from pixelpuncher.game.utils.combat import perform_skip, perform_skill, perform_taunt
+from pixelpuncher.game.utils.combat import perform_skip, perform_skill, perform_taunt, perform_use_item
 from pixelpuncher.game.utils.encounter import get_enemy
-from pixelpuncher.game.utils.game import can_punch
+from pixelpuncher.game.utils.game import can_punch, daily_reset, reset_check
 from pixelpuncher.game.utils.leveling import xp_required_for_level
 from pixelpuncher.game.utils.message import get_game_messages
+from pixelpuncher.item.models import Item
+from pixelpuncher.item.utils import get_combat_items, use_item
 from pixelpuncher.player.decorators import player_required
 from pixelpuncher.player.models import PlayerSkill, VICTORY, COMBAT, PASSIVE
+
+
+@player_required
+def game_start(request, player):
+
+    context = {
+        "user": player.user,
+        "player": player,
+    }
+
+    return TemplateResponse(
+        request, "game/start.html", RequestContext(request, context))
 
 
 @player_required
@@ -18,6 +32,9 @@ def play(request, player):
     can_punch_flag = can_punch(player)
 
     enemy = None
+
+    if reset_check(player):
+        daily_reset(player)
 
     if can_punch_flag:
         if player.status == VICTORY:
@@ -38,6 +55,7 @@ def play(request, player):
     context = {
         "user": player.user,
         "player": player,
+        "combat_items": get_combat_items(player),
         "enemy": enemy,
         "game_messages": game_messages,
         "can_punch": can_punch_flag,
@@ -45,6 +63,13 @@ def play(request, player):
 
     return TemplateResponse(
         request, "game/play.html", RequestContext(request, context))
+
+
+@player_required
+def use(request, player, item_id):
+    perform_use_item(player, item_id)
+
+    return redirect(reverse("game:play"))
 
 
 @player_required
@@ -76,6 +101,14 @@ def reset(request, player):
 
     return redirect(reverse("game:play"))
 
+
+@player_required
+def perform_daily_reset(request, player):
+    daily_reset(player)
+
+    return redirect(reverse("game:play"))
+
+
 @player_required
 def level_requirements(request, player):
     levels = []
@@ -98,3 +131,4 @@ def level_requirements(request, player):
 
     return TemplateResponse(
         request, "game/levels.html", RequestContext(request, context))
+

@@ -43,6 +43,8 @@ class Occupation(models.Model):
 
 
 class Avatar(models.Model):
+    name = models.CharField(max_length=20)
+    gender = models.CharField(max_length=1, default="M", choices=GENDER)
     image_path = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
 
@@ -246,3 +248,13 @@ class PlayerSkill(models.Model):
 
     def __unicode__(self):
         return self.skill.name
+
+    def display_damage(self):
+        if self.bonus > 0:
+            return "{0}d{1} + {2}".format(self.number_of_dice, self.dice_sides, self.bonus)
+        else:
+            return "{0}d{1}".format(self.number_of_dice, self.dice_sides)
+
+    @property
+    def can_use(self):
+        return self.player.current_energy >= self.skill.energy_cost

@@ -4,6 +4,7 @@ from annoying.functions import get_object_or_None
 
 from pixelpuncher.enemy.models import Enemy, EnemyType
 from pixelpuncher.game.utils.message import add_game_message
+from pixelpuncher.game.utils.messages import battle_message
 from pixelpuncher.player.models import COMBAT
 
 
@@ -16,9 +17,7 @@ def get_enemy(player):
         player.punches -= 1  # Should each attack cost one punch or each combat?
         player.save()
 
-        add_game_message(player, "You see a {0}.".format(enemy))
-    else:
-        add_game_message(player, "You are battling a {0}.".format(enemy))
+        add_game_message(player, battle_message(enemy))
 
     return enemy
 

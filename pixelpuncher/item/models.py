@@ -47,8 +47,11 @@ class ItemType(models.Model):
     stackable = models.BooleanField(default=False)
     level_requirement = models.IntegerField(default=1)
 
+    icon = models.CharField(max_length=30, null=True, blank=True)
+    combat_usable = models.BooleanField(default=False)
+
     def __unicode__(self):
-        return self.name
+        return "{0} ({1})".format(self.name, self.level_requirement)
 
 
 class Item(models.Model):
@@ -70,6 +73,8 @@ class Item(models.Model):
 class DropTable(models.Model):
     name = models.CharField(max_length=30)
     max_rate = models.IntegerField(default=100)
+    max_drops = models.IntegerField(default=1)
+    recommended_level = models.IntegerField(default=1)  # mainly used to automate creation of item drops
 
     def __unicode__(self):
         return self.name
@@ -79,3 +84,8 @@ class ItemDrop(models.Model):
     drop_table = models.ForeignKey(DropTable, related_name="items")
     item_type = models.ForeignKey(ItemType, related_name="+")
     drop_rate = models.IntegerField()  # From 0 to 1000
+
+
+class LevelEquipment(models.Model):
+    item_type = models.ForeignKey(ItemType, related_name="+")
+    level = models.IntegerField(default=1)

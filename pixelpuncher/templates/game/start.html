@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load apps_player %}
+{% load apps_enemy %}
+
+{% block content %}
+<section class="" id="create">
+    <div class="container-fluid">
+      <div class="row" style="padding-top: 10px;">
+        <div class="col-md-3">
+          {% mini_profile request.user %}
+        </div>
+        <div class="col-md-6">
+          {% for game_message in game_messages %}
+            <div>
+              <h3>{{ game_message|safe }}</h3>
+            </div>
+          {% endfor %}
+
+          <h2>
+            I feel like punching something...
+          </h2>
+          <a class="btn btn-warning" href="{% url "game:play" %}">Find something to punch</a>
+        </div>
+        <div class="col-md-3">
+          {% if enemy %}
+            {% enemy_mini_profile enemy %}
+          {% endif %}
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}

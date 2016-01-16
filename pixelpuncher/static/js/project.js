@@ -1,6 +1,11 @@
 /* Project specific Javascript goes here. */
 
 
+$('form').submit(function(){
+    $(this).find('button[type=submit]').prop('disabled', true);
+});
+
+
 function increase(id)
 {
     var value = parseInt(document.getElementById(id).value, 10);

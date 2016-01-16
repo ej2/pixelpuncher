@@ -9,13 +9,16 @@ from pixelpuncher.game.utils.leveling import can_level_up, level_up
 from pixelpuncher.game.utils.loot import generate_loot
 from pixelpuncher.game.utils.message import add_game_message
 from pixelpuncher.game.utils.messages import successful_critical_message, successful_hit_message, low_energy_message, \
-    hit_failure_message, player_damage_message, successful_heal_message, failed_heal_message
+    hit_failure_message, player_damage_message, successful_heal_message, failed_heal_message, victory_message, \
+    battle_message
+from pixelpuncher.item.utils import use_item
 from pixelpuncher.player.models import VICTORY
 
 
 def perform_skill(player, player_skill):
     victory = False
     enemy = get_current_enemy(player)
+    add_game_message(player, battle_message(enemy))
 
     if can_use_skill(player, player_skill):
 
@@ -34,8 +37,7 @@ def perform_skill(player, player_skill):
                     add_game_message(
                         player, successful_hit_message(player_skill.skill, enemy, results['damage']))
             else:
-                add_game_message(
-                    player, hit_failure_message(player_skill.skill, enemy))
+                add_game_message(player, hit_failure_message(player_skill.skill, enemy))
 
         elif player_skill.skill.skill_type == "SPCL":
             results = perform_special_skill(player, enemy, player_skill)
@@ -52,18 +54,11 @@ def perform_skill(player, player_skill):
                 add_game_message(
                     player, failed_heal_message(player_skill.skill))
 
-        else:
-            add_game_message(player, hit_failure_message(player_skill.skill, enemy))
-
         if enemy.is_defeated:
             victory = True
             player.status = VICTORY
         else:
-            attack_results = perform_enemy_attack(player, enemy)
-
-            if attack_results['hit']:
-                player.adjust_health(-attack_results['damage'])
-                add_game_message(player, player_damage_message(attack_results['damage']))
+            perform_enemy_attack(player, enemy)
 
         # Apply player changes
         player.adjust_energy(-player_skill.energy_cost)
@@ -75,6 +70,7 @@ def perform_skill(player, player_skill):
         add_game_message(player, low_energy_message(player_skill.skill))
 
     if victory:
+        add_game_message(player, victory_message())
         generate_loot(player, enemy)
         calculate_xp(player, enemy)
 
@@ -83,15 +79,11 @@ def perform_skill(player, player_skill):
 
 def perform_enemy_attack(player, enemy):
     hit = calculate_enemy_hit(player, enemy)
-    damage = 0
 
     if hit:
         damage = calculate_enemy_damage(enemy)
-
-    return {
-        "hit": hit,
-        "damage": damage,
-    }
+        player.adjust_health(-damage)
+        add_game_message(player, player_damage_message(damage))
 
 
 def perform_special_skill(player, enemy, player_skill):
@@ -156,6 +148,8 @@ def can_use_skill(player, player_skill):
 
 def perform_taunt(player):
     enemy = get_current_enemy(player)
+    add_game_message(player, battle_message(enemy))
+
     player.adjust_energy(random.randint(1, 4))
     player.save()
 
@@ -174,11 +168,21 @@ def perform_skip(player):
     add_game_message(player, result)
 
 
+def perform_use_item(player, item_id):
+    enemy = get_current_enemy(player)
+
+    result = use_item(player, item_id)
+    add_game_message(player, result)
+
+    perform_enemy_attack(player, enemy)
+    player.save()
+
+
 def calculate_xp(player, enemy):
     gained_xp = enemy.enemy_type.xp
     player.xp += gained_xp
 
-    result = "<span class='xp'>+{0}XP!</span>".format(gained_xp)
+    result = "You gain <span class='xp'>{0}XP!</span>".format(gained_xp)
     add_game_message(player, result)
 
     if enemy.hits == 1:
@@ -186,7 +190,7 @@ def calculate_xp(player, enemy):
         bonus_xp = int(enemy.enemy_type.xp / 2 + enemy.level)
 
         player.xp += bonus_xp
-        result = "<span class='xp'>Single hit kill! Bonus +{0}XP!</span>".format(bonus_xp)
+        result = "<span class='xp'>Single hit kill! Bonus {0}XP!</span>".format(bonus_xp)
         add_game_message(player, result)
 
     if can_level_up(player):

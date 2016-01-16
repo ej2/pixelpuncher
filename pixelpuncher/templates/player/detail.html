@@ -19,25 +19,22 @@
 
     <div class="row">
 
-      <div class="col-md-3" style="text-align: center;">
-        <div class="player-avatar">
-          <img src="{% static 'images/avatar-male-large.png' %}">
-        </div>
-        <div>
-          <h3>{{ player.name }}</h3>
-        </div>
-      </div>
+      {% include "player/_avatar_profile.html" %}
 
       <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Profile</h3>
+            <h3 class="panel-title"><i class="mdi mdi-human-child"></i> Profile</h3>
           </div>
           <div class="panel-body">
             {% status_bar 'Health' player.current_health player.total_health 'progress-bar-danger' %}
             {% status_bar 'Energy' player.current_energy player.total_energy 'progress-bar-success' %}
 
             <table class="table table-striped">
+              <tr>
+                <td class="player-stats-title">Armor:</td>
+                <td class="player-stats-numbers">{{ player.effective_armor }}</td>
+              </tr>
               <tr>
                 <td class="player-stats-title">Power:</td>
                 <td class="player-stats-numbers">{{ player.effect_power }} ({{ player.power }})</td>
@@ -59,7 +56,7 @@
                 <td class="player-stats-numbers">{{ player.previous_occupation }}</td>
               </tr>
               <tr>
-                <td class="player-stats-title">Adventures:</td>
+                <td class="player-stats-title">Action Points:</td>
                 <td class="player-stats-numbers">{{ player.punches }}</td>
               </tr>
               <tr>
@@ -72,10 +69,10 @@
 
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Experience</h3>
+            <h3 class="panel-title"><i class="mdi mdi-heart"></i> Experience</h3>
           </div>
           <div class="panel-body">
             {% status_bar 'XP' player.xp player.xp_to_next_level 'progress-bar-info' %}
@@ -87,7 +84,7 @@
 
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Wearing</h3>
+            <h3 class="panel-title"><i class="mdi mdi-tshirt-crew"></i> Wearing</h3>
           </div>
           <div class="panel-body">
 
@@ -109,17 +106,30 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-        {% inventory_list player %}
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><i class="mdi mdi-briefcase"></i> Inventory</h3>
+          </div>
+          <div class="panel-body">
+            {% inventory_list player %}
+          </div>
+        </div>
       </div>
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><i class="mdi mdi-library-books"></i> Skills</h3>
+          </div>
+          <div class="panel-body">
+            {% skill_list player %}
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
-
 </section>
 
 {% endblock content %}

@@ -30,3 +30,12 @@ def display_current_next_xp(player):
     xp_next = int(xp_required_for_level(player.level))
 
     return "{0} / {1}".format(player.xp, xp_next)
+
+
+@register.simple_tag()
+def skill_list(player):
+
+    return render_to_string("player/_skills.html", {
+        "player": player,
+        "skills": player.skills.all().order_by("skill__name")
+    })

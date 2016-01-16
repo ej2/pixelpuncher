@@ -30,7 +30,7 @@ class OccupationModelAdmin(admin.ModelAdmin):
 
 
 class AvatarModelAdmin(admin.ModelAdmin):
-    list_display = ("id", "image_path", "active",)
+    list_display = ("id", "name", "gender", "image_path", "active",)
     search_fields = ("id", "image_path", "active",)
     list_per_page = 25
 

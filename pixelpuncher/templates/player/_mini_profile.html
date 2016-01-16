@@ -3,7 +3,7 @@
 
 <div>
   <div class="pull-right player-data well">
-    <div class="pull-left player-avatar"><img src="{% static 'images/avatar-male-large.png' %}" height="64"> </div>
+    <div class="pull-left player-avatar"><img src="{% static player.avatar.image_path %}" height="64"> </div>
     <div class="player-name">
       <a href="{% url "player:detail" player.pk %}">{{ player.name }}</a>
     </div>
@@ -13,5 +13,7 @@
     {% status_bar 'Health' player.current_health player.total_health 'progress-bar-danger' %}
     {% status_bar 'Energy' player.current_energy player.total_energy 'progress-bar-success' %}
     {% status_bar 'XP' player.xp player.xp_to_next_level 'progress-bar-info' %}
+
+    <div>Action Points: {{ player.punches }}</div>
   </div>
 </div>

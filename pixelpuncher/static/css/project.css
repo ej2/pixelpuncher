@@ -155,3 +155,29 @@
   width: 30px;
   text-align: right;
 }
+
+.numeric {
+  text-align: right;
+}
+
+.table-inventory-header {
+  border-bottom: #ebebeb 1px solid !important;
+}
+
+.skill-detail {
+  text-align: left;
+  font-size:120%;
+}
+
+.combat-items-field {
+  width: 300px;
+}
+
+.avatar-display {
+  margin: 4px;
+  background-color: #2b3e50;
+}
+
+.avatar-display h3 {
+  padding-left: 50px;
+}

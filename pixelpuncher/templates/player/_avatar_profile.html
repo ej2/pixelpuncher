@@ -1,0 +1,10 @@
+{% load staticfiles i18n %}
+<div class="col-md-3" style="text-align: center;">
+  <div class="player-avatar">
+    <img src="{% static player.avatar.image_path %}">
+  </div>
+  <div>
+    <h3>{{ player.name }}</h3>
+    <h5>[<a href="{% url "player:avatar" %}">Change Avatar</a>]</h5>
+  </div>
+</div>

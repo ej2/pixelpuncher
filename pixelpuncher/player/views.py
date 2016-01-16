@@ -1,13 +1,15 @@
 from annoying.functions import get_object_or_None
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
+from django.template import RequestContext
+from django.template.response import TemplateResponse
 from django.views.generic import CreateView, DetailView, UpdateView
 
 from pixelpuncher.game.utils.message import add_game_message, get_game_messages
 from pixelpuncher.item.utils import use_item, drop_item, examine_item
 from pixelpuncher.player.decorators import player_required
 from pixelpuncher.player.forms import PlayerForm, AttributeForm
-from pixelpuncher.player.models import Player
+from pixelpuncher.player.models import Player, Avatar
 
 
 class PlayerCreateView(CreateView):
@@ -71,7 +73,7 @@ def drop(request, player, item_id):
 
 @player_required
 def use(request, player, item_id):
-    result = use_item(item_id)
+    result = use_item(player, item_id)
     add_game_message(player, result)
 
     return redirect(reverse("player:detail", args=[player.id]))
@@ -84,3 +86,41 @@ def examine(request, player, item_id):
 
     return redirect(reverse("player:detail", args=[player.id]))
 
+
+@player_required
+def top_punchers(request, player):
+
+    players = Player.objects.all().order_by("-xp")
+
+    context = {
+        "user": player.user,
+        "players": players,
+        "player": player,
+    }
+
+    return TemplateResponse(
+        request, "player/top_punchers.html", RequestContext(request, context))
+
+
+@player_required
+def avatar_list(request, player):
+    avatars = Avatar.objects.filter(active=True, gender=player.gender).order_by("name")
+
+    context = {
+        "user": player.user,
+        "player": player,
+        "avatars": avatars
+    }
+
+    return TemplateResponse(
+        request, "player/avatar_choose.html", RequestContext(request, context))
+
+
+@player_required
+def choose_avatar(request, player, avatar_id):
+    avatar = get_object_or_404(Avatar, pk=avatar_id)
+
+    player.avatar = avatar
+    player.save()
+
+    return redirect(reverse("player:detail", args=[player.id]))

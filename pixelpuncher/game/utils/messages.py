@@ -48,3 +48,15 @@ def out_of_punches_message():
 
 def out_of_health_message():
     return "Your hands hurt too much right now to punch stuff. Maybe you should have a refreshing sports drink."
+
+
+def battle_message(enemy):
+    return "You're punching a {0}.".format(enemy)
+
+
+def item_dropped(item):
+    return "You find {0}.".format(item)
+
+
+def no_loot(enemy):
+    return "You find nothing on the {0}.".format(enemy)
