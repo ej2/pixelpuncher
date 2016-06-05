@@ -1,0 +1,10 @@
+{% load staticfiles i18n %}
+{% load apps_game %}
+
+{% status_bar 'XP' player.xp player.xp_to_next_level 'progress-bar-info' %}
+
+<h5>Attribute Points: {{ player.attribute_points }}
+  {% if player.attribute_points > 0 %}
+    [<a href="{% url "player:spend" player.pk %}">Spend</a>]</h5>
+  {% endif %}
+<h5>Level: {{ player.level }}</h5>

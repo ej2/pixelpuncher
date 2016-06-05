@@ -1,19 +1,20 @@
 {% load staticfiles i18n %}
 {% load apps_game %}
+{% load apps_player %}
 
-<div>
-  <div class="pull-right player-data well">
-    <div class="pull-left player-avatar"><img src="{% static player.avatar.image_path %}" height="64"> </div>
-    <div class="player-name">
-      <a href="{% url "player:detail" player.pk %}">{{ player.name }}</a>
-    </div>
-    <div class="player-title">Level {{ player.level }}</div>
-
-
-    {% status_bar 'Health' player.current_health player.total_health 'progress-bar-danger' %}
-    {% status_bar 'Energy' player.current_energy player.total_energy 'progress-bar-success' %}
-    {% status_bar 'XP' player.xp player.xp_to_next_level 'progress-bar-info' %}
-
-    <div>Action Points: {{ player.punches }}</div>
+<div class="well">
+  <div class="pull-left player-avatar">
+    {% small_avatar player %}
   </div>
+  <div class="player-name">
+    <a href="{% url "player:detail" player.pk %}">{{ player.name }}</a>
+  </div>
+  <div class="player-title">Level {{ player.level }}</div>
+
+
+  {% status_bar 'Health' player.current_health player.total_health 'progress-bar-danger' %}
+  {% status_bar 'Energy' player.current_energy player.total_energy 'progress-bar-success' %}
+  {% status_bar 'XP' player.xp player.xp_to_next_level 'progress-bar-info' %}
+
+  <div>Action Points: {{ player.punches }}</div>
 </div>

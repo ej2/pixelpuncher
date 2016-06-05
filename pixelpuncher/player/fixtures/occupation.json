@@ -1,0 +1,26 @@
+[
+  {
+    "model": "player.occupation",
+    "pk": 1,
+    "fields": {
+      "name": "French Fry Technician",
+      "active": true
+    }
+  },
+  {
+    "model": "player.occupation",
+    "pk": 2,
+    "fields": {
+      "name": "Hot Dog Inspector",
+      "active": true
+    }
+  },
+  {
+    "model": "player.occupation",
+    "pk": 3,
+    "fields": {
+      "name": "Underwear Elastic Tester",
+      "active": true
+    }
+  }
+]

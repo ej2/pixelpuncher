@@ -39,3 +39,18 @@ def skill_list(player):
         "player": player,
         "skills": player.skills.all().order_by("skill__name")
     })
+
+
+@register.simple_tag()
+def avatar(player):
+    return render_to_string("player/_avatar_display.html", {
+        "player": player,
+    })
+
+
+@register.simple_tag()
+def small_avatar(player):
+    return render_to_string("player/_avatar_small_display.html", {
+        "player": player,
+    })
+

@@ -1,0 +1,14 @@
+{% load staticfiles i18n %}
+{% load apps_npc %}
+{% load apps_game %}
+
+<div class="well">
+  <div class="pull-left player-avatar">
+    {% npc_avatar npc %}
+  </div>
+  <div class="player-name">
+    {{ npc.name }}
+  </div>
+
+  {% status_bar 'Health' npc.current_health npc.total_health 'progress-bar-danger' %}
+</div>

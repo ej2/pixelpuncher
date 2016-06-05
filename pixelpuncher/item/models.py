@@ -18,6 +18,7 @@ CLASSIFICATION = (
     ("TORSO", "Torso",),
     ("FOOD", "Food",),
     ("DRINK", "Drink",),
+    ("MISC", "Misc",),
 )
 
 

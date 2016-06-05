@@ -65,6 +65,7 @@
 }
 
 .player-avatar {
+
   margin: 0px 8px 10px 0px;
   padding: 2px 5px 0px 5px;
   background-color: #2b3e50;
@@ -126,6 +127,10 @@
 }
 
 
+.pixels {
+  color: #269abc;
+}
+
 .item-name {
 
 }
@@ -176,8 +181,59 @@
 .avatar-display {
   margin: 4px;
   background-color: #2b3e50;
+  vertical-align: bottom;
+  height: 310px;
+  text-align: center;
 }
 
 .avatar-display h3 {
-  padding-left: 50px;
+
+}
+
+.avatar-display img {
+
+}
+
+.avatar-box {
+  margin: 0 auto;
+  position: relative;
+  height: 260px;
+  width: 192px;
+}
+
+.avatar-small-box {
+
+  margin: 0 auto;
+  position: relative;
+  height: 85px;
+  width: 64px;
+}
+
+.avatar-buttons {
+  margin: 0 auto;
+  position: relative;
+  width: 300px;
+  padding-top: 50px;
+}
+
+.avatar {
+  position:absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.avatar-small {
+  width: 64px;
+}
+
+.center-div
+{
+  margin: 0 auto;
+}
+
+.avatar-btn
+{
+  text-align: center;
+  width: 80px;
+  margin: 5px;
 }

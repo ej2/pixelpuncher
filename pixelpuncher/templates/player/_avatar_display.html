@@ -1,0 +1,8 @@
+{% load staticfiles i18n %}
+{% load static %}
+<div class="avatar-box">
+  <img class="avatar" id="body_layer" src="{% get_static_prefix %}{{ player.body_layer.layer.image_path }}">
+  <img class="avatar" id="face_layer" src="{% get_static_prefix %}{{ player.face_layer.layer.image_path }}">
+  <img class="avatar" id="hair_layer" src="{% get_static_prefix %}{{ player.hair_layer.layer.image_path }}">
+  <img class="avatar" id="shirt_layer" src="{% get_static_prefix %}{{ player.shirt_layer.layer.image_path }}">
+</div>

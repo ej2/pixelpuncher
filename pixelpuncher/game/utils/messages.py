@@ -60,3 +60,7 @@ def item_dropped(item):
 
 def no_loot(enemy):
     return "You find nothing on the {0}.".format(enemy)
+
+
+def pixels_dropped_message(pixels):
+    return "You find <span class='pixels'>{} pixels</span>.".format(pixels)

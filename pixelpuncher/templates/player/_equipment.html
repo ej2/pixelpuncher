@@ -1,0 +1,14 @@
+<table class="table table-striped">
+  <tr>
+    <td>Head</td>
+    <td>{{ player.head|default_if_none:"-"  }}</td>
+  </tr>
+  <tr>
+    <td>Gloves</td>
+    <td>{{ player.gloves|default_if_none:"-" }}</td>
+  </tr>
+  <tr>
+    <td>Torso</td>
+    <td>{{ player.torso|default_if_none:"-" }}</td>
+  </tr>
+</table>

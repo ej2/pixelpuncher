@@ -1,20 +1,154 @@
 {% extends "base.html" %}
 {% load staticfiles i18n %}
+{% load apps_player %}
 
 {% block content %}
 
- <section class="" id="create">
-    <div class="container-fluid">
-      <div class="row">
-        <h3 style="padding-bottom: 20px;">Choose Avatar</h3>
-        {% for avatar in avatars %}
-          <div class="col-md-3 avatar-display">
-            <img src="{% static avatar.image_path %}">
-            <h3><a class="btn btn-primary" href="{% url "player:avatar_choose" avatar.pk %}">Choose</a></h3>
-          </div>
-        {% endfor %}
+  <div class="row">
+    <div class="col-sm-1 col-sm-offset-3">
+      <div class="avatar-buttons">
+        <button type="button" class="btn btn-default avatar-btn" id="hairPrev">
+          <i class="mdi mdi-arrow-left-bold"></i> Hair
+        </button><br>
+        <button type="button" class="btn btn-default avatar-btn" id="facePrev">
+          <i class="mdi mdi-arrow-left-bold"></i> Face
+        </button><br>
+        <button type="button" class="btn btn-default avatar-btn" id="bodyPrev">
+          <i class="mdi mdi-arrow-left-bold"></i> Body
+        </button><br>
+        <button type="button" class="btn btn-default avatar-btn" id="shirtPrev">
+          <i class="mdi mdi-arrow-left-bold"></i> Shirt
+        </button><br>
       </div>
     </div>
-  </section>
+    <div class="col-lg-2">
+      {% avatar player %}
+    </div>
+  <div class="col-sm-1">
+      <div class="avatar-buttons">
+        <button type="button" class="btn btn-default avatar-btn" id="hairNext">
+          Hair <i class="mdi mdi-arrow-right-bold"></i>
+        </button><br>
+        <button type="button" class="btn btn-default avatar-btn" id="faceNext">
+          Face <i class="mdi mdi-arrow-right-bold"></i>
+        </button><br>
+        <button type="button" class="btn btn-default avatar-btn" id="bodyNext">
+          Body <i class="mdi mdi-arrow-right-bold"></i>
+        </button><br>
+        <button type="button" class="btn btn-default avatar-btn" id="shirtNext">
+          Shirt <i class="mdi mdi-arrow-right-bold"></i>
+        </button><br>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <form action="" method="post" class="form-horizontal">
+        {% csrf_token %}
+
+        <input type="hidden" id="body_id" name="body_id" value="{{ player.body_layer.layer.id }}">
+        <input type="hidden" id="face_id" name="face_id" value="{{ player.face_layer.layer.id }}">
+        <input type="hidden" id="hair_id" name="hair_id" value="{{ player.hair_layer.layer.id }}">
+        <input type="hidden" id="shirt_id" name="shirt_id" value="{{ player.shirt_layer.layer.id }}">
+
+        <button type="submit" class="btn btn-primary" id="bodyupdate">Save Changes</button>
+        <a class="btn" href="{% url "player:detail" player.pk %}">Cancel</a>
+      </form>
+    </div>
+  </div>
 
 {% endblock content %}
+
+{% block additional-js %}
+  <script>
+  $(document).ready(function () {
+    var selected_hair = 0;
+    var selected_face = 0;
+    var selected_body = 0;
+    var selected_shirt = 0;
+
+    var bodies = [
+      {% for layer in body_layers %}
+        ['{{ layer.pk }}','{% static layer.image_path %}'],
+      {% endfor %}
+    ];
+
+    var shirts = [
+      {% for layer in shirt_layers %}
+        ['{{ layer.pk }}','{% static layer.image_path %}'],
+      {% endfor %}
+    ];
+
+    var faces = [
+        {% for layer in face_layers %}
+        ['{{ layer.pk }}','{% static layer.image_path %}'],
+      {% endfor %}
+      ];
+
+    var hairs = [
+      {% for layer in hair_layers %}
+        ['{{ layer.pk }}','{% static layer.image_path %}'],
+      {% endfor %}
+    ];
+
+    $('#bodyNext').click(function () {
+      selected_body = next_item(selected_body, bodies, '#body_layer', '#body_id');
+     });
+
+    $('#faceNext').click(function () {
+      selected_face = next_item(selected_face, faces, '#face_layer', '#face_id');
+     });
+
+    $('#hairNext').click(function () {
+      selected_hair = next_item(selected_hair, hairs, '#hair_layer', '#hair_id');
+     });
+
+    $('#shirtNext').click(function () {
+      selected_shirt = next_item(selected_shirt, shirts, '#shirt_layer', '#shirt_id');
+     });
+
+    $('#bodyPrev').click(function () {
+      selected_body = prev_item(selected_body, bodies, '#body_layer', '#body_id');
+     });
+
+    $('#facePrev').click(function () {
+      selected_face = prev_item(selected_face, faces, '#face_layer', '#face_id');
+     });
+
+    $('#hairPrev').click(function () {
+      selected_hair = prev_item(selected_hair, hairs, '#hair_layer', '#hair_id');
+     });
+
+    $('#shirtPrev').click(function () {
+      selected_shirt = prev_item(selected_shirt, shirts, '#shirt_layer', '#shirt_id');
+     });
+  });
+
+  function prev_item(selected_index, img_array, image, field)
+  {
+    selected_index--;
+    if (selected_index < 0)
+    {
+      selected_index = img_array.length - 1;
+    }
+
+    $(image).attr('src', img_array[selected_index][1]);
+    $(field).val(img_array[selected_index][0]);
+    return selected_index;
+  }
+
+  function next_item(selected_index, img_array, image, field)
+  {
+    selected_index++;
+    if (selected_index > img_array.length - 1)
+    {
+      selected_index = 0;
+    }
+
+    $(image).attr('src', img_array[selected_index][1]);
+    $(field).val(img_array[selected_index][0]);
+    return selected_index;
+  }
+  </script>
+{% endblock additional-js %}

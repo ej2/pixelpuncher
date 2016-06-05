@@ -1,8 +1,10 @@
 from annoying.functions import get_object_or_None
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404
 from django.template import RequestContext
 from django.template.response import TemplateResponse
+from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView
 
 from pixelpuncher.game.utils.message import add_game_message, get_game_messages
@@ -10,6 +12,7 @@ from pixelpuncher.item.utils import use_item, drop_item, examine_item
 from pixelpuncher.player.decorators import player_required
 from pixelpuncher.player.forms import PlayerForm, AttributeForm
 from pixelpuncher.player.models import Player, Avatar
+from pixelpuncher.player.utils.avatar import get_unlocked_layers_by_type, set_avatar
 
 
 class PlayerCreateView(CreateView):
@@ -34,6 +37,10 @@ class PlayerDetailView(DetailView):
     context_object_name = "player"
     pk_url_kwarg = "player_id"
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(PlayerDetailView, self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(PlayerDetailView, self).get_context_data(**kwargs)
         context['game_messages'] = get_game_messages(self.object)
@@ -46,6 +53,10 @@ class AttributeSpendView(UpdateView):
     template_name = "player/attribute.html"
     context_object_name = "player"
     pk_url_kwarg = "player_id"
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(AttributeSpendView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         self.object = form.save()
@@ -63,6 +74,7 @@ def player_redirect(request):
         return redirect(reverse("player:new"))
 
 
+@login_required
 @player_required
 def drop(request, player, item_id):
     result = drop_item(item_id)
@@ -71,6 +83,7 @@ def drop(request, player, item_id):
     return redirect(reverse("player:detail", args=[player.id]))
 
 
+@login_required
 @player_required
 def use(request, player, item_id):
     result = use_item(player, item_id)
@@ -79,6 +92,7 @@ def use(request, player, item_id):
     return redirect(reverse("player:detail", args=[player.id]))
 
 
+@login_required
 @player_required
 def examine(request, player, item_id):
     result = examine_item(item_id)
@@ -87,6 +101,7 @@ def examine(request, player, item_id):
     return redirect(reverse("player:detail", args=[player.id]))
 
 
+@login_required
 @player_required
 def top_punchers(request, player):
 
@@ -102,20 +117,38 @@ def top_punchers(request, player):
         request, "player/top_punchers.html", RequestContext(request, context))
 
 
+@login_required
 @player_required
 def avatar_list(request, player):
-    avatars = Avatar.objects.filter(active=True, gender=player.gender).order_by("name")
+    body_layers = get_unlocked_layers_by_type(player, 'body')
+    hair_layers = get_unlocked_layers_by_type(player, 'hair')
+    face_layers = get_unlocked_layers_by_type(player, 'face')
+    shirt_layers = get_unlocked_layers_by_type(player, 'shirt')
+
+    if request.method == "POST":
+        body_id = request.POST["body_id"]
+        hair_id = request.POST["hair_id"]
+        face_id = request.POST["face_id"]
+        shirt_id = request.POST["shirt_id"]
+
+        set_avatar(player, hair_id, face_id, body_id, shirt_id)
+
+        return redirect(reverse("player:detail", args=[player.id]))
 
     context = {
         "user": player.user,
         "player": player,
-        "avatars": avatars
-    }
+        "body_layers": body_layers,
+        "hair_layers": hair_layers,
+        "face_layers": face_layers,
+        "shirt_layers": shirt_layers,
 
+    }
     return TemplateResponse(
         request, "player/avatar_choose.html", RequestContext(request, context))
 
 
+@login_required
 @player_required
 def choose_avatar(request, player, avatar_id):
     avatar = get_object_or_404(Avatar, pk=avatar_id)

@@ -33,6 +33,20 @@ SKILL_TYPE = (
     ("HEAL", "Heal",),
 )
 
+LAYER_TYPES = (
+    ("body", "Body",),
+    ("hair", "Hair",),
+    ("face", "Face",),
+    ("shirt", "Shirt",),
+)
+
+UNLOCK_METHODS = (
+    ("start", "Starter",),
+    ("discvr", "Discover",),
+    ("purcha", "Purchase",),
+    ("secret", "Secret",),
+)
+
 
 class Occupation(models.Model):
     name = models.CharField(max_length=50)
@@ -42,6 +56,7 @@ class Occupation(models.Model):
         return self.name
 
 
+# TODO: Remove this model
 class Avatar(models.Model):
     name = models.CharField(max_length=20)
     gender = models.CharField(max_length=1, default="M", choices=GENDER)
@@ -86,6 +101,8 @@ class Player(models.Model):
 
     motto = models.CharField(max_length=200, null=True, blank=True)
     previous_occupation = models.CharField(max_length=50, null=True, blank=True)
+
+    pixels = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -194,6 +211,56 @@ class Player(models.Model):
 
         return armor_rating
 
+    @property
+    def body_layer(self):
+        layers = self.layers.filter(layer__layer_type='body', current=True)
+        if layers.exists():
+            return layers[0]
+        else:
+            return None
+
+    @property
+    def hair_layer(self):
+        layers = self.layers.filter(layer__layer_type='hair', current=True)
+        if layers.exists():
+            return layers[0]
+        else:
+            return None
+
+    @property
+    def face_layer(self):
+        layers = self.layers.filter(layer__layer_type='face', current=True)
+        if layers.exists():
+            return layers[0]
+        else:
+            return None
+
+    @property
+    def shirt_layer(self):
+        layers = self.layers.filter(layer__layer_type='shirt', current=True)
+        if layers.exists():
+            return layers[0]
+        else:
+            return None
+
+
+class AvatarLayer(models.Model):
+    name = models.CharField(max_length=20)
+    gender = models.CharField(max_length=1, default="M", choices=GENDER)
+    image_path = models.CharField(max_length=200)
+    active = models.BooleanField(default=True)
+    layer_type = models.CharField(max_length=5, choices=LAYER_TYPES, default='body')
+    unlock_method = models.CharField(max_length=6, choices=UNLOCK_METHODS, default="discov")
+
+    def __unicode__(self):
+        return self.image_path
+
+
+class PlayerAvatar(models.Model):
+    player = models.ForeignKey(Player, related_name="layers")
+    layer = models.ForeignKey(AvatarLayer, related_name="+")
+    current = models.BooleanField(default=False)
+
 
 class Skill(models.Model):
     name = models.CharField(max_length=25)
@@ -220,6 +287,7 @@ class Skill(models.Model):
     gained_critical = models.IntegerField(default=0)  # how much critical percentage increases on level up
     gained_critical_multipler = models.IntegerField(default=0)  # how much critical multipler increases on level up
     gained_energy_cost = models.IntegerField(default=0)  # how much energy cost increases on level up
+    gained_bonus = models.IntegerField(default=0)  # how much bonus damage increases on level up
 
     date_created = fields.CreationDateTimeField(editable=True)
     date_updated = fields.ModificationDateTimeField(editable=True)
@@ -232,6 +300,7 @@ class PlayerSkill(models.Model):
     player = models.ForeignKey(Player, related_name="skills")
     skill = models.ForeignKey(Skill, related_name="+")
     level = models.IntegerField(default=1)  # all skills start at level 1 and gain level when character levels
+    remaining_for_level_up = models.IntegerField(default=1)  # levels until skill will increase
 
     hit_percentage = models.IntegerField(default=0)
     critical_percentage = models.IntegerField(default=0)

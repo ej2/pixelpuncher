@@ -1,0 +1,222 @@
+[
+  {
+    "model": "player.avatar",
+    "pk": 1,
+    "fields": {
+      "name": "Default",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar01.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 2,
+    "fields": {
+      "name": "Bob",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar02.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 3,
+    "fields": {
+      "name": "Bill",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar03.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 4,
+    "fields": {
+      "name": "Barry",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar04.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 5,
+    "fields": {
+      "name": "Ben",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar05.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 6,
+    "fields": {
+      "name": "Sue",
+      "gender": "F",
+      "image_path": "images/avatars/female/avatar01.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 7,
+    "fields": {
+      "name": "Sara",
+      "gender": "F",
+      "image_path": "images/avatars/female/avatar02.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 8,
+    "fields": {
+      "name": "Shanon",
+      "gender": "F",
+      "image_path": "images/avatars/female/avatar03.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 9,
+    "fields": {
+      "name": "Sally",
+      "gender": "F",
+      "image_path": "images/avatars/female/avatar04.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 10,
+    "fields": {
+      "name": "Robert",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar06.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 11,
+    "fields": {
+      "name": "Nigel",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar07.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 12,
+    "fields": {
+      "name": "Sid",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar08.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 13,
+    "fields": {
+      "name": "Garen",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar09.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 14,
+    "fields": {
+      "name": "Grant",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar10.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 15,
+    "fields": {
+      "name": "Mike",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar11.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 16,
+    "fields": {
+      "name": "Aaron",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar12.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 17,
+    "fields": {
+      "name": "Lester",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar13.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 18,
+    "fields": {
+      "name": "Jason",
+      "gender": "M",
+      "image_path": "images/avatars/male/avatar14.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 19,
+    "fields": {
+      "name": "Jenny",
+      "gender": "F",
+      "image_path": "images/avatars/female/avatar05.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 20,
+    "fields": {
+      "name": "Jill",
+      "gender": "F",
+      "image_path": "images/avatars/female/avatar06.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 21,
+    "fields": {
+      "name": "Elissa",
+      "gender": "F",
+      "image_path": "images/avatars/female/avatar07.png",
+      "active": true
+    }
+  },
+  {
+    "model": "player.avatar",
+    "pk": 22,
+    "fields": {
+      "name": "Aimee",
+      "gender": "F",
+      "image_path": "images/avatars/female/avatar08.png",
+      "active": true
+    }
+  }
+]

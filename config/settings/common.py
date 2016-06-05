@@ -48,7 +48,9 @@ LOCAL_APPS = (
     'pixelpuncher.enemy',
     'pixelpuncher.game',
     'pixelpuncher.item',
+    'pixelpuncher.location',
     'pixelpuncher.player',
+    'pixelpuncher.npc',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

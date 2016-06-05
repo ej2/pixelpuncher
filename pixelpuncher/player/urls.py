@@ -1,9 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from pixelpuncher.player import views
 
-urlpatterns = patterns(
-    "",
+urlpatterns = [
     url(r'^new$', views.PlayerCreateView.as_view(), name="new"),
     url(r'^redirect$', views.player_redirect, name="redirect"),
     url(
@@ -23,4 +22,4 @@ urlpatterns = patterns(
     url(r'^use/(?P<item_id>[\w.@+-]+)/$', views.use, name="use"),
 
     url(r'^top_punchers$', views.top_punchers, name="top_punchers"),
-)
+]

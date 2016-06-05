@@ -23,6 +23,8 @@ class EnemyType(models.Model):
     date_created = fields.CreationDateTimeField(editable=True)
     date_updated = fields.ModificationDateTimeField(editable=True)
     drop_table = models.ForeignKey(DropTable, related_name="+", null=True, blank=True)
+    minimum_pixels = models.IntegerField(default=0)
+    maximum_pixels = models.IntegerField(default=1)
 
     attack = models.IntegerField(default=0)
     defense = models.IntegerField(default=0)

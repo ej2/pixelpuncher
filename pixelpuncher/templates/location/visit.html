@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load apps_player %}
+{% load apps_npc %}
+{% load apps_enemy %}
+{% load apps_game %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-3">
+      {% mini_profile request.user %}
+    </div>
+
+    <div class="col-md-6">
+      <div class="page-header">
+        <h1><i class="text-info mdi {{ location.icon }}"></i>{{ location.name }}</h1>
+
+        <p>{{ location.description }}</p>
+      </div>
+
+      {% show_messages player %}
+
+      {% if location.location_type == 'SHP' %}
+        {% include "location/_selling.html" %}
+      {% endif %}
+
+      <a href="{% url "game:map" %}" class="btn btn-primary btn-sm pull-right">Return to the city</a>
+    </div>
+    <div class="col-md-3">
+      {% npc_profile location.npc %}
+    </div>
+
+  </div>
+{% endblock content %}

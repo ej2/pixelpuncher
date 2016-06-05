@@ -1,7 +1,7 @@
 from pixelpuncher.game.utils import game_settings
 from pixelpuncher.game.utils.message import add_game_message
 from pixelpuncher.game.utils.messages import player_level_up_message
-from pixelpuncher.game.utils.skills import add_skills
+from pixelpuncher.game.utils.skills import add_skills, level_skill
 
 
 def level_up(player):
@@ -12,6 +12,9 @@ def level_up(player):
     player.current_energy = player.total_energy
     player.current_health = player.total_health
     player.save()
+
+    for skill in player.skills.all():
+        level_skill(skill)
 
     add_game_message(player, player_level_up_message())
     add_skills(player, player.level)

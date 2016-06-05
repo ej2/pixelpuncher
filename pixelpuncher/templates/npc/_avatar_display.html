@@ -1,0 +1,8 @@
+{% load staticfiles i18n %}
+{% load static %}
+<div class="avatar-small-box">
+  <img class="avatar avatar-small" id="body_layer" src="{% get_static_prefix %}{{ npc.avatar.body_layer.image_path }}">
+  <img class="avatar avatar-small" id="face_layer" src="{% get_static_prefix %}{{ npc.avatar.face_layer.image_path }}">
+  <img class="avatar avatar-small" id="hair_layer" src="{% get_static_prefix %}{{ npc.avatar.hair_layer.image_path }}">
+  <img class="avatar avatar-small" id="shirt_layer" src="{% get_static_prefix %}{{ npc.avatar.shirt_layer.image_path }}">
+</div>

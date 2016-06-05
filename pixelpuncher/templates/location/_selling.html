@@ -1,0 +1,19 @@
+<div class="page-header">Buy</div>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th style="text-align: right;">Cost</th>
+      <th style="text-align: right;"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in location.items.all %}
+      <tr>
+        <td>{{ item.item_type.name }}</td>
+        <td style="text-align: right;">${{ item.price }}</td>
+        <td style="text-align: right;"><a class="btn btn-sm btn-success" href="">Buy</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

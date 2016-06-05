@@ -1,7 +1,7 @@
 import random
 
 from pixelpuncher.game.utils.message import add_game_message
-from pixelpuncher.game.utils.messages import item_dropped, no_loot
+from pixelpuncher.game.utils.messages import item_dropped, no_loot, pixels_dropped_message
 from pixelpuncher.item.utils import get_random_drop, add_item_type_to_player
 
 
@@ -22,3 +22,14 @@ def generate_loot(player, enemy):
 
     if items_received == 0:
         add_game_message(player, no_loot(enemy))
+
+
+def generate_pixels(player, enemy):
+    if enemy.enemy_type.maximum_pixels > 0:
+        pixels = random.randint(enemy.enemy_type.minimum_pixels, enemy.enemy_type.maximum_pixels)
+
+        if pixels > 0:
+            player.pixels += pixels
+            player.save()
+
+            add_game_message(player, pixels_dropped_message(pixels))

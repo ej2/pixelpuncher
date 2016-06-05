@@ -5,131 +5,77 @@
 {% load apps_game %}
 
 {% block content %}
-<section class="" id="create">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-10 col-md-offset-2">
-      {% for game_message in game_messages %}
-        <div>
-          <h3>{{ game_message|safe }}</h3>
-        </div>
-      {% endfor %}
+  <div class="row">
+    <div class="col-md-10 col-md-offset-2">
+    {% for game_message in game_messages %}
+      <div>
+        <h3>{{ game_message|safe }}</h3>
       </div>
-    </div>
-
-    <div class="row">
-
-      {% include "player/_avatar_profile.html" %}
-
-      <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title"><i class="mdi mdi-human-child"></i> Profile</h3>
-          </div>
-          <div class="panel-body">
-            {% status_bar 'Health' player.current_health player.total_health 'progress-bar-danger' %}
-            {% status_bar 'Energy' player.current_energy player.total_energy 'progress-bar-success' %}
-
-            <table class="table table-striped">
-              <tr>
-                <td class="player-stats-title">Armor:</td>
-                <td class="player-stats-numbers">{{ player.effective_armor }}</td>
-              </tr>
-              <tr>
-                <td class="player-stats-title">Power:</td>
-                <td class="player-stats-numbers">{{ player.effect_power }} ({{ player.power }})</td>
-              </tr>
-              <tr>
-                <td class="player-stats-title">Technique:</td>
-                <td class="player-stats-numbers">{{ player.effect_technique }} ({{ player.technique }})</td>
-              </tr>
-              <tr>
-                <td class="player-stats-title">Endurance:</td>
-                <td class="player-stats-numbers">{{ player.effect_endurance }} ({{ player.endurance }})</td>
-              </tr>
-              <tr>
-                <td class="player-stats-title">Current Occupation:</td>
-                <td class="player-stats-numbers">Professional Puncher</td>
-              </tr>
-              <tr>
-                <td class="player-stats-title">Previous Occupation:</td>
-                <td class="player-stats-numbers">{{ player.previous_occupation }}</td>
-              </tr>
-              <tr>
-                <td class="player-stats-title">Action Points:</td>
-                <td class="player-stats-numbers">{{ player.punches }}</td>
-              </tr>
-              <tr>
-                <td class="player-stats-title">Gender:</td>
-                <td class="player-stats-numbers">{{ player.get_gender_display }}</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title"><i class="mdi mdi-heart"></i> Experience</h3>
-          </div>
-          <div class="panel-body">
-            {% status_bar 'XP' player.xp player.xp_to_next_level 'progress-bar-info' %}
-
-            <h5>Attribute Points: {{ player.attribute_points }} [<a href="{% url "player:spend" player.pk %}">Spend</a>]</h5>
-            <h5>Level: {{ player.level }}</h5>
-          </div>
-        </div>
-
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title"><i class="mdi mdi-tshirt-crew"></i> Wearing</h3>
-          </div>
-          <div class="panel-body">
-
-            <table class="table table-striped">
-              <tr>
-                <td>Head</td>
-                <td>{{ player.head|default_if_none:"-"  }}</td>
-              </tr>
-              <tr>
-                <td>Gloves</td>
-                <td>{{ player.gloves|default_if_none:"-" }}</td>
-              </tr>
-              <tr>
-                <td>Torso</td>
-                <td>{{ player.torso|default_if_none:"-" }}</td>
-              </tr>
-            </table>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title"><i class="mdi mdi-briefcase"></i> Inventory</h3>
-          </div>
-          <div class="panel-body">
-            {% inventory_list player %}
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title"><i class="mdi mdi-library-books"></i> Skills</h3>
-          </div>
-          <div class="panel-body">
-            {% skill_list player %}
-          </div>
-        </div>
-      </div>
-
+    {% endfor %}
     </div>
   </div>
-</section>
+
+  <div class="row">
+
+    {% include "player/_avatar_profile.html" %}
+
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="mdi mdi-human-child"></i> Profile</h3>
+        </div>
+        <div class="panel-body">
+          {% include "player/_stats.html" %}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="mdi mdi-heart"></i> Experience</h3>
+        </div>
+        <div class="panel-body">
+          {% include "player/_experience.html" %}
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="mdi mdi-tshirt-crew"></i> Wearing</h3>
+        </div>
+        <div class="panel-body">
+          {% include "player/_equipment.html" %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-lg-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="mdi mdi-briefcase"></i> Inventory</h3>
+        </div>
+        <div class="panel-body">
+          {% inventory_list player %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="mdi mdi-library-books"></i> Skills</h3>
+        </div>
+        <div class="panel-body">
+          {% skill_list player %}
+        </div>
+      </div>
+    </div>
+
+  </div>
 
 {% endblock content %}

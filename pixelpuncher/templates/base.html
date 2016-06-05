@@ -39,49 +39,64 @@
 
   <body>
     <div class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
+      <div class="container-fluid">
         <div class="navbar-header">
-          <a href="/" class="navbar-brand"><img src="{% static 'images/logo.png' %}"></a>
+
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+
+          <a href="/" class="navbar-brand"><img src="{% static 'images/logo.png' %}"></a>
         </div>
+
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
             {% if request.user.is_authenticated %}
               <li>
                 <a href="{% url "game:play" %}">Play</a>
               </li>
+              {% if player %}
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="player">Player
+                  {% if player.attribute_points > 0 %}<span class="badge">{{ player.attribute_points }}</span>{% endif %}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="player">
+                  <li><a href="{% url "player:detail" player.pk %}">Character</a></li>
+                  <li><a href="{% url 'users:detail' request.user.username  %}">Account</a></li>
+                  <li><a href="{% url "player:avatar" %}">Change Avatar</a></li>
+                  {% if player.attribute_points > 0 %}
+                    <li><a href="{% url "player:spend" player.pk %}">Spend Attribute points</a></li>
+                  {% endif %}
+                </ul>
+              </li>
+              {% endif %}
             {% endif %}
-            <li>
-              <a href="{% url "player:top_punchers" %}">Top Punchers</a>
-            </li>
-            <li>
-              <a href="/">Training Room</a>
-            </li>
-          {% if player %}
-            <li>
-              <a href="{% url "player:detail" player.pk %}">Profile
-                {% if player.attribute_points > 0 %}<span class="badge">{{ player.attribute_points }}</span>{% endif %}
-              </a>
-            </li>
-          {% endif %}
             <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="cheats">Cheats</a>
-              <ul class="dropdown-menu" aria-labelledby="cheats">
-                <li><a href="{% url "game:reset" %}">Reset Health/Energy/Turns</a></li>
-                <li><a href="{% url "game:daily_reset" %}">Daily reset</a></li>
-                <li class="divider"></li>
-                <li><a href="{% url "game:levels" %}">Level XP Breakdown</a></li>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="community">Community</a>
+              <ul class="dropdown-menu" aria-labelledby="community">
+                <li><a href="{% url "player:top_punchers" %}">Top Punchers</a></li>
+                <li><a href="">Player List</a></li>
+                <li><a href="">Forums</a></li>
               </ul>
             </li>
+
+            {% if request.user.is_authenticated %}
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="cheats">Cheats</a>
+                <ul class="dropdown-menu" aria-labelledby="cheats">
+                  <li><a href="{% url "game:reset" %}">Reset Health/Energy/Turns</a></li>
+                  <li><a href="{% url "game:daily_reset" %}">Daily reset</a></li>
+                  <li class="divider"></li>
+                  <li><a href="{% url "game:levels" %}">Level XP Breakdown</a></li>
+                </ul>
+              </li>
+            {% endif %}
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
             {% if request.user.is_authenticated %}
-              <li><a href="{% url 'users:detail' request.user.username  %}">{% trans "Profile" %}</a></li>
               <li><a href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
             {% else %}
               <li><a id="sign-up-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
@@ -99,7 +114,7 @@
       </nav>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
 
       {% if messages %}
           {% for message in messages %}
@@ -130,6 +145,9 @@
       <!-- place project specific Javascript in this file -->
       <script src="{% static 'js/project.js' %}"></script>
     {% endblock javascript %}
+
+    {% block additional-js %}
+  {% endblock additional-js %}
   </body>
 </html>
 

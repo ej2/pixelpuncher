@@ -5,8 +5,9 @@ import random
 from pixelpuncher.game.utils.calculations import calculate_hit, calculate_critial_hit, calculate_critial_damage, \
     calculate_damage, calculate_enemy_damage, calculate_enemy_hit, percentage_roll, dice_roll
 from pixelpuncher.game.utils.encounter import get_current_enemy
+from pixelpuncher.game.utils.game_settings import TAUNT_SUCCESS_PERCENTAGE, TAUNT_EPIC_SUCCESS_PERCENTAGE
 from pixelpuncher.game.utils.leveling import can_level_up, level_up
-from pixelpuncher.game.utils.loot import generate_loot
+from pixelpuncher.game.utils.loot import generate_loot, generate_pixels
 from pixelpuncher.game.utils.message import add_game_message
 from pixelpuncher.game.utils.messages import successful_critical_message, successful_hit_message, low_energy_message, \
     hit_failure_message, player_damage_message, successful_heal_message, failed_heal_message, victory_message, \
@@ -72,6 +73,7 @@ def perform_skill(player, player_skill):
     if victory:
         add_game_message(player, victory_message())
         generate_loot(player, enemy)
+        generate_pixels(player, enemy)
         calculate_xp(player, enemy)
 
     return victory
@@ -150,11 +152,24 @@ def perform_taunt(player):
     enemy = get_current_enemy(player)
     add_game_message(player, battle_message(enemy))
 
-    player.adjust_energy(random.randint(1, 4))
-    player.save()
+    taunt_success = random.randint(1, 100)
 
-    result = "You taunt and call the {0} names. You feel better about yourself but it does not respond.".format(
-        enemy.enemy_type.name)
+    if taunt_success < TAUNT_EPIC_SUCCESS_PERCENTAGE:
+        player.adjust_energy(random.randint(10, 20))
+        player.save()
+
+        result = "You taunt and call the {0} names. Ohhhh burn! You feel a lot better about yourself.".format(
+            enemy.enemy_type.name)
+
+    elif taunt_success < TAUNT_SUCCESS_PERCENTAGE:
+        player.adjust_energy(random.randint(1, 4))
+        player.save()
+
+        result = "You taunt and call the {0} names. You feel better about yourself but it does not respond.".format(
+            enemy.enemy_type.name)
+    else:
+        result = "You taunt and call the {0} names, then realize it doesn't care. ".format(
+            enemy.enemy_type.name)
 
     add_game_message(player, result)
 
