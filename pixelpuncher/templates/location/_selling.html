@@ -12,7 +12,7 @@
       <tr>
         <td>{{ item.item_type.name }}</td>
         <td style="text-align: right;">${{ item.price }}</td>
-        <td style="text-align: right;"><a class="btn btn-sm btn-success" href="">Buy</a></td>
+        <td style="text-align: right;"><a class="btn btn-sm btn-success" href="{% url "location:purchase" location.pk item.pk %}">Buy</a></td>
       </tr>
     {% endfor %}
   </tbody>

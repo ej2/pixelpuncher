@@ -16,5 +16,9 @@
   {% status_bar 'Energy' player.current_energy player.total_energy 'progress-bar-success' %}
   {% status_bar 'XP' player.xp player.xp_to_next_level 'progress-bar-info' %}
 
-  <div>Action Points: {{ player.punches }}</div>
+  <div>
+    <span>{{ player.punches }} AP</span>
+    <span class="pull-right">{{ player.pixels }} <i class="mdi mdi-vector-arrange-below"></i> </span>
+  </div>
+
 </div>

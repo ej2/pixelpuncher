@@ -1,5 +1,6 @@
 import random
 from annoying.functions import get_object_or_None
+from django.db import transaction
 
 from pixelpuncher.item.models import Item, LevelEquipment
 
@@ -126,3 +127,19 @@ def auto_equip(player):
 
 def get_combat_items(player):
     return player.items.filter(item_type__combat_usable=True).order_by("item_type__name")
+
+
+def purchase_item(player, item_type, price):
+
+    if player.pixels < price:
+        return "You don't have enough to purchase that."
+
+    with transaction.atomic():
+        player.pixels -= price
+        player.save()
+
+        item = create_item(item_type)
+        item.player = player
+        item.save()
+
+    return "You purchase the {} for {}.".format(item_type.name, price)

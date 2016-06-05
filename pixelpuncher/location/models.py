@@ -11,6 +11,7 @@ LOCATION_TYPE = (
     ("MED", "Medical",),
     ("SHP", "Shop",),
     ("TRN", "Training",),
+    ("HOM", "Home",),
 )
 
 
