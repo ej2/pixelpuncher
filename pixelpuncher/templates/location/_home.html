@@ -1,3 +1,6 @@
   {% for service in location.services.all %}
-    <a class="btn btn-sm btn-success" href="{% url "location:service" location.pk service.pk %}">{{ service.service.name }}</a>
+    <a class="btn btn-sm btn-success" href="{% url "location:service" location.pk service.pk %}">
+      {{ service.service.name }}
+      {% if service.action_point_cost > 0 %}({{ service.action_point_cost }} AP){% endif %}
+    </a>
   {% endfor %}

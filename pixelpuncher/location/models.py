@@ -65,6 +65,7 @@ class LocationService(models.Model):
     service = models.ForeignKey(Service, related_name="locations")
     location = models.ForeignKey(Location, related_name="services")
     price = models.IntegerField()
+    action_point_cost = models.IntegerField(default=0)
 
     def __unicode__(self):
-        return "{} ${}".format(self.service.name, self.price)
+        return "{}".format(self.service.name)

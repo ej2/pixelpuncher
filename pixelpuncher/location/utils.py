@@ -15,15 +15,21 @@ def unlock_location(player, location):
     location.save()
 
 
-def purchase_service(player, service, price):
-    if player.pixels < price:
+def purchase_service(player, location_service):
+    if player.pixels < location_service.price:
         return "You don't have enough to purchase that."
 
-    if price > 0:
-        player.pixels -= price
-        player.save()
+    if player.punches < location_service.action_point_cost:
+        return "You don't have enough action points to do that."
 
-    result = perform_service(player, service)
+    if location_service.action_point_cost > 0:
+        player.punches -= location_service.action_point_cost
+
+    if location_service.price > 0:
+        player.pixels -= location_service.price
+
+    player.save()
+    result = perform_service(player, location_service.service)
 
     return result
 

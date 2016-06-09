@@ -49,7 +49,7 @@ def purchase(request, player, location_id, locationitem_id):
 def service(request, player, location_id, locationservice_id):
     location_service = get_object_or_404(LocationService, pk=locationservice_id)
 
-    result = purchase_service(player, location_service.service, location_service.price)
+    result = purchase_service(player, location_service)
     add_game_message(player, result)
 
     return redirect("location:visit", location_id)
