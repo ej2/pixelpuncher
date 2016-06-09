@@ -1,0 +1,19 @@
+<div class="page-header">Available Services</div>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Service</th>
+      <th style="text-align: right;">Cost</th>
+      <th style="text-align: right;"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for service in location.services.all %}
+      <tr>
+        <td>{{ service.service.name }}</td>
+        <td style="text-align: right;">${{ service.price }}</td>
+        <td style="text-align: right;"><a class="btn btn-sm btn-success" href="{% url "location:service" location.pk service.pk %}">Buy</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

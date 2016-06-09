@@ -1,3 +1,8 @@
+import random
+
+from pixelpuncher.game.utils.message import GameMessageManager
+
+DANGER_WORDS = ["treacherous", "formidable", "deadly", "troublesome", "lethal"]
 
 
 def low_energy_message(skill):
@@ -64,3 +69,21 @@ def no_loot(enemy):
 
 def pixels_dropped_message(pixels):
     return "You find <span class='pixels'>{} pixels</span>.".format(pixels)
+
+
+def begin_combat_sequence(enemy):
+    msg = GameMessageManager()
+    msg.add("[INITIATING ENVIRONMENT SCAN]", 200)
+    msg.add("WARNING: {} {} detected!".format(str(random.choice(DANGER_WORDS)).title(), enemy.enemy_type.name))
+
+    return msg.to_string()
+
+
+def system_boot():
+    msg = GameMessageManager()
+    msg.add("Loading BIOS")
+    msg.add("Scanning memory", 550)
+    msg.add("Checking VRAM", 200)
+    msg.add("SYSTEM STATUS: OK")
+
+    return msg.to_string()

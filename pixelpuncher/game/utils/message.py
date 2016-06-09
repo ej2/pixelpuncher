@@ -34,3 +34,13 @@ def get_random_punching_sound():
 
 def get_random_destroyed_word():
     return random.choice(DESTROYED_VERBS)
+
+
+class GameMessageManager(object):
+    _message = ""
+
+    def add(self, message, pause=50):
+        self._message += "{}^{}\\n".format(message, pause)
+
+    def to_string(self):
+        return self._message

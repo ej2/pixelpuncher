@@ -121,6 +121,11 @@ class Player(models.Model):
 
         return result
 
+    def adjust_to_max_health(self):
+        self.current_health = self.total_health
+
+        return "Your health is fully restored."
+
     def adjust_energy(self, amount):
         self.current_energy += amount
 
@@ -134,6 +139,11 @@ class Player(models.Model):
             "gain" if amount > 0 else "lose", abs(amount))
 
         return result
+
+    def adjust_to_max_energy(self):
+        self.current_energy = self.total_energy
+
+        return "Your energy is fully restored."
 
     @property
     def health_percentage(self):

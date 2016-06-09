@@ -23,11 +23,26 @@
         {% include "location/_selling.html" %}
       {% endif %}
 
+      {% if location.location_type == 'MED' %}
+        {% include "location/_services.html" %}
+      {% endif %}
+
+      {% if location.location_type == 'HOM' %}
+        {% include "location/_home.html" %}
+      {% endif %}
+
+      {% if location.location_type == 'CAS' %}
+        {% include "location/_casino.html" %}
+      {% endif %}
+
       <a href="{% url "game:map" %}" class="btn btn-primary btn-sm pull-right">Return to the city</a>
     </div>
+
+    {% if location.npc %}
     <div class="col-md-3">
       {% npc_profile location.npc %}
     </div>
+    {% endif %}
 
   </div>
 {% endblock content %}

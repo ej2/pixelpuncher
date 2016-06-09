@@ -27,7 +27,10 @@ def get_random_drop(drop_table):
 
 
 def add_item_type_to_player(item_type, player):
-    item = get_object_or_None(Item, player=player, item_type=item_type)
+    item = None
+
+    if item_type.stackable:
+        item = get_object_or_None(Item, player=player, item_type=item_type)
 
     if item:
         item.remaining_uses += 1
@@ -138,8 +141,6 @@ def purchase_item(player, item_type, price):
         player.pixels -= price
         player.save()
 
-        item = create_item(item_type)
-        item.player = player
-        item.save()
+        add_item_type_to_player(item_type, player)
 
     return "You purchase the {} for {}.".format(item_type.name, price)

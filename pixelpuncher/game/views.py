@@ -10,6 +10,7 @@ from pixelpuncher.game.utils.encounter import get_enemy
 from pixelpuncher.game.utils.game import can_punch, daily_reset, reset_check
 from pixelpuncher.game.utils.leveling import xp_required_for_level, level_up
 from pixelpuncher.game.utils.message import get_game_messages
+from pixelpuncher.game.utils.messages import begin_combat_sequence, system_boot
 from pixelpuncher.item.models import Item
 from pixelpuncher.item.utils import get_combat_items, use_item
 from pixelpuncher.player.decorators import player_required
@@ -46,6 +47,7 @@ def map(request, player):
 @login_required
 @player_required
 def play(request, player):
+    combat_output = "Something"
     can_punch_flag = can_punch(player)
 
     enemy = None
@@ -63,9 +65,11 @@ def play(request, player):
                 enemy = get_enemy(player)
                 player.status = COMBAT
                 player.save()
+                combat_output = begin_combat_sequence(enemy)
 
         elif player.status == COMBAT:
             enemy = get_enemy(player)
+            combat_output = begin_combat_sequence(enemy)
 
     context = {
         "user": player.user,
@@ -73,6 +77,8 @@ def play(request, player):
         "combat_items": get_combat_items(player),
         "enemy": enemy,
         "can_punch": can_punch_flag,
+        "combat_output": combat_output,
+        "boot_up": system_boot()
     }
 
     return TemplateResponse(

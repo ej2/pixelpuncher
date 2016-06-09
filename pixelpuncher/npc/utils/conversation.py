@@ -2,17 +2,21 @@ import random
 
 GREETINGS = [
     "Welcome to {}!",
-    "A warm welcome to you my friend.",
-    "Greetings my friend.",
-    "Salutations friend.",
-    "Welcome to my humble store.",
     "Welcome!",
-    "Welcome, what may I do to serve you?",
-    "Greetings, what do you require?"
+    "Can I help you?",
+    "Welcome, can I help you?",
+    "Welcome, what can I do to serve you?",
+    "Hello, welcome to {}!",
+    "Buy somethin' will ya!"
 ]
 
 
 def get_merchant_greeting(location):
-    greeting = random.choice(GREETINGS)
-    return str(greeting).format(location.name)
+    greeting = str(random.choice(GREETINGS)).format(location.name)
+    return '{} says "{}"'.format(location.npc.name, greeting)
 
+#
+# def get_merchant_greeting(location):
+#     greeting = random.choice(GREETINGS)
+#     return str(greeting).format(location.name)
+#

@@ -9,20 +9,25 @@
       {% mini_profile request.user %}
     </div>
 
-    <div class="col-md-6">
-      {% show_messages player %}
-
-      {% for location in locations %}
-        <div>
-          <h3 class="">
-            <i class="text-info mdi {{ location.icon }}"></i>
-            {{ location.name }}
-          </h3>
-          <p>{{ location.description }}</p>
-            <a href="{% url "location:visit" location.pk %}" class="btn btn-primary btn-sm">Visit</a>
+    {% for location in locations %}
+    <div class="col-md-2">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <i class="mdi md-24 {{ location.icon }}
+            {% if location.location_type == "HOM" %}text-success
+            {% elif location.location_type == "ADV" %}text-danger
+            {% else %}text-info{% endif %}
+            "></i>
+          {{ location.name }}
         </div>
-      {% endfor %}
-
+        <div class="panel-body">
+          <p>{{ location.description }}</p>
+          <a href="{% url "location:visit" location.pk %}" class="btn btn-primary btn-sm">Visit
+            {% if location.location_type == 'ADV' %} (1 AP){% endif %}</a>
+        </div>
+      </div>
     </div>
+    {% endfor %}
   </div>
 {% endblock content %}
+

@@ -10,8 +10,17 @@ LOCATION_TYPE = (
     ("ADV", "Adventure",),
     ("MED", "Medical",),
     ("SHP", "Shop",),
+    ("CAS", "Casino",),
     ("TRN", "Training",),
     ("HOM", "Home",),
+)
+
+SERVICE_TYPE = (
+    ("HEAL", "Healing",),
+    ("REST", "Rest",),
+    ("HEALMAX", "Restore Health",),
+    ("RESTMAX", "Restore Energy",),
+    ("GMB", "Gambling")
 )
 
 
@@ -36,3 +45,26 @@ class LocationItem(models.Model):
 
     def __unicode__(self):
         return "{} ${}".format(self.item_type.name, self.price)
+
+
+class Service(models.Model):
+    name = models.CharField(max_length=20)
+    service_type = models.CharField(max_length=7, choices=SERVICE_TYPE)
+    description = models.CharField(max_length=200, blank=True, null=True)
+    min_amount = models.IntegerField(default=1)
+    max_amount = models.IntegerField(default=1)
+    success_rate = models.IntegerField(default=100)
+    success_text = models.CharField(max_length=200)
+    failure_text = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.name
+
+
+class LocationService(models.Model):
+    service = models.ForeignKey(Service, related_name="locations")
+    location = models.ForeignKey(Location, related_name="services")
+    price = models.IntegerField()
+
+    def __unicode__(self):
+        return "{} ${}".format(self.service.name, self.price)

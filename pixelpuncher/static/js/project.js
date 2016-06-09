@@ -1,10 +1,20 @@
 /* Project specific Javascript goes here. */
 
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('.shuffle-text').each(function(){
+      var container = $(".shuffle-text");
+
+      container.shuffleLetters({
+        "text": container.val()
+      });
+    });
+});
 
 $('form').submit(function(){
     $(this).find('button[type=submit]').prop('disabled', true);
 });
-
 
 function increase(id)
 {

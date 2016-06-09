@@ -54,9 +54,7 @@
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
             {% if request.user.is_authenticated %}
-              <li>
-                <a href="{% url "game:play" %}">Play</a>
-              </li>
+              <li><a href="{% url "game:map" %}">Play</a></li>
               {% if player %}
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="player">Player
@@ -141,6 +139,8 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
       <!-- Your stuff: Third-party javascript libraries go here -->
+      <script src="{% static 'js/jquery.shuffleLetters.js' %}"></script>
+      <script src="{% static 'js/typed.js' %}"></script>
 
       <!-- place project specific Javascript in this file -->
       <script src="{% static 'js/project.js' %}"></script>

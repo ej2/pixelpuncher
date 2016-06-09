@@ -1,0 +1,3 @@
+  {% for service in location.services.all %}
+    <a class="btn btn-sm btn-success" href="{% url "location:service" location.pk service.pk %}">{{ service.service.name }}</a>
+  {% endfor %}

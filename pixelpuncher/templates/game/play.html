@@ -2,6 +2,7 @@
 {% load apps_player %}
 {% load apps_enemy %}
 {% load apps_game %}
+{% load staticfiles i18n %}
 
 {% block content %}
       <div class="row">
@@ -10,7 +11,11 @@
         </div>
 
         <div class="col-md-6">
-         {% show_messages player %}
+          <div class="combatlog" id="combatlog" style="white-space: pre;">
+
+          </div>
+
+          {% show_messages player %}
         </div>
 
         <div class="col-md-3">
@@ -56,10 +61,25 @@
               </div>
             </form>
           {% else %}
-            <a class="btn btn-warning" href="{% url "game:play" %}">Find something to punch</a>
+            <a class="btn btn-warning" href="{% url "game:play" %}">Find something to punch (1 AP)</a>
+            <a class="btn btn-default" href="{% url "game:map" %}">Return to the City</a>
           {% endif %}
         </div>
       </div>
 
-
 {% endblock content %}
+
+{% block additional-js %}
+<script>
+  $(function(){
+      $(".combatlog").typed({
+        strings: ["{{ combat_output|safe }}"],
+                typeSpeed: 1,
+                backDelay: 500,
+                loop: false,
+                loopCount: false,
+      });
+  });
+</script>
+
+{% endblock additional-js %}
