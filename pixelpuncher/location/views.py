@@ -14,6 +14,7 @@ from pixelpuncher.player.decorators import player_required
 @login_required
 @player_required
 def visit_location(request, player, location_id):
+    request.session['location_id'] = location_id
     location = get_object_or_404(Location, id=location_id)
 
     if location.location_type == 'ADV':

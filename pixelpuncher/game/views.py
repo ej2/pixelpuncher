@@ -13,6 +13,7 @@ from pixelpuncher.game.utils.message import get_game_messages
 from pixelpuncher.game.utils.messages import begin_combat_sequence, system_boot
 from pixelpuncher.item.models import Item
 from pixelpuncher.item.utils import get_combat_items, use_item
+from pixelpuncher.location.models import Location
 from pixelpuncher.player.decorators import player_required
 from pixelpuncher.player.models import PlayerSkill, VICTORY, COMBAT, PASSIVE
 
@@ -47,7 +48,9 @@ def map(request, player):
 @login_required
 @player_required
 def play(request, player):
-    combat_output = "Something"
+    location_id = request.session.get('location_id', 0)
+    location = get_object_or_404(Location, pk=location_id)
+    combat_output = " "
     can_punch_flag = can_punch(player)
 
     enemy = None
@@ -62,13 +65,13 @@ def play(request, player):
 
         elif player.status == PASSIVE:
             if can_punch_flag:
-                enemy = get_enemy(player)
+                enemy = get_enemy(player, location)
                 player.status = COMBAT
                 player.save()
                 combat_output = begin_combat_sequence(enemy)
 
         elif player.status == COMBAT:
-            enemy = get_enemy(player)
+            enemy = get_enemy(player, location)
             combat_output = begin_combat_sequence(enemy)
 
     context = {
@@ -78,7 +81,8 @@ def play(request, player):
         "enemy": enemy,
         "can_punch": can_punch_flag,
         "combat_output": combat_output,
-        "boot_up": system_boot()
+        "boot_up": system_boot(),
+        "location": location
     }
 
     return TemplateResponse(

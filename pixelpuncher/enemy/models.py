@@ -2,6 +2,7 @@ from django.db import models
 from django_extensions.db import fields
 
 from pixelpuncher.item.models import DropTable
+from pixelpuncher.location.models import Location
 from pixelpuncher.player.models import Player
 
 
@@ -83,3 +84,9 @@ class Enemy(models.Model):
 
         if self.current_health > self.total_health:
             self.current_health = self.total_health
+
+
+class EnemySpawn(models.Model):
+    enemy_type = models.ForeignKey(EnemyType, related_name="+")
+    location = models.ForeignKey(Location, related_name="enemy_spawns")
+    spawn_rate = models.IntegerField(default=100)

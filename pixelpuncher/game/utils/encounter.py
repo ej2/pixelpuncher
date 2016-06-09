@@ -2,17 +2,17 @@ import random
 
 from annoying.functions import get_object_or_None
 
-from pixelpuncher.enemy.models import Enemy, EnemyType
+from pixelpuncher.enemy.models import Enemy
 from pixelpuncher.game.utils.message import add_game_message
 from pixelpuncher.game.utils.messages import battle_message
 from pixelpuncher.player.models import COMBAT
 
 
-def get_enemy(player):
+def get_enemy(player, location):
     enemy = get_current_enemy(player)
 
     if enemy is None:
-        enemy = random_encounter(player)
+        enemy = random_encounter(player, location)
         player.status = COMBAT
         player.punches -= 1  # Should each attack cost one punch or each combat?
         player.save()
@@ -26,11 +26,11 @@ def get_current_enemy(player):
     return get_object_or_None(Enemy, active=True, player=player)
 
 
-def random_encounter(player):
-    enemy_types = EnemyType.objects.filter(base_level__lte=player.level)
-    enemy_type = random.choice(enemy_types)
+def random_encounter(player, location):
+    enemy_spawns = location.enemy_spawns.filter(enemy_type__base_level__lte=player.level)
+    enemy_spawn = random.choice(enemy_spawns)
 
-    enemy = create_enemy(enemy_type, player)
+    enemy = create_enemy(enemy_spawn.enemy_type, player)
     return enemy
 
 
