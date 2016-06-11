@@ -27,10 +27,14 @@
             </div>
           </div>
           </div>
+        {% empty %}
+          <div class="col-md-12">
+            Yikes... there is nothing here. You should go out and achieve something!
+          </div>
         {% endfor %}
       </div>
 
-      <a href="{% url "location:visit" 1 %}" class="btn btn-primary btn-sm pull-right">Stop looking at your achievement wall</a>
+      <a href="{% url "location:home" %}" class="btn btn-primary btn-sm pull-right">Stop looking at your achievement wall</a>
     </div>
 
 

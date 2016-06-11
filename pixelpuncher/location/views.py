@@ -35,6 +35,24 @@ def visit_location(request, player, location_id):
 
 @login_required
 @player_required
+def visit_home(request, player):
+    locations = player.locations.filter(location_type='HOM')
+
+    if locations.count() > 1:
+        return redirect("game:map")
+    else:
+        context = {
+            "user": player.user,
+            "player": player,
+            "location": locations[0],
+        }
+
+        return TemplateResponse(
+            request, "location/visit.html", RequestContext(request, context))
+
+
+@login_required
+@player_required
 def purchase(request, player, location_id, locationitem_id):
     location_item = get_object_or_404(LocationItem, pk=locationitem_id)
 

@@ -343,4 +343,4 @@ class Achievement(models.Model):
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=200)
     icon = models.CharField(max_length=20, blank=True, null=True)
-    players = models.ManyToManyField(Player, related_name="achievements")
+    players = models.ManyToManyField(Player, related_name="achievements", blank=True)
