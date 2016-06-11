@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load apps_player %}
+{% load apps_npc %}
+{% load apps_enemy %}
+{% load apps_game %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-3">
+      {% mini_profile request.user %}
+    </div>
+
+    <div class="col-md-9">
+      <div class="row">
+        <div class="page-header">
+          <h1>{{ player.name }}'s Wall of Outstanding Achievements</h1>
+        </div>
+        {% for achievement in player.achievements.all %}
+          <div class="col-md-4">
+            <div class="panel panel-default">
+            <div class="panel-heading">
+              <i class="mdi md-24 {{ achievement.icon }}"></i>
+              {{ achievement.name }}
+            </div>
+            <div class="panel-body">
+              <p>{{ achievement.description }}</p>
+            </div>
+          </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <a href="{% url "location:visit" 1 %}" class="btn btn-primary btn-sm pull-right">Stop looking at your achievement wall</a>
+    </div>
+
+
+  </div>
+{% endblock content %}

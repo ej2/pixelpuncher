@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from pixelpuncher.player.models import Player, Skill, PlayerSkill, Occupation, Avatar, PlayerAvatar, AvatarLayer
+from pixelpuncher.player.models import Player, Skill, PlayerSkill, Occupation, Avatar, PlayerAvatar, AvatarLayer, \
+    Achievement
 
 
 class PlayerModelAdmin(admin.ModelAdmin):
@@ -45,9 +46,16 @@ class OccupationModelAdmin(admin.ModelAdmin):
 class AvatarModelAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "gender", "image_path", "active",)
     search_fields = ("id", "image_path", "active",)
-    list_per_page = 25
+    list_per_page = 50
 
 
+class AchievementModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "description", "icon",)
+    search_fields = ("id", "name", "description", "icon",)
+    list_per_page = 50
+
+
+admin.site.register(Achievement, AchievementModelAdmin)
 admin.site.register(Avatar, AvatarModelAdmin)
 admin.site.register(AvatarLayer, AvatarLayerModelAdmin)
 admin.site.register(PlayerAvatar, PlayerAvatarModelAdmin)

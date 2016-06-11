@@ -337,3 +337,10 @@ class PlayerSkill(models.Model):
     @property
     def can_use(self):
         return self.player.current_energy >= self.skill.energy_cost
+
+
+class Achievement(models.Model):
+    name = models.CharField(max_length=30)
+    description = models.CharField(max_length=200)
+    icon = models.CharField(max_length=20, blank=True, null=True)
+    players = models.ManyToManyField(Player, related_name="achievements")

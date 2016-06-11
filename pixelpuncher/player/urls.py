@@ -17,6 +17,7 @@ urlpatterns = [
     ),
     url(r'^avatar_choose/(?P<avatar_id>[\w.@+-]+)/$', views.choose_avatar, name='avatar_choose'),
     url(r'^avatar', views.avatar_list, name='avatar'),
+    url(r'^achievements', views.view_achievements, name='achievements'),
     url(r'^examine/(?P<item_id>[\w.@+-]+)/$', views.examine, name="examine"),
     url(r'^drop/(?P<item_id>[\w.@+-]+)/$', views.drop, name="drop"),
     url(r'^use/(?P<item_id>[\w.@+-]+)/$', views.use, name="use"),

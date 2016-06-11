@@ -5,13 +5,13 @@ from django.shortcuts import redirect, get_object_or_404
 from django.template import RequestContext
 from django.template.response import TemplateResponse
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, UpdateView, ListView
 
 from pixelpuncher.game.utils.message import add_game_message, get_game_messages
 from pixelpuncher.item.utils import use_item, drop_item, examine_item
 from pixelpuncher.player.decorators import player_required
 from pixelpuncher.player.forms import PlayerForm, AttributeForm
-from pixelpuncher.player.models import Player, Avatar
+from pixelpuncher.player.models import Player, Avatar, Achievement
 from pixelpuncher.player.utils.avatar import get_unlocked_layers_by_type, set_avatar
 
 
@@ -157,3 +157,16 @@ def choose_avatar(request, player, avatar_id):
     player.save()
 
     return redirect(reverse("player:detail", args=[player.id]))
+
+
+@login_required
+@player_required
+def view_achievements(request, player):
+    context = {
+        "user": player.user,
+        "player": player,
+    }
+
+    return TemplateResponse(
+        request, "player/achievements.html", RequestContext(request, context))
+
