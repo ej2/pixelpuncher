@@ -50,6 +50,7 @@ class LocationItem(models.Model):
 class Service(models.Model):
     name = models.CharField(max_length=20)
     service_type = models.CharField(max_length=7, choices=SERVICE_TYPE)
+    icon = models.CharField(max_length=20, blank=True, null=True)
     description = models.CharField(max_length=200, blank=True, null=True)
     min_amount = models.IntegerField(default=1)
     max_amount = models.IntegerField(default=1)
