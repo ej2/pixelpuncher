@@ -3,22 +3,24 @@ from __future__ import division
 from django.db import models
 from django_extensions.db import fields
 
-from pixelpuncher.player.models import Player
-
+from pixelpuncher.player.models import Player, AvatarLayer
 
 BASE_TYPE = (
     ("WEA", "Weapon",),
     ("ARM", "Armor",),
     ("CON", "Consumable",),
+    ("UNL", "Unlock",),
 )
 
 CLASSIFICATION = (
-    ("GLOVE", "Gloves",),
-    ("HEAD", "Head",),
-    ("TORSO", "Torso",),
-    ("FOOD", "Food",),
     ("DRINK", "Drink",),
+    ("FOOD", "Food",),
+    ("GLOVE", "Gloves",),
+    ("HAIR", "Hair",),
+    ("HEAD", "Head",),
     ("MISC", "Misc",),
+    ("SHIRT", "Shirt",),
+    ("TORSO", "Torso",),
 )
 
 
@@ -50,6 +52,9 @@ class ItemType(models.Model):
 
     icon = models.CharField(max_length=30, null=True, blank=True)
     combat_usable = models.BooleanField(default=False)
+
+    # This layer is unlocked when item is acquired
+    layer = models.ForeignKey(AvatarLayer, related_name="+", null=True, blank=True)
 
     def __unicode__(self):
         return "{0} ({1})".format(self.name, self.level_requirement)

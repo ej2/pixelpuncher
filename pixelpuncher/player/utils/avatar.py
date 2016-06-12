@@ -1,5 +1,6 @@
 from django.db.models import Q
 from pixelpuncher.player.models import AvatarLayer, PlayerAvatar
+from annoying.functions import get_object_or_None
 
 
 def get_unlocked_layers_by_type(player, layer_type):
@@ -30,3 +31,21 @@ def set_avatar(player, hair_id, face_id, body_id, shirt_id):
     shirt_layer, created = PlayerAvatar.objects.get_or_create(player=player, layer_id=shirt_id)
     shirt_layer.current = True
     shirt_layer.save()
+
+
+def unlock_layer(player, layer):
+    """
+    Unlocks a avatar layer for a player
+    :param player:
+    :param layer:
+    :return: True if layer was unlocked
+    """
+    player_avatar = get_object_or_None(PlayerAvatar, player=player, layer=layer)
+
+    if player_avatar is None:
+        player_avatar = PlayerAvatar(player=player, layer=layer)
+        player_avatar.save()
+
+        return True
+    else:
+        return False

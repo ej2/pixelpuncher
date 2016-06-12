@@ -272,6 +272,9 @@ class PlayerAvatar(models.Model):
     layer = models.ForeignKey(AvatarLayer, related_name="+")
     current = models.BooleanField(default=False)
 
+    class Meta:
+        unique_together = ('player', 'layer',)
+
 
 class Skill(models.Model):
     name = models.CharField(max_length=25)

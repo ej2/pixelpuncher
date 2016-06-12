@@ -1,14 +1,29 @@
 <table class="table table-striped">
   <tr>
     <td>Head</td>
-    <td>{{ player.head|default_if_none:"-"  }}</td>
+    <td>
+      {% if player.head %}
+        {{ player.head }}
+        [ <a class="text-info" href="#" data-toggle="modal" data-target="#itemModal{{ player.gloves.pk }}">Examine</a> ]
+      {% endif %}
+    </td>
   </tr>
   <tr>
-    <td>Gloves</td>
-    <td>{{ player.gloves|default_if_none:"-" }}</td>
+    <td>Hands</td>
+    <td>
+      {% if player.gloves %}
+        {{ player.gloves }}
+        [ <a class="text-info" href="#" data-toggle="modal" data-target="#itemModal{{ player.gloves.pk }}">Examine</a> ]
+      {% endif %}
+    </td>
   </tr>
   <tr>
     <td>Torso</td>
-    <td>{{ player.torso|default_if_none:"-" }}</td>
+    <td>
+      {% if player.torso %}
+        {{ player.torso }}
+        [ <a class="text-info" href="#" data-toggle="modal" data-target="#itemModal{{ player.gloves.pk }}">Examine</a> ]
+      {% endif %}
+    </td>
   </tr>
 </table>

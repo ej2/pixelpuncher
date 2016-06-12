@@ -3,6 +3,7 @@ from annoying.functions import get_object_or_None
 from django.db import transaction
 
 from pixelpuncher.item.models import Item, LevelEquipment
+from pixelpuncher.player.utils.avatar import unlock_layer
 
 
 def create_item(item_type):
@@ -152,5 +153,8 @@ def purchase_item(player, item_type, price, currency):
             player.save()
 
     add_item_type_to_player(item_type, player)
+    if item_type.layer:
+        unlock_layer(player, item_type.layer)
+
     return "You purchase the {} for {} {}.".format(item_type.name, price, currency_name)
 
