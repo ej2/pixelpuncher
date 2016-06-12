@@ -103,6 +103,7 @@ class Player(models.Model):
     previous_occupation = models.CharField(max_length=50, null=True, blank=True)
 
     pixels = models.IntegerField(default=0)
+    megapixels = models.IntegerField(default=0)  # can only be aquired through RMT
 
     def __unicode__(self):
         return self.name

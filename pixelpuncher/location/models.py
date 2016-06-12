@@ -23,6 +23,11 @@ SERVICE_TYPE = (
     ("GMB", "Gambling")
 )
 
+CURRENCY = (
+    ("P", "Pixels",),
+    ("M", "MegaPixels",),
+)
+
 
 class Location(models.Model):
     name = models.CharField(max_length=50)
@@ -42,6 +47,7 @@ class LocationItem(models.Model):
     location = models.ForeignKey(Location, related_name="items")
     item_type = models.ForeignKey(ItemType)
     price = models.IntegerField()
+    currency = models.CharField(max_length=1, choices=CURRENCY, default='P')
 
     def __unicode__(self):
         return "{} ${}".format(self.item_type.name, self.price)

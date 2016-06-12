@@ -20,12 +20,9 @@
     <span data-toggle="tooltip" title="Action Points" data-placement="right">
       {{ player.punches }} AP
     </span>
-    <span class="pull-right" data-toggle="tooltip" title="Pixels" data-placement="right">
-      {{ player.pixels }}
-      <i class="mdi mdi-vector-arrange-below" ></i>
-    </span>
 
-
+    {% include "player/_currency.html" %}
+    
   </div>
 
 </div>
