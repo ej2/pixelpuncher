@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from pixelpuncher.location.models import Location, LocationItem, Service, LocationService
+from pixelpuncher.location.models import Location, LocationItem, Service, LocationService, Adventure, AdventureChoice
 
 
 class LocationModelAdmin(admin.ModelAdmin):
@@ -30,7 +30,21 @@ class LocationServiceModelAdmin(admin.ModelAdmin):
     list_per_page = 50
 
 
+class AdventureModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "location", "frequency",)
+    search_fields = ("id", "title", )
+    list_per_page = 50
+
+
+class AdventureChoiceModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "adventure", "option_text", "success_percentage",)
+    search_fields = ("id", "adventure__title", "option_text", "success_percentage",)
+    list_per_page = 50
+
+
 admin.site.register(Location, LocationModelAdmin)
 admin.site.register(LocationItem, LocationItemsModelAdmin)
 admin.site.register(Service, ServiceModelAdmin)
 admin.site.register(LocationService, LocationServiceModelAdmin)
+admin.site.register(Adventure, AdventureModelAdmin)
+admin.site.register(AdventureChoice, AdventureChoiceModelAdmin)

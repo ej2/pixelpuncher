@@ -28,6 +28,19 @@ CURRENCY = (
     ("M", "MegaPixels",),
 )
 
+SUCCESS_BONUS_STAT = (
+    ("POWR", "power",),
+    ("TECH", "technique",),
+    ("ENDR", "endurance",),
+    ("ARMR", "armor",),
+)
+
+ENCOUNTER_FREQUENCY = (
+    ("COMMON", "Common",),
+    ("RARE", "Rare",),
+    ("ULTRA", "Ultra Rare",),
+)
+
 
 class Location(models.Model):
     name = models.CharField(max_length=50)
@@ -76,3 +89,29 @@ class LocationService(models.Model):
 
     def __unicode__(self):
         return "{}".format(self.service.name)
+
+
+class Adventure(models.Model):
+    title = models.CharField(max_length=30)
+    image_path = models.CharField(max_length=200)
+    adventure_text = models.TextField()
+    location = models.ManyToManyField(Location, blank=True)
+    frequency = models.CharField(max_length=6, choices=ENCOUNTER_FREQUENCY)
+
+    def __unicode__(self):
+        return self.title
+
+
+class AdventureChoice(models.Model):
+    adventure = models.ForeignKey(Adventure, related_name="choices")
+    # Used if this choice leads to another adventure
+    follow_up_adventure = models.ForeignKey(Adventure, related_name="+", null=True, blank=True)
+    option_text = models.CharField(max_length=50)
+    icon = models.CharField(max_length=20, blank=True, null=True)
+    success_percentage = models.IntegerField(default=100)
+    success_bonus = models.CharField(max_length=4, choices=SUCCESS_BONUS_STAT)
+    success_text = models.TextField()
+    failure_text = models.TextField(blank=True, null=True)
+
+    def __unicode__(self):
+        return self.option_text
