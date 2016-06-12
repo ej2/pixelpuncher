@@ -132,15 +132,25 @@ def get_combat_items(player):
     return player.items.filter(item_type__combat_usable=True).order_by("item_type__name")
 
 
-def purchase_item(player, item_type, price):
+def purchase_item(player, item_type, price, currency):
+    if currency == 'P':
+        currency_name = "Pixels"
+        if player.pixels < price:
+            return "You don't have enough to purchase that."
 
-    if player.pixels < price:
-        return "You don't have enough to purchase that."
+        with transaction.atomic():
+            player.pixels -= price
+            player.save()
 
-    with transaction.atomic():
-        player.pixels -= price
-        player.save()
+    else:
+        currency_name = "MegaPixels"
+        if player.megapixels < price:
+            return "You don't have enough to purchase that."
 
-        add_item_type_to_player(item_type, player)
+        with transaction.atomic():
+            player.megapixels -= price
+            player.save()
 
-    return "You purchase the {} for {}.".format(item_type.name, price)
+    add_item_type_to_player(item_type, player)
+    return "You purchase the {} for {} {}.".format(item_type.name, price, currency_name)
+

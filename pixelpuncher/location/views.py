@@ -56,7 +56,7 @@ def visit_home(request, player):
 def purchase(request, player, location_id, locationitem_id):
     location_item = get_object_or_404(LocationItem, pk=locationitem_id)
 
-    result = purchase_item(player, location_item.item_type, location_item.price)
+    result = purchase_item(player, location_item.item_type, location_item.price, location_item.currency)
     add_game_message(player, result)
 
     return redirect("location:visit", location_id)
