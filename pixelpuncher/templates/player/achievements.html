@@ -11,10 +11,11 @@
     </div>
 
     <div class="col-md-9">
+      <div class="page-header">
+        <h1>{{ player.name }}'s Wall of Outstanding Achievements</h1>
+      </div>
+
       <div class="row">
-        <div class="page-header">
-          <h1>{{ player.name }}'s Wall of Outstanding Achievements</h1>
-        </div>
         {% for achievement in player.achievements.all %}
           <div class="col-md-4">
             <div class="panel panel-default">
@@ -28,7 +29,7 @@
           </div>
           </div>
         {% empty %}
-          <div class="col-md-12">
+          <div class="col-md-6">
             Yikes... there is nothing here. You should go out and achieve something!
           </div>
         {% endfor %}
@@ -36,7 +37,5 @@
 
       <a href="{% url "location:home" %}" class="btn btn-primary btn-sm pull-right">Stop looking at your achievement wall</a>
     </div>
-
-
   </div>
 {% endblock content %}
