@@ -14,75 +14,25 @@
           <div class="page-header">
             <h1><i class="text-info mdi {{ location.icon }}"></i>{{ location.name }}</h1>
           </div>
-          <div class="combatlog" id="combatlog" style="white-space: pre;">
-
-          </div>
-
           {% show_messages player %}
+
+          {% if player.status == 'c' %}
+            {% include "game/_combat.html" %}
+          {% elif player.status == 'a' %}
+
+            {% include "game/_adventure.html" %}
+          {% else %}
+            <a class="btn btn-warning" href="{% url "game:play" %}">Find something to punch (1 AP)</a>
+            <a class="btn btn-default" href="{% url "game:map" %}">Return to the City</a>
+          {% endif %}
+
         </div>
 
         <div class="col-md-3">
           {% if enemy %}
-          {% enemy_mini_profile enemy %}
-          {% endif %}
-        </div>
-      </div>
-      <div class="row">
-          <div class="col-sm-6 col-sm-offset-3">
-          {% if player.status == 'c' %}
-            <form class="form-horizontal" method="post" action="">
-
-            {% if can_punch %}
-              <div class="game-actions">
-                {% for player_skill in player.skills.all %}
-                  <a class="btn btn-primary btn-game-action {% if player.current_energy < player_skill.energy_cost %}disabled{% endif %}"
-                     href="{% url "game:skill" player_skill.id %}">{{ player_skill }} ({{ player_skill.energy_cost }} EP)</a>
-                {% endfor %}
-
-                <a class="btn btn-warning" href="{% url "game:taunt" %}">Taunt</a>
-                <a class="btn btn-danger" href="{% url "game:skip" %}">Leave</a>
-
-
-              {% if combat_items.count > 0 %}
-                {% for item in combat_items %}
-                  <a class="btn btn-primary btn-game-action"
-                     href="{% url "game:use" item.id %}">{{ item }} (X{{ item.remaining_uses }})</a>
-                {% endfor %}
-              {% endif %}
-
-              {% if combat_items.count > 0 and 1 == 0 %}
-                <select id="item" class="form-control combat-items-field">
-                {% for item in combat_items %}
-                  <option>{{ item }} (X{{ item.remaining_uses }})</option>
-                {% endfor %}
-                </select>
-                <a class="btn btn-primary disable-onclick" href="#">Use</a>
-              {% endif %}
-            {% endif %}
-
-            {% csrf_token %}
-              </div>
-            </form>
-          {% else %}
-            <a class="btn btn-warning" href="{% url "game:play" %}">Find something to punch (1 AP)</a>
-            <a class="btn btn-default" href="{% url "game:map" %}">Return to the City</a>
+            {% enemy_mini_profile enemy %}
           {% endif %}
         </div>
       </div>
 
 {% endblock content %}
-
-{% block additional-js %}
-<script>
-  $(function(){
-      $(".combatlog").typed({
-        strings: ["{{ combat_output|safe }}"],
-                typeSpeed: 1,
-                backDelay: 500,
-                loop: false,
-                loopCount: false,
-      });
-  });
-</script>
-
-{% endblock additional-js %}

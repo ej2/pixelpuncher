@@ -10,6 +10,7 @@ from pixelpuncher.users.models import User
 VICTORY = 'v'
 COMBAT = 'c'
 PASSIVE = 'p'
+ADVENTURING = 'a'
 
 GENDER = (
     ("M", "Male",),

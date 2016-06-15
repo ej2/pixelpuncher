@@ -68,7 +68,19 @@ def no_loot(enemy):
 
 
 def pixels_dropped_message(pixels):
-    return "You find <span class='pixels'>{} pixels</span>.".format(pixels)
+    return "You gain <span class='pixels'>{} pixels</span>.".format(pixels)
+
+
+def xp_gained_message(gained_xp):
+    return "You gain <span class='xp'>{0}XP!</span>".format(gained_xp)
+
+
+def bonus_xp_gained_message(reason, bonus_xp):
+    return "<span class='xp'>{} Bonus {}XP!</span>".format(reason, bonus_xp)
+
+
+def run_away_message(enemy_name):
+    return "You don't want to punch a stupid {0}.".format(enemy_name)
 
 
 def begin_combat_sequence(enemy):

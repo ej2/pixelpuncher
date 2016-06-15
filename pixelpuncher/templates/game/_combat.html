@@ -1,0 +1,35 @@
+{% load apps_player %}
+{% load apps_enemy %}
+{% load apps_game %}
+{% load staticfiles i18n %}
+
+<form class="form-horizontal" method="post" action="">
+
+  <div class="game-actions">
+    {% for player_skill in player.skills.all %}
+      <a class="btn btn-primary btn-game-action {% if player.current_energy < player_skill.energy_cost %}disabled{% endif %}"
+         href="{% url "game:skill" player_skill.id %}">{{ player_skill }} ({{ player_skill.energy_cost }} EP)</a>
+    {% endfor %}
+
+    <a class="btn btn-warning" href="{% url "game:taunt" %}">Taunt</a>
+    <a class="btn btn-danger" href="{% url "game:skip" %}">Leave</a>
+
+  {% if combat_items.count > 0 %}
+    {% for item in combat_items %}
+      <a class="btn btn-primary btn-game-action"
+         href="{% url "game:use" item.id %}">{{ item }} (X{{ item.remaining_uses }})</a>
+    {% endfor %}
+  {% endif %}
+
+  {% if combat_items.count > 0 and 1 == 0 %}
+    <select id="item" class="form-control combat-items-field">
+    {% for item in combat_items %}
+      <option>{{ item }} (X{{ item.remaining_uses }})</option>
+    {% endfor %}
+    </select>
+    <a class="btn btn-primary disable-onclick" href="#">Use</a>
+  {% endif %}
+
+{% csrf_token %}
+  </div>
+</form>

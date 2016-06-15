@@ -1,5 +1,6 @@
 from __future__ import division
 from django.db import models
+from django_extensions.db import fields
 
 from pixelpuncher.item.models import ItemType
 from pixelpuncher.npc.models import NPC
@@ -51,6 +52,7 @@ class Location(models.Model):
     players = models.ManyToManyField(Player, related_name='locations', blank=True)
     starting_location = models.BooleanField(default=False)  # Player starts with these locations unlocked
     npc = models.ForeignKey(NPC, null=True, blank=True)
+    adventure_rate = models.IntegerField(default=50)
 
     def __unicode__(self):
         return self.name
@@ -93,10 +95,11 @@ class LocationService(models.Model):
 
 class Adventure(models.Model):
     title = models.CharField(max_length=30)
-    image_path = models.CharField(max_length=200)
+    image_path = models.CharField(max_length=200, null=True, blank=True)
     adventure_text = models.TextField()
-    location = models.ManyToManyField(Location, blank=True)
+    location = models.ManyToManyField(Location, related_name="adventures", blank=True)
     frequency = models.CharField(max_length=6, choices=ENCOUNTER_FREQUENCY)
+    active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.title
@@ -109,9 +112,25 @@ class AdventureChoice(models.Model):
     option_text = models.CharField(max_length=50)
     icon = models.CharField(max_length=20, blank=True, null=True)
     success_percentage = models.IntegerField(default=100)
-    success_bonus = models.CharField(max_length=4, choices=SUCCESS_BONUS_STAT)
+    success_bonus = models.CharField(max_length=4, choices=SUCCESS_BONUS_STAT, null=True, blank=True)
     success_text = models.TextField()
     failure_text = models.TextField(blank=True, null=True)
 
+    health_change = models.IntegerField(default=0)
+    energy_change = models.IntegerField(default=0)
+    pixels_change = models.IntegerField(default=0)
+    xp_change = models.IntegerField(default=0)
+
+    reward_items = models.ManyToManyField(ItemType, related_name="+", blank=True)
+
     def __unicode__(self):
         return self.option_text
+
+
+class PlayerAdventure(models.Model):
+    adventure = models.ForeignKey(Adventure, related_name="+")
+    player = models.ForeignKey(Player, related_name="+")
+    choice_made = models.ForeignKey(AdventureChoice, related_name="+", null=True, blank=True)
+    active = models.BooleanField(default=True)
+    date_created = fields.CreationDateTimeField(editable=True)
+    date_updated = fields.ModificationDateTimeField(editable=True)

@@ -31,7 +31,7 @@ class LocationServiceModelAdmin(admin.ModelAdmin):
 
 
 class AdventureModelAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "location", "frequency",)
+    list_display = ("id", "title", "frequency",)
     search_fields = ("id", "title", )
     list_per_page = 50
 

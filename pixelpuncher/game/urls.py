@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^taunt$', views.taunt, name="taunt"),
     url(r'^start$', views.game_start, name="start"),
     url(r'^play$', views.play, name="play"),
+    url(r'^choice/(?P<choice_id>[\w.@+-]+)/$', views.adventure_choice, name="choice"),
     url(r'^map$', views.map, name="map"),
     url(r'^reset$', views.reset, name="reset"),
 

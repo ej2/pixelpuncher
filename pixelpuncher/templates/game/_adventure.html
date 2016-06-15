@@ -1,0 +1,15 @@
+{% load apps_player %}
+{% load apps_enemy %}
+{% load apps_game %}
+{% load staticfiles i18n %}
+
+<h1>{{ player_adventure.adventure.title }}</h1>
+
+<p>{{ player_adventure.adventure.adventure_text }}</p>
+
+<div class="game-actions">
+  {% for choice in player_adventure.adventure.choices.all %}
+    <a class="btn btn-primary btn-game-action"
+       href="{% url "game:choice" choice.pk %}">{{ choice.option_text }}</a>
+  {% endfor %}
+</div>

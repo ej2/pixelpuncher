@@ -14,9 +14,9 @@
         <td style="text-align: right;">
           {{ item.price }}
           {% if item.currency == 'P' %}
-            <i class="mdi mdi-coin" data-toggle="tooltip" title="Pixels" data-placement="right"></i>
+            <i class="mdi mdi-coin text-success" data-toggle="tooltip" title="Pixels" data-placement="right"></i>
           {% else %}
-            <i class="mdi mdi-diamond" data-toggle="tooltip" title="MegaPixels" data-placement="right"></i>
+            <i class="mdi mdi-diamond text-info" data-toggle="tooltip" title="MegaPixels" data-placement="right"></i>
           {% endif %}
         </td>
         <td style="text-align: right;"><a class="btn btn-sm btn-success" href="{% url "location:purchase" location.pk item.pk %}">Buy</a></td>

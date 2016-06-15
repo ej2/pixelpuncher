@@ -23,4 +23,4 @@ def enemy_image_path(enemy):
     if enemy.enemy_type.image_name:
         return static(ENEMY_IMAGE_FOLDER + enemy.enemy_type.image_name)
     else:
-        return static(ENEMY_IMAGE_FOLDER + "darkness.png")
+        return static(ENEMY_IMAGE_FOLDER + "unknown.png")

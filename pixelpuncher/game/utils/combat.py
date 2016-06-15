@@ -11,7 +11,7 @@ from pixelpuncher.game.utils.loot import generate_loot, generate_pixels
 from pixelpuncher.game.utils.message import add_game_message
 from pixelpuncher.game.utils.messages import successful_critical_message, successful_hit_message, low_energy_message, \
     hit_failure_message, player_damage_message, successful_heal_message, failed_heal_message, victory_message, \
-    battle_message
+    battle_message, xp_gained_message, bonus_xp_gained_message, run_away_message
 from pixelpuncher.item.utils import use_item
 from pixelpuncher.player.models import VICTORY
 
@@ -179,7 +179,7 @@ def perform_skip(player):
     enemy.active = False
     enemy.save()
 
-    result = "You don't want to punch a stupid {0}.".format(enemy.enemy_type.name)
+    result = run_away_message(enemy.enemy_type.name)
     add_game_message(player, result)
 
 
@@ -197,7 +197,7 @@ def calculate_xp(player, enemy):
     gained_xp = enemy.enemy_type.xp
     player.xp += gained_xp
 
-    result = "You gain <span class='xp'>{0}XP!</span>".format(gained_xp)
+    result = xp_gained_message(gained_xp)
     add_game_message(player, result)
 
     if enemy.hits == 1:
@@ -205,7 +205,7 @@ def calculate_xp(player, enemy):
         bonus_xp = int(enemy.enemy_type.xp / 2 + enemy.level)
 
         player.xp += bonus_xp
-        result = "<span class='xp'>Single hit kill! Bonus {0}XP!</span>".format(bonus_xp)
+        result = bonus_xp_gained_message('Single hit kill!', bonus_xp)
         add_game_message(player, result)
 
     if can_level_up(player):

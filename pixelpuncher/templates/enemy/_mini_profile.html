@@ -4,7 +4,9 @@
 
 <div>
   <div class="well">
-    <div class="pull-left player-avatar"><img src="{% enemy_image_path enemy %}" height="64"> </div>
+    <div class="pull-left player-avatar">
+
+      <img src="{% enemy_image_path enemy %}" height="64"> </div>
     <div class="enemy-name">{{ enemy|title }}</div>
     <div class="enemy-category">{{ enemy.enemy_type.category }}</div>
     <div class="enemy-level">Level {{ enemy.level }}</div>
