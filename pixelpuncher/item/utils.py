@@ -66,8 +66,15 @@ def use_item(player, item_id):
 
         elif item.item_type.base_type == "ARM":
             result = use_armor(player, item)
+
+        elif item.item_type.base_type == "UNL":
+            result = "Nothing happens..."
+
         elif item.item_type.base_type == "WEA":
-            pass
+            result = "Nothing happens..."
+
+        else:
+            result = "Nothing happens..."
 
     return result
 

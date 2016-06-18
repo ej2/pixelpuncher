@@ -2,7 +2,14 @@ from __future__ import division
 
 from django.db import models
 
+from pixelpuncher.item.models import ItemType
 from pixelpuncher.player.models import GENDER, AvatarLayer
+
+
+TRIGGER_TYPE = (
+    ("ASK", "Ask about",),
+    ("TELL", "Tell about",),
+)
 
 
 class NPCAvatar(models.Model):
@@ -36,3 +43,22 @@ class NPC(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Response(models.Model):
+    text = models.TextField()
+    health_change = models.IntegerField(default=0)
+    energy_change = models.IntegerField(default=0)
+    pixels_change = models.IntegerField(default=0)
+    xp_change = models.IntegerField(default=0)
+    reward_items = models.ManyToManyField(ItemType, related_name="+", blank=True)
+
+
+class ResponseTrigger(models.Model):
+    npcs = models.ManyToManyField(NPC, related_name="triggers")
+    response = models.ForeignKey(Response, related_name="triggers")
+    trigger_text = models.CharField(max_length=30)
+    trigger_type = models.CharField(max_length=4, choices=TRIGGER_TYPE)
+
+
+# Need a default response
