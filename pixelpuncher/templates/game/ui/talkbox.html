@@ -1,0 +1,10 @@
+
+<div id="responseMsg"></div>
+
+<div class="form-inline">
+  <form action="/create_post/" method="POST" id="post-form">
+    <input class="form-control" style="width:80%;" type="text" name="talktext" id="talktext">
+    <button class="btn btn-primary" name="talkBtn" id="talkBtn">Talk</button>
+    {% csrf_token %}
+  </form>
+</div>

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from pixelpuncher.item.models import ItemType, Item, DropTable, ItemDrop, LevelEquipment
+from pixelpuncher.item.models import ItemType, Item, DropTable, ItemDrop, LevelEquipment, PlayerContainer, Container
 
 
 class ItemTypeModelAdmin(admin.ModelAdmin):
@@ -33,8 +33,22 @@ class LevelEquipmentModelAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 
+class ContainerModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "location",)
+    search_fields = ("id", "name", "location",)
+    list_per_page = 25
+
+
+class PlayerContainerModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "container", "player",)
+    search_fields = ("id",)
+    list_per_page = 25
+
+
 admin.site.register(ItemType, ItemTypeModelAdmin)
 admin.site.register(Item, ItemModelAdmin)
 admin.site.register(DropTable, DropTableModelAdmin)
 admin.site.register(ItemDrop, ItemDropModelAdmin)
 admin.site.register(LevelEquipment, LevelEquipmentModelAdmin)
+admin.site.register(Container, ContainerModelAdmin)
+admin.site.register(PlayerContainer, PlayerContainerModelAdmin)

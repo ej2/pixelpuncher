@@ -9,6 +9,7 @@ from pixelpuncher.player.models import GENDER, AvatarLayer
 TRIGGER_TYPE = (
     ("ASK", "Ask about",),
     ("TELL", "Tell about",),
+    ("ACK", "Acknowledge",),
 )
 
 
@@ -53,6 +54,8 @@ class Response(models.Model):
     xp_change = models.IntegerField(default=0)
     reward_items = models.ManyToManyField(ItemType, related_name="+", blank=True)
 
+    # TODO: add requirements... player must give npc a certain item or be a certain level, etc.
+
 
 class ResponseTrigger(models.Model):
     npcs = models.ManyToManyField(NPC, related_name="triggers")
@@ -60,5 +63,3 @@ class ResponseTrigger(models.Model):
     trigger_text = models.CharField(max_length=30)
     trigger_type = models.CharField(max_length=4, choices=TRIGGER_TYPE)
 
-
-# Need a default response

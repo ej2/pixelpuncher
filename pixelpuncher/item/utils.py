@@ -165,3 +165,19 @@ def purchase_item(player, item_type, price, currency):
 
     return "You purchase the {} for {} {}.".format(item_type.name, price, currency_name)
 
+
+def take_item_from_container(player, item):
+    container_name = item.container.container.name
+    item.player = player
+    item.container = None
+    item.save()
+
+    return "You take the {} from the {}.".format(item, container_name)
+
+
+def put_item_in_container(item, player_container):
+    item.player = None
+    item.container = player_container
+    item.save()
+
+    return "You put the {} in the {}.".format(item, player_container.container.name)

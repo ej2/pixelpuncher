@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^location/', include("pixelpuncher.location.urls", namespace="location")),
     url(r'^player/', include("pixelpuncher.player.urls", namespace="player")),
     url(r'^game/', include("pixelpuncher.game.urls", namespace="game")),
+    url(r'^npc/', include("pixelpuncher.npc.urls", namespace="npc")),
+    url(r'^container/', include("pixelpuncher.item.urls.container", namespace="container")),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

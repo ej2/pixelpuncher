@@ -24,6 +24,25 @@ CLASSIFICATION = (
 )
 
 
+class Container(models.Model):
+    name = models.CharField(max_length=40)  # Examples: Crate, Fridge, Chest, Closet, Trash Can
+    description = models.CharField(max_length=500, null=True, blank=True)
+    icon = models.CharField(max_length=30, null=True, blank=True)
+    action = models.CharField(max_length=30, null=True, blank=True)
+    location = models.ForeignKey('location.Location', related_name="containers")
+
+    def __unicode__(self):
+        return self.name
+
+
+class PlayerContainer(models.Model):
+    container = models.ForeignKey(Container, related_name="player_containers")
+    player = models.ForeignKey(Player, related_name="+")
+
+    def __unicode__(self):
+        return "{}'s {}".format(self.player.name, self.container.name)
+
+
 class ItemType(models.Model):
     name = models.CharField(max_length=30)
     description = models.TextField(null=True, blank=True)
@@ -66,6 +85,7 @@ class Item(models.Model):
     remaining_uses = models.IntegerField(default=0)
     date_created = fields.CreationDateTimeField(editable=True)
     date_updated = fields.ModificationDateTimeField(editable=True)
+    container = models.ForeignKey(PlayerContainer, related_name="items", null=True, blank=True, on_delete=models.SET_NULL)
 
     def __unicode__(self):
         return self.item_type.name
@@ -95,3 +115,4 @@ class ItemDrop(models.Model):
 class LevelEquipment(models.Model):
     item_type = models.ForeignKey(ItemType, related_name="+")
     level = models.IntegerField(default=1)
+

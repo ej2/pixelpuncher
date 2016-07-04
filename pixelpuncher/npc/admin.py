@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from pixelpuncher.npc.forms import CustomNPCAvatarForm
-from pixelpuncher.npc.models import NPC, NPCAvatar
+from pixelpuncher.npc.models import NPC, NPCAvatar, ResponseTrigger, Response
 
 
 class NPCModelAdmin(admin.ModelAdmin):
@@ -17,5 +17,19 @@ class NPCAvatarModelAdmin(admin.ModelAdmin):
     list_per_page = 50
 
 
+class ResponseModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "text", "xp_change", )
+    search_fields = ("id", "text", "xp_change", )
+    list_per_page = 50
+
+
+class ResponseTriggerModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "trigger_text", "trigger_type", )
+    search_fields = ("id", "trigger_text", "trigger_type", )
+    list_per_page = 50
+
+
 admin.site.register(NPC, NPCModelAdmin)
 admin.site.register(NPCAvatar, NPCAvatarModelAdmin)
+admin.site.register(Response, ResponseModelAdmin)
+admin.site.register(ResponseTrigger, ResponseTriggerModelAdmin)

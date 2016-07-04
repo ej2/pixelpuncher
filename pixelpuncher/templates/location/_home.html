@@ -1,12 +1,16 @@
-  <p>Not much here... just a bed. You are sooo boring.</p>
 
-    <a class="btn btn-sm btn-info" href="{% url "player:achievements" %}">
-      <i class="mdi"></i> Wall of achievements</a>
+{% for container in location.containers.all %}
+  <a class="btn btn-sm btn-success" href="{% url "container:open" container.id %}">
+    <i class="mdi {{ container.icon }}"></i> {{ container.action }} {{ container.name }}
+  </a>
+{% endfor %}
 
+{% for service in location.services.all %}
+  <a class="btn btn-sm btn-success" href="{% url "location:service" location.pk service.pk %}">
+    <i class="mdi {{ service.service.icon }}"></i> {{ service.service.name }}
+    {% if service.action_point_cost > 0 %}({{ service.action_point_cost }} AP){% endif %}
+  </a>
+{% endfor %}
 
-  {% for service in location.services.all %}
-    <a class="btn btn-sm btn-success" href="{% url "location:service" location.pk service.pk %}">
-      <i class="mdi {{ service.service.icon }}"></i> {{ service.service.name }}
-      {% if service.action_point_cost > 0 %}({{ service.action_point_cost }} AP){% endif %}
-    </a>
-  {% endfor %}
+<a class="btn btn-sm btn-info" href="{% url "player:achievements" %}"><i class="mdi"></i> Wall of achievements</a>
+

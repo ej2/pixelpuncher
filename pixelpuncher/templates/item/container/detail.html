@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load apps_player %}
+{% load apps_game %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-3">
+      {% mini_profile request.user %}
+    </div>
+
+    <div class="col-md-6">
+      <div class="page-header">
+        <h1><i class="text-info mdi {{ player_container.container.icon }}"></i>{{ player_container.container.name }}</h1>
+      </div>
+
+      {% show_messages player %}
+
+      <p>{{ player_container.container.description }}</p>
+
+      {% if player_container.items.count > 0 %}
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th class="table-inventory-header">Item</th>
+            <th class="table-inventory-header item-options">Options</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in player_container.items.all %}
+          <tr>
+            <td>{{ item }}</td>
+            <td class="item-options">
+              [
+              <a class="text-info" href="#" data-toggle="modal" data-target="#itemModal{{ item.pk }}">Examine</a> |
+              <a href="{% url "container:take" item.pk %}" class="text-success">Take</a> |
+              <a href="{% url "container:discard" item.pk %}" class="text-danger">Discard</a>
+              ]
+              {% include "player/_item_modal.html" %}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+
+      <a href="{% url "location:visit" player_container.container.location.pk %}" class="btn btn-primary btn-sm">Close</a>
+    </div>
+
+  </div>
+{% endblock content %}
