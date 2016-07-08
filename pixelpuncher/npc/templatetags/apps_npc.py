@@ -6,8 +6,9 @@ register = template.Library()
 
 
 @register.simple_tag()
-def npc_profile(npc):
+def npc_profile(location, npc):
     return render_to_string("npc/_npc_profile.html", {
+        "location": location,
         "npc": npc
     })
 

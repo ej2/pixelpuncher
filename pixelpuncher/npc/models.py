@@ -13,6 +13,12 @@ TRIGGER_TYPE = (
 )
 
 
+class Triggers(object):
+    ASK = 'ask'
+    TELL = 'tell'
+    HELP = 'help'
+
+
 class NPCAvatar(models.Model):
     name = models.CharField(max_length=25)
     body_layer = models.ForeignKey(AvatarLayer, null=True, blank=True, related_name="+")
@@ -56,6 +62,9 @@ class Response(models.Model):
 
     # TODO: add requirements... player must give npc a certain item or be a certain level, etc.
 
+    def __unicode__(self):
+        return self.text
+
 
 class ResponseTrigger(models.Model):
     npcs = models.ManyToManyField(NPC, related_name="triggers")
@@ -63,3 +72,5 @@ class ResponseTrigger(models.Model):
     trigger_text = models.CharField(max_length=30)
     trigger_type = models.CharField(max_length=4, choices=TRIGGER_TYPE)
 
+    def __unicode__(self):
+        return self.trigger_text

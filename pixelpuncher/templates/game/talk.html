@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load apps_player %}
+{% load apps_npc %}
+{% load apps_game %}
+{% load staticfiles i18n %}
+
+{% block content %}
+      <div class="row">
+        <div class="col-md-3">
+          {% mini_profile request.user %}
+        </div>
+
+        <div class="col-md-6">
+          <div class="page-header">
+            <h1><i class="text-info mdi {{ location.icon }}"></i>{{ location.name }}</h1>
+          </div>
+          {% show_messages player %}
+
+          <form action="" method="post" class="form-horizontal">
+            {% csrf_token %}
+            <div class="form-group form-group-sm">
+              <div class="input-group">
+                <input type="text" class="form-control" name="playerinput">
+                <span class="input-group-btn">
+                  <input class="btn btn-primary btn-sm" type="submit">Say</input>
+                </span>
+
+              </div>
+            </div>
+            <a href="{% url "location:visit" location.pk %}" class="btn btn-primary btn-sm">Return</a>
+          </form>
+
+        </div>
+
+        <div class="col-md-3">
+          {% npc_profile location npc %}
+        </div>
+
+    </div>
+
+{% endblock content %}

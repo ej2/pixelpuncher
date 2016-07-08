@@ -2,11 +2,11 @@ import random
 from annoying.functions import get_object_or_None
 
 from pixelpuncher.game.utils.message import add_game_message
-from pixelpuncher.game.utils.messages import pixels_dropped_message, xp_gained_message, item_dropped
+from pixelpuncher.game.utils.messages import pixels_dropped_message, xp_gained_message, item_dropped, item_given
 from pixelpuncher.item.utils import add_item_type_to_player
-from pixelpuncher.npc.models import ResponseTrigger
+from pixelpuncher.npc.models import ResponseTrigger, Triggers
 
-GREETINGS = [
+MERCHANT_GREETINGS = [
     "Welcome to {}!",
     "Welcome!",
     "Can I help you?",
@@ -16,9 +16,26 @@ GREETINGS = [
     "Buy somethin' will ya!"
 ]
 
+NPC_GREETINGS = [
+    "Yes?",
+    "What's up?",
+    "Hey.",
+    "Hello.",
+    "How ya doing?",
+    "What's happening?",
+    "What's going on?",
+    "How are things?",
+]
+
+NPC_GREETINGS_FORMAL = [
+    "State your business.",
+    "May I help you?",
+    "Good morning.",
+    "Good evening.",
+]
 
 def get_merchant_greeting(location):
-    greeting = str(random.choice(GREETINGS)).format(location.name)
+    greeting = str(random.choice(MERCHANT_GREETINGS)).format(location.name)
     return '{} says "{}"'.format(location.npc.name, greeting)
 
 #
@@ -28,16 +45,28 @@ def get_merchant_greeting(location):
 #
 
 
+def get_npc_greeting(npc):
+    greeting = str(random.choice(NPC_GREETINGS))
+    return '{} says "{}"'.format(npc.name, greeting)
+
+
 def parse_trigger_text(text):
     trigger_type = ""
+    output_text = ""
 
-    if text.lower().startswith("ask"):
-        trigger_type = 'ask'
+    if text.lower().startswith("ask about"):
+        trigger_type = Triggers.ASK
+        output_text = text[9:]
+    elif text.lower().startswith("ask"):
+        trigger_type = Triggers.ASK
+        output_text = text[3:]
     elif text.lower().startswith("tell"):
-        trigger_type = 'tell'
+        trigger_type = Triggers.TELL
+        output_text = text[4:]
+    elif text.lower().startswith("help"):
+        trigger_type = Triggers.HELP
 
-    output_text = text.replace(trigger_type, '').strip()
-    return trigger_type, output_text
+    return trigger_type, output_text.strip()
 
 
 def get_response(npc, trigger_text, trigger_type):
@@ -50,7 +79,7 @@ def get_response(npc, trigger_text, trigger_type):
         return None
 
 
-def response_reward(response, player):
+def response_reward(response, player, npc):
     if response.health_change != 0:
         add_game_message(player, player.adjust_health(response.health_change))
 
@@ -67,7 +96,7 @@ def response_reward(response, player):
 
     for item_type in response.reward_items.all():
         item = add_item_type_to_player(item_type, player)
-        add_game_message(player, item_dropped(item))
+        add_game_message(player, item_given(npc, item))
 
     player.save()
 

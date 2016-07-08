@@ -43,6 +43,25 @@
       </table>
     {% endif %}
 
+
+
+    <form action="" method="post" class="form-horizontal">
+      {% csrf_token %}
+
+      <div class="form-group form-group-sm">
+        <div class="input-group">
+          <select class="form-control">
+            {% for item in player.items.all %}
+              <option>{{ item }}</option>
+            {% endfor %}
+          </select>
+
+          <span class="input-group-btn">
+            <button class="btn btn-primary btn-sm" type="button">Put in {{ player_container }}</button>
+          </span>
+        </div>
+      </div>
+    </form>
       <a href="{% url "location:visit" player_container.container.location.pk %}" class="btn btn-primary btn-sm">Close</a>
     </div>
 

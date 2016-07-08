@@ -63,6 +63,10 @@ def item_dropped(item):
     return "You find {0}.".format(item)
 
 
+def item_given(npc, item):
+    return "{} gives you a {}".format(npc.name, item)
+
+
 def no_loot(enemy):
     return "You find nothing on the {0}.".format(enemy)
 
@@ -99,3 +103,7 @@ def system_boot():
     msg.add("SYSTEM STATUS: OK")
 
     return msg.to_string()
+
+
+def npc_says(npc, message):
+    return '{} says "{}"'.format(npc.name, message)

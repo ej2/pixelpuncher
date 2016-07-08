@@ -12,5 +12,9 @@
 
   {% status_bar 'Health' npc.current_health npc.total_health 'progress-bar-danger' %}
 
-  {% include "npc/_npc_chat.html" %}
+  <div class="center">
+    <a class="btn btn-primary" href="{% url "npc:talk" location.id npc.id %}">Talk</a>
+    <a class="btn btn-success" href="">Give</a>
+    <a class="btn btn-danger" href="">Punch</a>
+  </div>
 </div>
