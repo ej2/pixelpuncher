@@ -168,16 +168,53 @@ def purchase_item(player, item_type, price, currency):
 
 def take_item_from_container(player, item):
     container_name = item.container.container.name
-    item.player = player
-    item.container = None
-    item.save()
 
-    return "You take the {} from the {}.".format(item, container_name)
+    if item.item_type.stackable:
+        player_item = get_object_or_None(Item, player=player, item_type=item.item_type)
+
+        if player_item is None:
+            player_item = create_item(item.item_type)
+            player_item.player = player
+        else:
+            player_item.remaining_uses += 1
+
+        player_item.save()
+        item.remaining_uses -= 1
+        item.save()
+
+        if item.remaining_uses == 0:
+            item.delete()
+
+        return "You take a {} from the {}.".format(item, container_name)
+    else:
+        item.player = player
+        item.container = None
+        item.save()
+
+        return "You take the {} from the {}.".format(item, container_name)
 
 
 def put_item_in_container(item, player_container):
-    item.player = None
-    item.container = player_container
-    item.save()
 
-    return "You put the {} in the {}.".format(item, player_container.container.name)
+    if item.item_type.stackable and item.remaining_uses > 1:
+
+        container_item = get_object_or_None(Item, container=player_container, item_type=item.item_type)
+
+        if container_item is None:
+            container_item = create_item(item.item_type)
+            container_item.container = player_container
+        else:
+            container_item.remaining_uses += 1
+
+        container_item.save()
+        item.remaining_uses -= 1
+        item.save()
+
+        return "You put a {} in the {}.".format(item, player_container.container.name)
+
+    else:
+        item.player = None
+        item.container = player_container
+        item.save()
+
+        return "You put the {} in the {}.".format(item, player_container.container.name)

@@ -10,11 +10,11 @@
     {{ npc.name }}
   </div>
 
-  {% status_bar 'Health' npc.current_health npc.total_health 'progress-bar-danger' %}
+  {% status_bar 'Health' relationship.current_health npc.total_health 'progress-bar-danger' %}
 
   <div class="center">
     <a class="btn btn-primary" href="{% url "npc:talk" location.id npc.id %}">Talk</a>
     <a class="btn btn-success" href="">Give</a>
-    <a class="btn btn-danger" href="">Punch</a>
+    <a class="btn btn-danger" href="{% url "npc:punch" location.id npc.id %}">Punch</a>
   </div>
 </div>

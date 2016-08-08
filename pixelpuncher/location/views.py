@@ -9,6 +9,7 @@ from pixelpuncher.item.utils import purchase_item
 from pixelpuncher.location.models import Location, LocationItem, LocationService
 from pixelpuncher.location.utils import purchase_service
 from pixelpuncher.npc.utils.conversation import get_merchant_greeting
+from pixelpuncher.npc.utils.relationships import get_relationship
 from pixelpuncher.player.decorators import player_required
 
 
@@ -17,6 +18,38 @@ from pixelpuncher.player.decorators import player_required
 def visit_location(request, player, location_id):
     request.session['location_id'] = location_id
     location = get_object_or_404(Location, id=location_id)
+
+    if location.npc:
+        relationship = get_relationship(player, location.npc)
+    else:
+        relationship = None
+
+    if location.location_type == 'ADV':
+        return redirect("game:play")  # Temporary...
+
+    if location.npc and location.location_type == 'SHP':
+        add_game_message(player, get_merchant_greeting(location))
+
+    context = {
+        "user": player.user,
+        "player": player,
+        "relationship": relationship,
+        "location": location,
+    }
+
+    return TemplateResponse(
+        request, "location/visit.html", RequestContext(request, context))
+
+
+@login_required
+@player_required
+def visit_home(request, player):
+    location = player.locations.filter(location_type='HOM')[0]
+
+    if location.npc:
+        relationship = get_relationship(player, location.npc)
+    else:
+        relationship = None
 
     if location.location_type == 'ADV':
         return redirect("game:play")  # Temporary...
@@ -28,28 +61,11 @@ def visit_location(request, player, location_id):
         "user": player.user,
         "player": player,
         "location": location,
+        "relationship": relationship,
     }
 
     return TemplateResponse(
         request, "location/visit.html", RequestContext(request, context))
-
-
-@login_required
-@player_required
-def visit_home(request, player):
-    locations = player.locations.filter(location_type='HOM')
-
-    if locations.count() > 1:
-        return redirect("game:map")
-    else:
-        context = {
-            "user": player.user,
-            "player": player,
-            "location": locations[0],
-        }
-
-        return TemplateResponse(
-            request, "location/visit.html", RequestContext(request, context))
 
 
 @login_required

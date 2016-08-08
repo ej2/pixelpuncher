@@ -4,7 +4,8 @@ from django.template import RequestContext
 from django.template.response import TemplateResponse
 
 from pixelpuncher.game.utils.message import add_game_message
-from pixelpuncher.item.models import Container, PlayerContainer, Item
+from pixelpuncher.item.forms import ContainerForm
+from pixelpuncher.item.models import PlayerContainer, Item
 from pixelpuncher.item.utils import take_item_from_container, drop_item
 from pixelpuncher.player.decorators import player_required
 
@@ -15,10 +16,18 @@ def open_container(request, player, container_id):
     request.session['container_id'] = container_id
     player_container = get_object_or_404(PlayerContainer, id=container_id)
 
+    if request.method == "POST":
+        form = ContainerForm(request.POST, player_container=player_container)
+        result = form.save()
+        add_game_message(player, result)
+    else:
+        form = ContainerForm(player_container=player_container)
+
     context = {
         "user": player.user,
         "player": player,
         "player_container": player_container,
+        "form": form
     }
 
     return TemplateResponse(

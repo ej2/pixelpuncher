@@ -1,10 +1,12 @@
 import random
+
 from annoying.functions import get_object_or_None
 
 from pixelpuncher.game.utils.message import add_game_message
-from pixelpuncher.game.utils.messages import pixels_dropped_message, xp_gained_message, item_dropped, item_given
+from pixelpuncher.game.utils.messages import pixels_dropped_message, xp_gained_message, item_given
 from pixelpuncher.item.utils import add_item_type_to_player
 from pixelpuncher.npc.models import ResponseTrigger, Triggers
+from pixelpuncher.npc.utils.relationships import get_relationship, adjust_relationship_score
 
 MERCHANT_GREETINGS = [
     "Welcome to {}!",
@@ -34,7 +36,9 @@ NPC_GREETINGS_FORMAL = [
     "Good evening.",
 ]
 
+
 def get_merchant_greeting(location):
+    return get_saying(location.npc.name, NPC_GREETINGS)
     greeting = str(random.choice(MERCHANT_GREETINGS)).format(location.name)
     return '{} says "{}"'.format(location.npc.name, greeting)
 
@@ -46,12 +50,19 @@ def get_merchant_greeting(location):
 
 
 def get_npc_greeting(npc):
-    greeting = str(random.choice(NPC_GREETINGS))
-    return '{} says "{}"'.format(npc.name, greeting)
+    return get_saying(npc.name, NPC_GREETINGS)
+
+
+def get_formal_npc_greeting(npc):
+    return get_saying(npc.name, NPC_GREETINGS_FORMAL)
+
+
+def get_saying(name, saying_list):
+    saying = str(random.choice(saying_list))
+    return '{} says "{}"'.format(name, saying)
 
 
 def parse_trigger_text(text):
-    trigger_type = ""
     output_text = ""
 
     if text.lower().startswith("ask about"):
@@ -65,6 +76,10 @@ def parse_trigger_text(text):
         output_text = text[4:]
     elif text.lower().startswith("help"):
         trigger_type = Triggers.HELP
+        output_text = text[4:]
+    else:
+        trigger_type = Triggers.ACKNOWLEDGE
+        output_text = text
 
     return trigger_type, output_text.strip()
 
@@ -99,4 +114,9 @@ def response_reward(response, player, npc):
         add_game_message(player, item_given(npc, item))
 
     player.save()
+
+    if response.relationship_points != 0:
+        relationship = get_relationship(player, npc)
+        adjust_relationship_score(relationship, response.relationship_points)
+
 

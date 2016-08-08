@@ -12,21 +12,7 @@
       <div class="row">
         {% for location in locations %}
         <div class="col-lg-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <i class="mdi md-24 {{ location.icon }}
-                {% if location.location_type == "HOM" %}text-success
-                {% elif location.location_type == "ADV" %}text-danger
-                {% else %}text-info{% endif %}
-                "></i>
-              {{ location.name }}
-            </div>
-            <div class="panel-body">
-              <p>{{ location.description }}</p>
-              <a href="{% url "location:visit" location.pk %}" class="btn btn-primary btn-sm">Visit
-                {% if location.location_type == 'ADV' %} (1 AP){% endif %}</a>
-            </div>
-          </div>
+          {% include "location/_mapcard.html" %}
         </div>
         {% endfor %}
       </div>

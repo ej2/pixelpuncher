@@ -18,52 +18,45 @@
       <p>{{ player_container.container.description }}</p>
 
       {% if player_container.items.count > 0 %}
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th class="table-inventory-header">Item</th>
-            <th class="table-inventory-header item-options">Options</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for item in player_container.items.all %}
-          <tr>
-            <td>{{ item }}</td>
-            <td class="item-options">
-              [
-              <a class="text-info" href="#" data-toggle="modal" data-target="#itemModal{{ item.pk }}">Examine</a> |
-              <a href="{% url "container:take" item.pk %}" class="text-success">Take</a> |
-              <a href="{% url "container:discard" item.pk %}" class="text-danger">Discard</a>
-              ]
-              {% include "player/_item_modal.html" %}
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    {% endif %}
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="table-inventory-header">Item</th>
+              <th class="table-inventory-header item-options">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for item in player_container.items.all %}
+            <tr>
+              <td>{{ item.name }}</td>
+              <td class="item-options">
+                [
+                <a class="text-info" href="#" data-toggle="modal" data-target="#itemModal{{ item.pk }}">Examine</a> |
+                <a href="{% url "container:take" item.pk %}" class="text-success">Take</a> |
+                <a href="{% url "container:discard" item.pk %}" class="text-danger">Discard</a>
+                ]
+                {% include "player/_item_modal.html" %}
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
 
+      <form action="" method="post" class="form-horizontal">
+        {% csrf_token %}
 
+        <div class="form-group form-group-sm">
+          <div class="input-group">
+            {{ form.items }}
 
-    <form action="" method="post" class="form-horizontal">
-      {% csrf_token %}
-
-      <div class="form-group form-group-sm">
-        <div class="input-group">
-          <select class="form-control">
-            {% for item in player.items.all %}
-              <option>{{ item }}</option>
-            {% endfor %}
-          </select>
-
-          <span class="input-group-btn">
-            <button class="btn btn-primary btn-sm" type="button">Put in {{ player_container }}</button>
-          </span>
+            <span class="input-group-btn" style="padding-left: 4px;">
+              <button class="btn btn-primary btn-sm" type="submit">Put in {{ player_container.container.name }}</button>
+            </span>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
       <a href="{% url "location:visit" player_container.container.location.pk %}" class="btn btn-primary btn-sm">Close</a>
     </div>
-
   </div>
 {% endblock content %}

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from pixelpuncher.npc.forms import CustomNPCAvatarForm
-from pixelpuncher.npc.models import NPC, NPCAvatar, ResponseTrigger, Response
+from pixelpuncher.npc.models import NPC, NPCAvatar, ResponseTrigger, Response, NPCRelationship
 
 
 class NPCModelAdmin(admin.ModelAdmin):
@@ -29,7 +29,14 @@ class ResponseTriggerModelAdmin(admin.ModelAdmin):
     list_per_page = 50
 
 
+class NPCRelationshipModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "npc", "player", "relationship_type", "relationship_level", "score",)
+    search_fields = ("id", "npc", "player", "relationship_type", "relationship_level", "score",)
+    list_per_page = 50
+
+
 admin.site.register(NPC, NPCModelAdmin)
+admin.site.register(NPCRelationship, NPCRelationshipModelAdmin)
 admin.site.register(NPCAvatar, NPCAvatarModelAdmin)
 admin.site.register(Response, ResponseModelAdmin)
 admin.site.register(ResponseTrigger, ResponseTriggerModelAdmin)

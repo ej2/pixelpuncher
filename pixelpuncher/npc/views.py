@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.template import RequestContext
 from django.template.response import TemplateResponse
 
@@ -8,8 +9,22 @@ from pixelpuncher.game.utils.message import add_game_message
 from pixelpuncher.game.utils.messages import npc_says
 from pixelpuncher.location.models import Location
 from pixelpuncher.npc.models import NPC
+from pixelpuncher.npc.utils.actions import punch_npc
 from pixelpuncher.npc.utils.conversation import get_response, parse_trigger_text, response_reward, get_npc_greeting
+from pixelpuncher.npc.utils.relationships import get_relationship
 from pixelpuncher.player.decorators import player_required
+
+
+
+@login_required
+@player_required
+def punch(request, player, location_id, npc_id):
+    npc = get_object_or_404(NPC, id=npc_id)
+    punch_npc(player, npc)
+
+    add_game_message(player, "You punch {} in the face!".format(npc.name))
+
+    return redirect("location:visit", location_id)
 
 
 @login_required
@@ -17,6 +32,7 @@ from pixelpuncher.player.decorators import player_required
 def talk(request, player, location_id, npc_id):
     location = get_object_or_404(Location, pk=location_id)
     npc = get_object_or_404(NPC, id=npc_id)
+    relationship = get_relationship(player, npc)
 
     if request.method == "POST":
         player_input = request.POST["playerinput"]
@@ -28,7 +44,7 @@ def talk(request, player, location_id, npc_id):
             response_reward(response, player, npc)
             add_game_message(player, npc_says(npc, response.text))
         else:
-            add_game_message(player, "{} does not response".format(npc.name))
+            add_game_message(player, "{} does not respond.".format(npc.name))
     else:
         add_game_message(player, get_npc_greeting(npc))
 
@@ -36,6 +52,7 @@ def talk(request, player, location_id, npc_id):
         "user": player.user,
         "player": player,
         "npc": npc,
+        "relationship": relationship,
         "location": location,
     }
 

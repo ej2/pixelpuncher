@@ -91,6 +91,13 @@ class Item(models.Model):
         return self.item_type.name
 
     @property
+    def name(self):
+        if self.item_type.stackable:
+            return "{} (x{})".format(self.item_type.name, self.remaining_uses)
+        else:
+            return self.item_type.name
+
+    @property
     def display_verb(self):
         verb = self.item_type.action_verb or "use"
         return verb

@@ -195,4 +195,3 @@ def level_requirements(request, player):
 
     return TemplateResponse(
         request, "game/levels.html", RequestContext(request, context))
-
