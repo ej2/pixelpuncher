@@ -8,7 +8,7 @@ from django.template.response import TemplateResponse
 
 from pixelpuncher.game.utils import game_settings
 from pixelpuncher.game.utils.adventure import get_choice_results, get_adventure, get_current_adventure, start_adventure
-from pixelpuncher.game.utils.combat import perform_skip, perform_skill, perform_taunt, perform_use_item
+from pixelpuncher.game.utils.combat import perform_skip, perform_skill_in_combat, perform_taunt, perform_use_item
 from pixelpuncher.game.utils.encounter import get_enemy
 from pixelpuncher.game.utils.game import can_punch, daily_reset, reset_check
 from pixelpuncher.game.utils.leveling import xp_required_for_level, level_up
@@ -128,7 +128,7 @@ def use(request, player, item_id):
 @player_required
 def skill(request, player, player_skill_id):
     player_skill = get_object_or_404(PlayerSkill, id=player_skill_id)
-    perform_skill(player, player_skill)
+    perform_skill_in_combat(player, player_skill)
 
     return redirect(reverse("game:play"))
 

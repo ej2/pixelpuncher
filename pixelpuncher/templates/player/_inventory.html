@@ -16,8 +16,8 @@
       </td>
       <td class="item-options">
         [
-          <a class="text-info" href="#" data-toggle="modal" data-target="#itemModal{{ item.pk }}">Examine</a> |
           <a class="text-success" href="{% url "player:use" item.id %}">{{ item.display_verb|title }}</a> |
+          <a class="text-info" href="#" data-toggle="modal" data-target="#itemModal{{ item.pk }}">Examine</a> |
           <a class="text-danger" href="{% url "player:drop" item.id %}">Drop</a>
         ]
         {% include "player/_item_modal.html" %}

@@ -38,7 +38,7 @@ def talk(request, player, location_id, npc_id):
         player_input = request.POST["playerinput"]
 
         trigger, text = parse_trigger_text(player_input)
-        response = get_response(npc, text, trigger)
+        response = get_response(player, npc, text, trigger)
 
         if response:
             response_reward(response, player, npc)
@@ -61,14 +61,15 @@ def talk(request, player, location_id, npc_id):
 
 
 @login_required
-def talk_json(request, location_id):
+@player_required
+def talk_json(request, player, location_id):
     location = get_object_or_404(Location, pk=location_id)
 
     if request.method == 'POST' and request.is_ajax():
         input_text = request.POST.get('talktext')
 
         trigger, text = parse_trigger_text(input_text)
-        response = get_response(location.npc, text, trigger)
+        response = get_response(player, location.npc, text, trigger)
 
         #response_reward(response, player)
 

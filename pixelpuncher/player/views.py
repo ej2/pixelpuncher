@@ -7,12 +7,14 @@ from django.template.response import TemplateResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, ListView
 
+from pixelpuncher.game.utils.combat import perform_skill_in_combat, perform_skill
 from pixelpuncher.game.utils.message import add_game_message, get_game_messages
 from pixelpuncher.item.utils import use_item, drop_item, examine_item
 from pixelpuncher.player.decorators import player_required
 from pixelpuncher.player.forms import PlayerForm, AttributeForm
-from pixelpuncher.player.models import Player, Avatar, Achievement
+from pixelpuncher.player.models import Player, Avatar, Achievement, PlayerSkill
 from pixelpuncher.player.utils.avatar import get_unlocked_layers_by_type, set_avatar
+from pixelpuncher.player.utils.collections import assign_player_collections
 
 
 class PlayerCreateView(CreateView):
@@ -101,14 +103,17 @@ def examine(request, player, item_id):
     return redirect(reverse("player:detail", args=[player.id]))
 
 
-@login_required
-@player_required
-def top_punchers(request, player):
+def top_punchers(request):
+    if request.user.is_authenticated():
+        player = get_object_or_None(Player, user=request.user)
+
+        assign_player_collections(player)  # Temp - needs to be added to login or nightly script
+    else:
+        player = None
 
     players = Player.objects.all().order_by("-xp")
 
     context = {
-        "user": player.user,
         "players": players,
         "player": player,
     }
@@ -170,3 +175,11 @@ def view_achievements(request, player):
     return TemplateResponse(
         request, "player/achievements.html", RequestContext(request, context))
 
+
+@login_required
+@player_required
+def skill(request, player, player_skill_id):
+    player_skill = get_object_or_404(PlayerSkill, id=player_skill_id)
+    perform_skill(player, player_skill)
+
+    return redirect(reverse("player:detail", args=[player.id]))

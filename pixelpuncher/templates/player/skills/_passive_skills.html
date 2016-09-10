@@ -1,0 +1,19 @@
+ <table class="table table-hover">
+  <thead>
+    <tr>
+        <th class="table-skill-header">Passive Skills</th>
+        <th class="table-skill-header item-options">Options</th>
+      </tr>
+    <tr>
+  </thead>
+   {% for player_skill in skills %}
+      <td class="item-name">{{ player_skill }}</td>
+
+      <td class="item-options">
+        [&nbsp;<a class="text-info" href="#" data-toggle="modal" data-target="#skillModal{{ player_skill.pk }}">More&nbsp;Info</a>&nbsp;]
+        {% include "player/_skill_modal.html" %}
+      </td>
+    </tr>
+  {% endfor %}
+ </table>
+

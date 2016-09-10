@@ -33,12 +33,42 @@ def display_current_next_xp(player):
 
 
 @register.simple_tag()
-def skill_list(player):
+def combat_skill_list(player):
+    skills = player.skills.filter(skill__skill_type='ATTK').order_by("skill__name")
 
-    return render_to_string("player/_skills.html", {
-        "player": player,
-        "skills": player.skills.all().order_by("skill__name")
-    })
+    if skills.count() > 0:
+        return render_to_string("player/skills/_combat_skills.html", {
+            "player": player,
+            "skills": skills
+        })
+    else:
+        return ""
+
+
+@register.simple_tag()
+def healing_skill_list(player):
+    skills = player.skills.filter(skill__skill_type='HEAL').order_by("skill__name")
+
+    if skills.count() > 0:
+        return render_to_string("player/skills/_healing_skills.html", {
+            "player": player,
+            "skills": skills
+        })
+    else:
+        return ""
+
+
+@register.simple_tag()
+def passive_skill_list(player):
+    skills = player.skills.filter(skill__skill_type='PASS').order_by("skill__name")
+
+    if skills.count() > 0:
+        return render_to_string("player/skills/_passive_skills.html", {
+            "player": player,
+            "skills": skills
+        })
+    else:
+        return ""
 
 
 @register.simple_tag()

@@ -14,7 +14,7 @@
         <td>{{ service.service.name }}</td>
         <td>{{ service.service.description }}</td>
         <td style="text-align: right;">${{ service.price }}</td>
-        <td style="text-align: right;"><a class="btn btn-sm btn-success" href="{% url "location:service" location.pk service.pk %}">Bet</a></td>
+        <td style="text-align: right;"><a class="btn btn-sm btn-success" href="{% url "location:service" location.pk service.pk %}">Play</a></td>
       </tr>
     {% endfor %}
   </tbody>

@@ -15,7 +15,11 @@
           </span>
           &nbsp;
           <span class="label label-primary ">
-            Damage: {{ player_skill.display_damage }}
+            {% if player_skill.skill.skill_type == 'ATTK' %}
+              Damage: {{ player_skill.display_damage }}
+            {% elif player_skill.skill.skill_type == 'HEAL' %}
+              Healing: {{ player_skill.display_damage }}
+            {% endif %}
           </span>
           &nbsp;
           {% if player_skill.critical_percentage > 0 %}

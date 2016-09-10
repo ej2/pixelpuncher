@@ -7,6 +7,7 @@ from pixelpuncher.game.utils.skills import add_starting_skills
 from pixelpuncher.item.utils import give_level_equipment, auto_equip
 from pixelpuncher.location.utils import assign_starting_locations
 from pixelpuncher.player.models import Player, Occupation, GENDER, Avatar
+from pixelpuncher.player.utils.avatar import generate_random_starting_avatar
 
 
 class PlayerForm(forms.Form):
@@ -55,6 +56,7 @@ class PlayerForm(forms.Form):
         give_level_equipment(player)
         auto_equip(player)
         assign_starting_locations(player)
+        generate_random_starting_avatar(player)
 
         return player
 

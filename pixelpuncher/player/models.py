@@ -32,6 +32,7 @@ SKILL_TYPE = (
     ("ATTK", "Attack",),
     ("SPCL", "Special",),
     ("HEAL", "Heal",),
+    ("PASS", "Passive",),
 )
 
 LAYER_TYPES = (
@@ -278,7 +279,7 @@ class PlayerAvatar(models.Model):
 
 
 class Skill(models.Model):
-    name = models.CharField(max_length=25)
+    name = models.CharField(max_length=25, unique=True)
     description = models.TextField()
     skill_type = models.CharField(max_length=4, choices=SKILL_TYPE)
     level = models.IntegerField(default=1)
@@ -306,6 +307,9 @@ class Skill(models.Model):
 
     date_created = fields.CreationDateTimeField(editable=True)
     date_updated = fields.ModificationDateTimeField(editable=True)
+
+    class Meta:
+        ordering = ['name']
 
     def __unicode__(self):
         return self.name
@@ -345,7 +349,57 @@ class PlayerSkill(models.Model):
 
 
 class Achievement(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique=True)
     description = models.CharField(max_length=200)
     icon = models.CharField(max_length=20, blank=True, null=True)
     players = models.ManyToManyField(Player, related_name="achievements", blank=True)
+
+    class Meta:
+        ordering = ['name']
+
+    def __unicode__(self):
+        return self.name
+
+
+class Collection(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    achievement = models.OneToOneField(Achievement, related_name="collection", null=True, blank=True)
+    items = models.ManyToManyField("item.ItemType", related_name="collections", blank=True)
+    reward_item = models.ForeignKey("item.ItemType", related_name="+", null=True, blank=True)
+    reward_xp = models.IntegerField(default=0)
+    date_created = fields.CreationDateTimeField(editable=True)
+    date_updated = fields.ModificationDateTimeField(editable=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['name']
+
+    def __unicode__(self):
+        return self.name
+
+
+class PlayerCollection(models.Model):
+    player = models.ForeignKey(Player, related_name="collections")
+    collection = models.ForeignKey(Collection, related_name="players")
+    date_created = fields.CreationDateTimeField(editable=True)
+    date_completed = models.DateTimeField(null=True, blank=True)
+    reward_given = models.BooleanField(default=False)
+    found_items = models.ManyToManyField("item.ItemType", related_name="+", blank=True)
+
+    class Meta:
+        unique_together = ('player', 'collection',)
+
+    @property
+    def completed(self):
+        if self.date_completed:
+            return True
+        else:
+            return False
+
+    @property
+    def is_complete(self):
+        if self.found_items.all().count() == self.collection.items.all().count():
+            return True
+        else:
+            return False
+

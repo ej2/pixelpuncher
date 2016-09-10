@@ -21,7 +21,8 @@ SERVICE_TYPE = (
     ("REST", "Rest",),
     ("HEALMAX", "Restore Health",),
     ("RESTMAX", "Restore Energy",),
-    ("GMB", "Gambling")
+    ("GMB", "Gambling",),
+    ("PICK4", "Pick 4",),
 )
 
 CURRENCY = (
@@ -78,6 +79,7 @@ class Service(models.Model):
     success_rate = models.IntegerField(default=100)
     success_text = models.CharField(max_length=200)
     failure_text = models.CharField(max_length=200)
+    page = models.CharField(max_length=200, null=True, blank=True)  # page to load if servicee requires it
 
     def __unicode__(self):
         return self.name

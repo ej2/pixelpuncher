@@ -1,5 +1,6 @@
 import random
 
+from pixelpuncher.game.utils.message import add_game_message
 from pixelpuncher.location.models import Location
 
 
@@ -17,10 +18,10 @@ def unlock_location(player, location):
 
 def purchase_service(player, location_service):
     if player.pixels < location_service.price:
-        return "You don't have enough to purchase that."
+        add_game_message(player, "You don't have enough to purchase that.")
 
-    if player.punches < location_service.action_point_cost:
-        return "You don't have enough action points to do that."
+    elif player.punches < location_service.action_point_cost:
+        add_game_message(player, "You don't have enough action points to do that.")
 
     if location_service.action_point_cost > 0:
         player.punches -= location_service.action_point_cost
@@ -29,9 +30,6 @@ def purchase_service(player, location_service):
         player.pixels -= location_service.price
 
     player.save()
-    result = perform_service(player, location_service.service)
-
-    return result
 
 
 def perform_service(player, service):

@@ -17,6 +17,25 @@ from pixelpuncher.player.models import VICTORY
 
 
 def perform_skill(player, player_skill):
+    if can_use_skill(player, player_skill):
+        if player_skill.skill.skill_type == "HEAL":
+            results = perform_heal_skill(player, player_skill)
+
+            # Process results
+            if results['success']:
+                player.adjust_health(results['amount'])
+                add_game_message(
+                    player, successful_heal_message(player_skill.skill, results['amount']))
+            else:
+                add_game_message(
+                    player, failed_heal_message(player_skill.skill))
+
+        # Apply player changes
+        player.adjust_energy(-player_skill.energy_cost)
+        player.save()
+
+
+def perform_skill_in_combat(player, player_skill):
     victory = False
     enemy = get_current_enemy(player)
     add_game_message(player, battle_message(enemy))
@@ -44,7 +63,7 @@ def perform_skill(player, player_skill):
             results = perform_special_skill(player, enemy, player_skill)
 
         elif player_skill.skill.skill_type == "HEAL":
-            results = perform_heal_skill(player, enemy, player_skill)
+            results = perform_heal_skill(player, player_skill)
 
             # Process results
             if results['success']:
@@ -104,7 +123,7 @@ def perform_special_skill(player, enemy, player_skill):
     }
 
 
-def perform_heal_skill(player, enemy, player_skill):
+def perform_heal_skill(player, player_skill):
     heal_amount = 0
 
     success = percentage_roll(player_skill.hit_percentage)

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles i18n %}
+{% load apps_player %}
 
 {% block content %}
   <div class="row">
@@ -10,9 +11,8 @@
       {% for top_player in players %}
         <tr {% if top_player == player %}class="bg-primary"{% endif %}>
           <td>
-            {% if top_player.avatar %}
-              <img src="{% static top_player.avatar.image_path %}" width="32">
-            {% endif %}
+            {% small_avatar top_player %}
+
           </td>
           <td>
 

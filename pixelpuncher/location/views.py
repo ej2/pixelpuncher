@@ -2,12 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect
 from django.template import RequestContext
 from django.template.response import TemplateResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
 
 from pixelpuncher.game.utils.message import add_game_message
 from pixelpuncher.item.utils import purchase_item
 from pixelpuncher.location.models import Location, LocationItem, LocationService
-from pixelpuncher.location.utils import purchase_service
+from pixelpuncher.location.utils import purchase_service, perform_service
 from pixelpuncher.npc.utils.conversation import get_merchant_greeting
 from pixelpuncher.npc.utils.relationships import get_relationship
 from pixelpuncher.player.decorators import player_required
@@ -84,8 +83,12 @@ def purchase(request, player, location_id, locationitem_id):
 def service(request, player, location_id, locationservice_id):
     location_service = get_object_or_404(LocationService, pk=locationservice_id)
 
-    result = purchase_service(player, location_service)
-    add_game_message(player, result)
+    purchase_service(player, location_service)
 
-    return redirect("location:visit", location_id)
+    if location_service.service.page:
+        return redirect(location_service.service.page, locationservice_id)
+    else:
+        result = perform_service(player, location_service.service)
+        add_game_message(player, result)
+        return redirect("location:visit", location_id)
 

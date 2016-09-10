@@ -10,6 +10,7 @@ BASE_TYPE = (
     ("ARM", "Armor",),
     ("CON", "Consumable",),
     ("UNL", "Unlock",),
+    ("JNK", "Junk",),
 )
 
 CLASSIFICATION = (
@@ -38,6 +39,9 @@ class Container(models.Model):
 class PlayerContainer(models.Model):
     container = models.ForeignKey(Container, related_name="player_containers")
     player = models.ForeignKey(Player, related_name="+")
+
+    class Meta:
+        unique_together = ('container', 'player',)
 
     def __unicode__(self):
         return "{}'s {}".format(self.player.name, self.container.name)

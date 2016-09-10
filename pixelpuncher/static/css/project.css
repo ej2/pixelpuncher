@@ -37,6 +37,11 @@
   display: block !important;
 }
 
+.unlock {
+  color: #449d44;
+  font-weight: bold;
+}
+
 .xp {
   color: #449d44;
 }
@@ -166,6 +171,11 @@
 }
 
 .table-inventory-header {
+  border-bottom: #ebebeb 1px solid !important;
+}
+
+.table-skill-header {
+  height: 20px;
   border-bottom: #ebebeb 1px solid !important;
 }
 

@@ -1,16 +1,17 @@
  <table class="table table-hover">
-   <thead>
-    <tr>
-      <th class="table-inventory-header">Skill</th>
-      <th class="table-inventory-header numeric">Hit %</th>
-      <th class="table-inventory-header numeric">Damage</th>
-      <th class="table-inventory-header numeric">Crit %</th>
-      <th class="table-inventory-header numeric">Multiplier</th>
-      <th class="table-inventory-header numeric">Energy</th>
-      <th class="table-inventory-header item-options">Options</th>
-    </tr>
-  </thead>
    {% for player_skill in skills %}
+     {% ifchanged player_skill.skill.skill_type %}
+      <tr>
+        <th class="table-skill-header">{{ player_skill.skill.get_skill_type_display }} Skills</th>
+        <th class="table-skill-header numeric">Hit %</th>
+        <th class="table-skill-header numeric">Damage</th>
+        <th class="table-skill-header numeric">Crit %</th>
+        <th class="table-skill-header numeric">Multiplier</th>
+        <th class="table-skill-header numeric">Energy</th>
+        <th class="table-skill-header item-options">Options</th>
+      </tr>
+     {% endifchanged %}
+
     <tr>
       <td class="item-name">
         {{ player_skill }}</td>

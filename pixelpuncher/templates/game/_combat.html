@@ -3,6 +3,7 @@
 {% load apps_game %}
 {% load staticfiles i18n %}
 
+{% if can_punch %}
 <form class="form-horizontal" method="post" action="">
 
   <div class="game-actions">
@@ -33,3 +34,4 @@
 {% csrf_token %}
   </div>
 </form>
+{% endif %}

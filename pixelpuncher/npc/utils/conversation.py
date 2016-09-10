@@ -1,12 +1,16 @@
 import random
 
 from annoying.functions import get_object_or_None
+from datetime import datetime
 
 from pixelpuncher.game.utils.message import add_game_message
-from pixelpuncher.game.utils.messages import pixels_dropped_message, xp_gained_message, item_given
+from pixelpuncher.game.utils.messages import pixels_dropped_message, xp_gained_message, item_given, \
+    location_unlocked_message
 from pixelpuncher.item.utils import add_item_type_to_player
-from pixelpuncher.npc.models import ResponseTrigger, Triggers
+from pixelpuncher.location.utils import unlock_location
+from pixelpuncher.npc.models import ResponseTrigger, Triggers, ResponseHandlers, ResponseLog
 from pixelpuncher.npc.utils.relationships import get_relationship, adjust_relationship_score
+from pixelpuncher.player.utils.collections import check_collections
 
 MERCHANT_GREETINGS = [
     "Welcome to {}!",
@@ -84,12 +88,35 @@ def parse_trigger_text(text):
     return trigger_type, output_text.strip()
 
 
-def get_response(npc, trigger_text, trigger_type):
+def get_response(player, npc, trigger_text, trigger_type):
+    response = None
     trigger = get_object_or_None(
         ResponseTrigger, npcs__in=[npc], trigger_text=trigger_text, trigger_type=trigger_type.upper())
 
     if trigger:
-        return trigger.response
+        if trigger.responses.count() == 1:
+            return trigger.responses.all()[0]
+        else:
+            if trigger.response_handler == ResponseHandlers.Random:
+                response = random.choice(trigger.responses.all())
+                return response
+
+            elif trigger.response_handler == ResponseHandlers.Ordered:
+                last_response = get_last_response(player, trigger)
+
+                if last_response:
+                    next_priority = last_response.priority + 1
+                    next_response = trigger.responses.filter(priority=next_priority)
+                    if next_response.count() > 0:
+                        response = next_response[0]
+                else:
+                    response = trigger.responses.filter(priority=1)[0]
+
+                if response:
+                    log_response(player, response, trigger)
+                    return response
+                else:
+                    return last_response
     else:
         return None
 
@@ -113,10 +140,28 @@ def response_reward(response, player, npc):
         item = add_item_type_to_player(item_type, player)
         add_game_message(player, item_given(npc, item))
 
+        check_collections(player, item_type)
+
     player.save()
+
+    if response.location_unlock:
+        unlock_location(player, response.location_unlock)
+        add_game_message(player, location_unlocked_message(response.location_unlock.name))
 
     if response.relationship_points != 0:
         relationship = get_relationship(player, npc)
         adjust_relationship_score(relationship, response.relationship_points)
 
 
+def log_response(player, response, trigger):
+    log = ResponseLog(player=player, response=response, response_trigger=trigger, response_date=datetime.now())
+    log.save()
+    return log
+
+
+def get_last_response(player, trigger):
+    logs = ResponseLog.objects.filter(player=player, response_trigger=trigger).order_by("-response__priority")
+    if logs.count() > 0:
+        return logs[0].response
+    else:
+        return None

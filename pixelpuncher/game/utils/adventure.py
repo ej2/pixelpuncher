@@ -7,6 +7,7 @@ from pixelpuncher.game.utils.messages import xp_gained_message, pixels_dropped_m
 from pixelpuncher.item.utils import add_item_type_to_player
 from pixelpuncher.location.models import PlayerAdventure
 from pixelpuncher.player.models import ADVENTURING
+from pixelpuncher.player.utils.collections import check_collections
 
 
 def get_adventure(player, location):
@@ -82,6 +83,8 @@ def choice_reward(choice, player):
     for item_type in choice.reward_items.all():
         item = add_item_type_to_player(item_type, player)
         add_game_message(player, item_dropped(item))
+
+        check_collections(player, item_type)
 
     player.save()
 

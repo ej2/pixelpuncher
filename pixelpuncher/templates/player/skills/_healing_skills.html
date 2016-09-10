@@ -1,0 +1,27 @@
+ <table class="table table-hover">
+  <thead>
+    <tr>
+        <th class="table-skill-header">Healing Skills</th>
+        <th class="table-skill-header numeric">Success %</th>
+        <th class="table-skill-header numeric">Healing</th>
+        <th class="table-skill-header numeric">Energy</th>
+        <th class="table-skill-header item-options">Options</th>
+      </tr>
+    <tr>
+  </thead>
+   {% for player_skill in skills %}
+      <td class="item-name">{{ player_skill }}</td>
+      <td class="numeric">{{ player_skill.hit_percentage }}%</td>
+      <td class="numeric">{{ player_skill.display_damage }}</td>
+      <td class="numeric">{{ player_skill.energy_cost }}</td>
+
+      <td class="item-options">
+        [
+        <a class="text-success" href="{% url "player:skill" player_skill.id %}" data-toggle="modal">Use</a>&nbsp;|
+        <a class="text-info" href="#" data-toggle="modal" data-target="#skillModal{{ player_skill.pk }}">More&nbsp;Info</a>&nbsp;]
+        {% include "player/_skill_modal.html" %}
+      </td>
+    </tr>
+  {% endfor %}
+ </table>
+

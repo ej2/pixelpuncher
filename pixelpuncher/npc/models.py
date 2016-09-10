@@ -12,6 +12,11 @@ TRIGGER_TYPE = (
     ("GRT", "Greeting")
 )
 
+RESPONSE_HANDLER = (
+    ('RND', 'Random',),
+    ('ORD', 'Ordered',),
+)
+
 RELATIONSHIP_TYPE = (
     ('RIVL', 'Rival',),
     ('FRND', 'Friend',),
@@ -26,6 +31,11 @@ RELATIONSHIP_LEVEL = (
     ('BD', 'Bad',),
     ('HR', 'Horrible',),
 )
+
+
+class ResponseHandlers(object):
+    Random = 'RND'
+    Ordered = 'ORD'
 
 
 class RelationshipLevels(object):
@@ -112,15 +122,19 @@ class Response(models.Model):
     level_requirement = models.IntegerField(default=0)  # zero means no requirement
     required_items = models.ManyToManyField(ItemType, related_name="+", blank=True)
 
+    # Used for when an NPC tells player about a location
+    location_unlock = models.ForeignKey("location.Location", related_name="+", null=True, blank=True)
+
     def __unicode__(self):
         return self.text
 
 
 class ResponseTrigger(models.Model):
     npcs = models.ManyToManyField(NPC, related_name="triggers")
-    response = models.ForeignKey(Response, related_name="triggers")
+    responses = models.ManyToManyField(Response, related_name="triggers")
     trigger_text = models.CharField(max_length=30)
     trigger_type = models.CharField(max_length=4, choices=TRIGGER_TYPE)
+    response_handler = models.CharField(max_length=3, choices=RESPONSE_HANDLER, default='RND')
 
     def __unicode__(self):
         return self.trigger_text

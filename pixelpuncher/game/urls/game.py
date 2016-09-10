@@ -1,6 +1,7 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 
-from pixelpuncher.game import views
+from pixelpuncher.game.views import views
+from pixelpuncher.game.views.games import pickfour
 
 urlpatterns = [
     url(r'^skill/(?P<player_skill_id>[\w.@+-]+)/$', views.skill, name="skill"),
@@ -16,4 +17,7 @@ urlpatterns = [
     url(r'^levels$', views.level_requirements, name="levels"),
     url(r'^daily_reset$', views.perform_daily_reset, name="daily_reset"),
     url(r'^level_up$', views.perform_level_up, name="level_up"),
+
+    url(r'^(?P<locationservice_id>[\w.@+-]+)/pickfour/', include("pixelpuncher.game.urls.pickfour", namespace="pickfour")),
+
 ]

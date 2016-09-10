@@ -7,4 +7,7 @@ urlpatterns = [
     url(r'^visit/home$', views.visit_home, name="home"),
     url(r'^visit/(?P<location_id>[\w.@+-]+)/purchase/(?P<locationitem_id>[\w.@+-]+)$', views.purchase, name="purchase"),
     url(r'^visit/(?P<location_id>[\w.@+-]+)/service/(?P<locationservice_id>[\w.@+-]+)$', views.service, name="service"),
+
+
+
 ]

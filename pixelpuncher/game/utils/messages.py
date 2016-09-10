@@ -107,3 +107,11 @@ def system_boot():
 
 def npc_says(npc, message):
     return '{} says "{}"'.format(npc.name, message)
+
+
+def location_unlocked_message(location_name):
+    return "You have unlocked <span class='unlock'>{}</span>.".format(location_name)
+
+
+def item_added_to_collection(item_type, collection):
+    return "You add the {} to your {} collection.".format(item_type.name, collection.name)

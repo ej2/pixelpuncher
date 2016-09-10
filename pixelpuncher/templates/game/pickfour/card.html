@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load staticfiles i18n %}
+{% load apps_player %}
+{% load apps_npc %}
+{% load apps_enemy %}
+{% load apps_game %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-3">
+      {% mini_profile request.user %}
+    </div>
+
+    <div class="col-md-6">
+      <div class="page-header">
+        <h1><i class="text-info mdi {{ location.icon }}"></i>{{ location.name }}</h1>
+
+        <p>Pick 4 Card Game</p>
+      </div>
+
+      {% show_messages player %}
+
+      <div>
+        <h2 class="pull-right">Score: {{ match_game.points }}</h2>
+
+        <table>
+          <tr>
+          {% for card in cards.all %}
+            <td>
+              {% if card.flipped %}
+                <img src="{% static card.image %}">
+              {% else %}
+                {% if match_game.state == 'PLAY' %}
+                  <a href="{% url "game:pickfour:flip" locationservice_id match_game.id card.id %}"><img src="{% static card.image %}"></a>
+                {% else %}
+                  <img src="{% static card.image %}">
+                {% endif %}
+
+              {% endif %}
+            </td>
+            {% if forloop.last %}
+             </tr>
+            {% else %}
+             {% if forloop.counter|divisibleby:"4" %}
+               </tr><tr>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </table>
+
+      </div>
+      {% if match_game.state != 'PLAY' %}
+        <a href="{% url "location:visit" location.id %}" class="btn btn-primary btn-sm pull-right">Return to {{ location.name }}</a>
+        <a href="{% url "game:pickfour:start-game" locationservice_id %}" class="btn btn-info btn-sm pull-right">Play Again</a>
+      {% endif %}
+    </div>
+
+    {% if location.npc %}
+    <div class="col-md-3">
+      {% npc_profile location relationship %}
+    </div>
+    {% endif %}
+
+  </div>
+{% endblock content %}

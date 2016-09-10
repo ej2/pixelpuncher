@@ -1,8 +1,9 @@
 import random
+
 from annoying.functions import get_object_or_None
 from django.db import transaction
 
-from pixelpuncher.item.models import Item, LevelEquipment
+from pixelpuncher.item.models import Item, LevelEquipment, PlayerContainer
 from pixelpuncher.player.utils.avatar import unlock_layer
 
 
@@ -218,3 +219,12 @@ def put_item_in_container(item, player_container):
         item.save()
 
         return "You put the {} in the {}.".format(item, player_container.container.name)
+
+
+def assign_container(player, container):
+    player_container = PlayerContainer()
+    player_container.player = player
+    player_container.container = container
+    player_container.save()
+
+    return player_container

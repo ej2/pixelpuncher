@@ -3,6 +3,7 @@ import random
 from pixelpuncher.game.utils.message import add_game_message
 from pixelpuncher.game.utils.messages import item_dropped, no_loot, pixels_dropped_message
 from pixelpuncher.item.utils import get_random_drop, add_item_type_to_player
+from pixelpuncher.player.utils.collections import check_collections
 
 
 def generate_loot(player, enemy):
@@ -19,6 +20,8 @@ def generate_loot(player, enemy):
                 items_received += 1
                 item = add_item_type_to_player(item_type_dropped, player)
                 add_game_message(player, item_dropped(item))
+
+                check_collections(player, item_type_dropped)
 
     if items_received == 0:
         add_game_message(player, no_loot(enemy))

@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^examine/(?P<item_id>[\w.@+-]+)/$', views.examine, name="examine"),
     url(r'^drop/(?P<item_id>[\w.@+-]+)/$', views.drop, name="drop"),
     url(r'^use/(?P<item_id>[\w.@+-]+)/$', views.use, name="use"),
+    url(r'^skill/(?P<player_skill_id>[\w.@+-]+)/$', views.skill, name="skill"),
 
     url(r'^top_punchers$', views.top_punchers, name="top_punchers"),
 ]
