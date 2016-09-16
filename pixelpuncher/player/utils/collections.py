@@ -35,6 +35,13 @@ def item_type_in_collection(item_type, collection):
         return False
 
 
+def item_unlocked(item_type, player_collection):
+    if item_type in player_collection.found_items.all():
+        return True
+    else:
+        return False
+
+
 def add_item_to_collection(item_type, player_collection):
     player_collection.found_items.add(item_type)
 
@@ -42,8 +49,9 @@ def add_item_to_collection(item_type, player_collection):
 def check_collections(player, item_type):
     for player_collection in player.collections.all():
         if item_type_in_collection(item_type, player_collection.collection):
-            add_item_to_collection(item_type, player_collection)
-            add_game_message(player, item_added_to_collection(item_type, player_collection.collection))
+            if not item_unlocked(item_type, player_collection):
+                add_item_to_collection(item_type, player_collection)
+                add_game_message(player, item_added_to_collection(item_type, player_collection.collection))
 
         if player_collection.is_complete:
             give_collection_reward(player_collection)

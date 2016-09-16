@@ -5,8 +5,16 @@
 
 <h1>{{ player_adventure.adventure.title }}</h1>
 
-<p>{{ player_adventure.adventure.adventure_text }}</p>
+<p>
+  {% if player_adventure.adventure.image_path %}
+    <span class="pull-right">
+      <img src="{% adventure_image player_adventure.adventure %}">
+    </span>
+  {% endif %}
+  {{ player_adventure.adventure.adventure_text }}
+</p>
 
+<br><br>
 <div class="game-actions">
   {% for choice in player_adventure.adventure.choices.all %}
     <a class="btn btn-primary btn-game-action"

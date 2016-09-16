@@ -1,0 +1,27 @@
+ <table class="table table-hover">
+   <thead>
+    <tr>
+      <th class="table-inventory-header">Name</th>
+      <th class="table-inventory-header">Items</th>
+      <th class="table-inventory-header item-options">Options</th>
+    </tr>
+  </thead>
+   {% for player_collection in player.collections.all %}
+    <tr>
+      <td class="item-name">
+        {{ player_collection.collection.name }}
+      </td>
+      <td>{{ player_collection.found_items.count }} / {{ player_collection.collection.items.count }}</td>
+      <td class="item-options">
+        [&nbsp;<a class="text-success" href="#" data-toggle="modal" data-target="#collectionModal{{ player_collection.collection.pk }}">View</a>&nbsp;]
+        {% include "player/collections/_collection_modal.html" %}
+      </td>
+    </tr>
+  {% empty %}
+     <tr>
+      <td colspan="2" class="item-name">
+        Empty
+      </td>
+    </tr>
+  {% endfor %}
+ </table>

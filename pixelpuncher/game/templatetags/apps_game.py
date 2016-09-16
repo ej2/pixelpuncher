@@ -1,7 +1,9 @@
 from __future__ import division
 from django import template
 from django.template.loader import render_to_string
+from django.templatetags.static import static
 
+from pixelpuncher.game.utils.game_settings import ADVENTURE_IMAGE_FOLDER
 from pixelpuncher.game.utils.message import get_game_messages
 
 register = template.Library()
@@ -28,3 +30,10 @@ def show_messages(player):
         "game_messages": game_messages,
     })
 
+
+@register.simple_tag()
+def adventure_image(adventure):
+    if adventure.image_path:
+        return static(ADVENTURE_IMAGE_FOLDER + adventure.image_path)
+    else:
+        return ""

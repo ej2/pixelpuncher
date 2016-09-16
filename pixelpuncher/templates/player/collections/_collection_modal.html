@@ -1,0 +1,29 @@
+<div class="modal fade" id="collectionModal{{ player_collection.collection.pk }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     xmlns="http://www.w3.org/1999/html">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title pull-left" id="collectionModal{{ player_collection.collection.pk }}">
+          {{ player_collection.collection.name }} Collection
+        </h4>
+      </div>
+      <div class="modal-body skill-detail pull-right">
+        Found:
+        <ul>
+        {% for item in player_collection.found_items.all %}
+          <li><i class="mdi {{ item.icon }}"></i> {{ item.name }}</li>
+        {% endfor %}
+        </ul>
+      </div>
+      <div class="modal-body skill-detail">
+        Items:
+        <ul>
+        {% for item in player_collection.collection.items.all %}
+          <li><i class="mdi {{ item.icon }}"></i> {{ item.name }}</li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
