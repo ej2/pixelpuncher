@@ -49,6 +49,19 @@ UNLOCK_METHODS = (
     ("secret", "Secret",),
 )
 
+STATUS_EFFECT_TYPES = (
+    ("HP", "Health",),
+    ("ENE", "Energy",),
+    ("DAM", "Damage",),
+    ("XP", "Experience",),
+    ("PIX", "Pixels",),
+    ("ARM", "Armor",),
+    ("ATT", "Attack",),
+    ("POW", "Power",),
+    ("TEC", "Technique",),
+    ("END", "Endurance",),
+)
+
 
 class Occupation(models.Model):
     name = models.CharField(max_length=50)
@@ -403,3 +416,27 @@ class PlayerCollection(models.Model):
         else:
             return False
 
+
+class StatusEffect(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    primary_effect_type = models.CharField(max_length=3, choices=STATUS_EFFECT_TYPES)
+    primary_effect_amount = models.IntegerField(default=0)
+    secondary_effect_type = models.CharField(max_length=3, choices=STATUS_EFFECT_TYPES, null=True, blank=True)
+    secondary_effect_amount = models.IntegerField(null=True, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+class PlayerStatusEffect(models.Model):
+    player = models.ForeignKey(Player, related_name="effects")
+    status_effect = models.ForeignKey(StatusEffect, related_name="+")
+    remaining_turns = models.IntegerField(default=0)
+    date_created = fields.CreationDateTimeField(editable=True)
+    date_updated = fields.ModificationDateTimeField(editable=True)
+
+    class Meta:
+        unique_together = ('player', 'status_effect',)
+
+    def __unicode__(self):
+        return self.status_effect.name
