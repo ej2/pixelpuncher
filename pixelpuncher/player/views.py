@@ -107,7 +107,7 @@ def top_punchers(request):
     if request.user.is_authenticated():
         player = get_object_or_None(Player, user=request.user)
 
-        assign_player_collections(player)  # Temp - needs to be added to login or nightly script
+        #assign_player_collections(player)  # Temp - needs to be added to login or nightly script
     else:
         player = None
 

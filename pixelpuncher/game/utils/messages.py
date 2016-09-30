@@ -115,3 +115,5 @@ def location_unlocked_message(location_name):
 
 def item_added_to_collection(item_type, collection):
     return "You add the {} to your {} collection.".format(item_type.name, collection.name)
+
+

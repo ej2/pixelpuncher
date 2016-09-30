@@ -165,7 +165,7 @@ class Player(models.Model):
         return (self.xp / self.xp_to_next_level) * 100
 
     @property
-    def effect_power(self):
+    def effective_power(self):
         bonus = 0
 
         if self.gloves:
@@ -180,7 +180,7 @@ class Player(models.Model):
         return self.power + bonus
 
     @property
-    def effect_technique(self):
+    def effective_technique(self):
         bonus = 0
 
         if self.gloves:
@@ -195,7 +195,7 @@ class Player(models.Model):
         return self.technique + bonus
 
     @property
-    def effect_endurance(self):
+    def effective_endurance(self):
         bonus = 0
 
         if self.gloves:
