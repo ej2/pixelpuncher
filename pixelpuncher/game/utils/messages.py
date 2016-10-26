@@ -1,6 +1,6 @@
 import random
 
-from pixelpuncher.game.utils.message import GameMessageManager
+from pixelpuncher.game.utils.message import GameMessageManager, get_random_attack_verbs, get_random_pain_word
 
 DANGER_WORDS = ["treacherous", "formidable", "deadly", "troublesome", "lethal"]
 
@@ -27,8 +27,13 @@ def victory_message():
     return "<span class='victory'>Victory!</span> "
 
 
-def player_damage_message(damage):
-    return "You hurt your hand. You lose <span class='health'>{0} health</span>. ".format(int(damage))
+def player_damage_message(enemy, damage):
+    return "The {} {} at you. {} You lose <span class='health'>{} health</span>. ".format(
+        enemy.enemy_type.name, get_random_attack_verbs(), get_random_pain_word(), int(damage))
+
+
+def enemy_hit_failure(enemy):
+    return "The {} {} at you and misses!".format(enemy.enemy_type.name, get_random_attack_verbs())
 
 
 def player_level_up_message():

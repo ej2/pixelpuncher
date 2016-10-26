@@ -11,7 +11,7 @@ from pixelpuncher.game.utils.loot import generate_loot, generate_pixels
 from pixelpuncher.game.utils.message import add_game_message
 from pixelpuncher.game.utils.messages import successful_critical_message, successful_hit_message, low_energy_message, \
     hit_failure_message, player_damage_message, successful_heal_message, failed_heal_message, victory_message, \
-    battle_message, xp_gained_message, bonus_xp_gained_message, run_away_message
+    battle_message, xp_gained_message, bonus_xp_gained_message, run_away_message, enemy_hit_failure
 from pixelpuncher.item.utils import use_item
 from pixelpuncher.player.models import VICTORY
 
@@ -83,6 +83,10 @@ def perform_skill_in_combat(player, player_skill):
         # Apply player changes
         player.adjust_energy(-player_skill.energy_cost)
 
+        if player.is_defeated:
+            enemy.active = False
+            print "defeated!"
+
         player.save()
         enemy.save()
 
@@ -104,7 +108,9 @@ def perform_enemy_attack(player, enemy):
     if hit:
         damage = calculate_enemy_damage(enemy)
         player.adjust_health(-damage)
-        add_game_message(player, player_damage_message(damage))
+        add_game_message(player, player_damage_message(enemy, damage))
+    else:
+        add_game_message(player, enemy_hit_failure(enemy))
 
 
 def perform_special_skill(player, enemy, player_skill):

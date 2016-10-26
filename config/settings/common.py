@@ -39,12 +39,14 @@ THIRD_PARTY_APPS = (
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
+    'chatterbot.ext.django_chatterbot',
 )
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
     'pixelpuncher.users',  # custom users app
     # Your stuff: custom apps go here
+    'pixelpuncher.chatterbot',
     'pixelpuncher.enemy',
     'pixelpuncher.game',
     'pixelpuncher.item',
@@ -206,6 +208,7 @@ ROOT_URLCONF = 'config.urls'
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = 'config.wsgi.application'
 
+
 # AUTHENTICATION CONFIGURATION
 # ------------------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = (
@@ -232,3 +235,7 @@ AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 ADMIN_URL = r'^admin/'
 
 # Your common stuff: Below this line define 3rd party library settings
+
+CHATTERBOT = {
+    'name': 'Django ChatterBot Example'
+}

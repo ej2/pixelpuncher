@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^game/', include("pixelpuncher.game.urls.game", namespace="game")),
     url(r'^npc/', include("pixelpuncher.npc.urls", namespace="npc")),
     url(r'^container/', include("pixelpuncher.item.urls.container", namespace="container")),
+    #url(r'^chatterbot/', include('chatterbot.ext.django_chatterbot.urls', namespace='chatterbot')),
+    url(r'^chatterbot/', include('pixelpuncher.chatterbot.urls', namespace='chatterbot')),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

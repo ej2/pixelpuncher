@@ -123,6 +123,10 @@ class Player(models.Model):
     def __unicode__(self):
         return self.name
 
+    @property
+    def is_defeated(self):
+        return self.current_health <= 0
+
     def adjust_health(self, amount):
         self.current_health += amount
 

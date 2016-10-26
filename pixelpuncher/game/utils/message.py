@@ -3,6 +3,8 @@ import random
 from pixelpuncher.game.models import GameMessage
 
 
+ATTACK_VERBS = ("swings", "claws", "scratches", "hits", "kicks",)
+PAIN_WORDS = ("Ouch!", "Yozzers!", "Argh!", "Gah!", "Oww!", "Yeow!", "Yikes!")
 PUNCH_SOUNDS = ("BAM!", "CRASH!", "ZAP!", "KAPOW!", "POP!")
 DESTROYED_VERBS = ("shattered", "flattened", "crushed", "smashed", "splattered")
 TAUNTS = (
@@ -26,6 +28,14 @@ def get_game_messages(player):
         message.save()
 
     return messages
+
+
+def get_random_attack_verbs():
+    return random.choice(ATTACK_VERBS)
+
+
+def get_random_pain_word():
+    return random.choice(PAIN_WORDS)
 
 
 def get_random_punching_sound():
