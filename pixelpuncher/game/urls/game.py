@@ -17,6 +17,8 @@ urlpatterns = [
     url(r'^levels$', views.level_requirements, name="levels"),
     url(r'^daily_reset$', views.perform_daily_reset, name="daily_reset"),
     url(r'^level_up$', views.perform_level_up, name="level_up"),
+    url(r'^cheatcode$', views.cheat_code, name="cheat_code"),
+    url(r'^performcheat/(?P<cheatcode_id>[\w.@+-]+)$', views.perform_cheat, name="perform_cheat"),
 
     url(r'^(?P<locationservice_id>[\w.@+-]+)/pickfour/', include("pixelpuncher.game.urls.pickfour", namespace="pickfour")),
 

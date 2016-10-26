@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from pixelpuncher.game.models import GameMessage, MatchGame
+from pixelpuncher.game.models import GameMessage, MatchGame, CheatCode
 
 
 class MatchGameModelAdmin(admin.ModelAdmin):
@@ -16,5 +16,12 @@ class GameMessageModelAdmin(admin.ModelAdmin):
     raw_id_fields = ("player",)
     list_per_page = 25
 
+
+class CheatCodeModelAdmin(admin.ModelAdmin):
+    list_display = ("code", "date_created",)
+    search_fields = ("code",)
+    list_per_page = 50
+
 admin.site.register(GameMessage, GameMessageModelAdmin)
+admin.site.register(CheatCode, CheatCodeModelAdmin)
 admin.site.register(MatchGame, MatchGameModelAdmin)

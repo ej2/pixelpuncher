@@ -64,3 +64,15 @@ class MatchCard(models.Model):
             return "images/cards/{}.png".format(self.card_type)
         else:
             return "images/cards/card_back.png"
+
+
+class CheatCode(models.Model):
+    code = models.CharField(max_length=64, unique=True)
+    menu_text = models.CharField(max_length=32)
+    cheat_class = models.CharField(max_length=128)
+    description = models.TextField(null=True, blank=True)
+    date_created = fields.CreationDateTimeField(editable=True)
+    players = models.ManyToManyField(Player, related_name="cheatcodes", blank=True)
+
+    def __unicode__(self):
+        return self.code

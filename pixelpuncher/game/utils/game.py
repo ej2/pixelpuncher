@@ -35,5 +35,5 @@ def death(player):
     add_game_message(player, out_of_health_message())
 
     # handle death pently
-    
+
 

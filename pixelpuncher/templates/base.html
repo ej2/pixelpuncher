@@ -89,6 +89,12 @@
                   <li><a href="{% url "game:reset" %}">Reset Health/Energy/Turns</a></li>
                   <li><a href="{% url "game:daily_reset" %}">Daily reset</a></li>
                   <li class="divider"></li>
+                  {% if player %}
+                    {% for cheat in player.cheatcodes.all %}
+                      <li><a href="{% url "game:perform_cheat" cheat.id %}">{{ cheat.menu_text }}</a></li>
+                    {% endfor %}
+                  {% endif %}
+                  <li class="divider"></li>
                   <li><a href="{% url "game:levels" %}">Level XP Breakdown</a></li>
                 </ul>
               </li>
