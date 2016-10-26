@@ -18,8 +18,8 @@ class GameMessageModelAdmin(admin.ModelAdmin):
 
 
 class CheatCodeModelAdmin(admin.ModelAdmin):
-    list_display = ("code", "date_created",)
-    search_fields = ("code",)
+    list_display = ("code", "cheat_class", "admin_only", "date_created",)
+    search_fields = ("code", "cheat_class", "admin_only",)
     list_per_page = 50
 
 admin.site.register(GameMessage, GameMessageModelAdmin)
