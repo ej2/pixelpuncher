@@ -179,14 +179,14 @@ def perform_taunt(player):
 
     taunt_success = random.randint(1, 100)
 
-    if taunt_success < TAUNT_EPIC_SUCCESS_PERCENTAGE:
-        player.adjust_energy(random.randint(10, 20))
+    if taunt_success < TAUNT_EPIC_SUCCESS_PERCENTAGE + player.level:
+        player.adjust_energy(random.randint(12, 24))
         player.save()
 
-        result = "You taunt and call the {0} names. Ohhhh burn! You feel a lot better about yourself.".format(
+        result = "You taunt and call the {0} names. Ohhhh sick burn! You feel a lot better about yourself.".format(
             enemy.enemy_type.name)
 
-    elif taunt_success < TAUNT_SUCCESS_PERCENTAGE:
+    elif taunt_success < TAUNT_SUCCESS_PERCENTAGE + player.level:
         player.adjust_energy(random.randint(1, 4))
         player.save()
 
@@ -195,6 +195,9 @@ def perform_taunt(player):
     else:
         result = "You taunt and call the {0} names, then realize it doesn't care. ".format(
             enemy.enemy_type.name)
+
+    enemy.taunted = True
+    enemy.save()
 
     add_game_message(player, result)
 

@@ -12,7 +12,7 @@
          href="{% url "game:skill" player_skill.id %}">{{ player_skill }} ({{ player_skill.energy_cost }} EP)</a>
     {% endfor %}
 
-    <a class="btn btn-warning" href="{% url "game:taunt" %}">Taunt</a>
+    <a class="btn btn-warning {% if enemy.taunted%}disabled{% endif %}" href="{% url "game:taunt" %}">Taunt</a>
     <a class="btn btn-danger" href="{% url "game:skip" %}">Leave</a>
 
   {% if combat_items.count > 0 %}

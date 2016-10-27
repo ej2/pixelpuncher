@@ -7,11 +7,33 @@ ATTACK_VERBS = ("swings", "claws", "scratches", "hits", "kicks",)
 PAIN_WORDS = ("Ouch!", "Yozzers!", "Argh!", "Gah!", "Oww!", "Yeow!", "Yikes!")
 PUNCH_SOUNDS = ("BAM!", "CRASH!", "ZAP!", "KAPOW!", "POP!")
 DESTROYED_VERBS = ("shattered", "flattened", "crushed", "smashed", "splattered")
+
 TAUNTS = (
     "Your mother was a hamster and your father smelt of elderberries!",
     "Have a knuckle sandwich!",
+    "I fart in your general direction!",
+
 )
 
+VICTORY_QUOTES = (
+    "My fists know no equal!",
+    "You can't defeat me with moves like that!",
+    "You didn't keep your mind on the fight. That's why you lost!",
+    "Size and strength are no use if you can't hit me.",
+    "You were out of breath towards the end. You need to work on your stamina.",
+    "Sorry to be blunt, but you just don't have what it takes to beat me.",
+    "I don't need a reason. I just like to fight.",
+    "Try not to get knocked out so quick next time, OK?",
+    "Punching is the most refined of the fighting arts.",
+    "Victory is mine!",
+    "Your weakness is an embarrassment!",
+    "That was too easy!",
+    "I'm so tired... I can hardly wait to relax with a nice bubble bath.",
+    "Each time I punch, I learn something new. This journey has been fruitful.",
+    "You are not a warrior, you're a beginner.",
+    "Awesome fight! I'm on top of my game today!",
+    "No one compares to my beauty. Nor my strength.",
+)
 
 def add_game_message(player, message):
     game_message = GameMessage()
@@ -28,6 +50,10 @@ def get_game_messages(player):
         message.save()
 
     return messages
+
+
+def get_random_victory_quote():
+    return random.choice(VICTORY_QUOTES)
 
 
 def get_random_attack_verbs():

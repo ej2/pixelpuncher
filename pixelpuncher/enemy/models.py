@@ -61,6 +61,8 @@ class Enemy(models.Model):
     dice_sides = models.IntegerField(default=0)
     bonus = models.IntegerField(default=0)
 
+    taunted = models.BooleanField(default=False)
+
     class Meta:
         verbose_name = "enemy"
         verbose_name_plural = "enemies"
