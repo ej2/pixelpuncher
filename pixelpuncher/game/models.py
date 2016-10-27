@@ -74,6 +74,7 @@ class CheatCode(models.Model):
     date_created = fields.CreationDateTimeField(editable=True)
     players = models.ManyToManyField(Player, related_name="cheatcodes", blank=True)
     admin_only = models.BooleanField(default=False)
+    show_on_menu = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.code

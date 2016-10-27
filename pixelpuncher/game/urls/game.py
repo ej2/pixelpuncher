@@ -12,10 +12,8 @@ urlpatterns = [
     url(r'^play$', views.play, name="play"),
     url(r'^choice/(?P<choice_id>[\w.@+-]+)/$', views.adventure_choice, name="choice"),
     url(r'^map$', views.map, name="map"),
-    url(r'^reset$', views.reset, name="reset"),
 
     url(r'^levels$', views.level_requirements, name="levels"),
-    url(r'^daily_reset$', views.perform_daily_reset, name="daily_reset"),
     url(r'^level_up$', views.perform_level_up, name="level_up"),
     url(r'^cheatcode$', views.cheat_code, name="cheat_code"),
     url(r'^performcheat/(?P<cheatcode_id>[\w.@+-]+)$', views.perform_cheat, name="perform_cheat"),

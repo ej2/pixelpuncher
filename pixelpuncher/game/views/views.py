@@ -98,7 +98,6 @@ def play(request, player):
         request, "game/play.html", RequestContext(request, context))
 
 
-
 @login_required
 @player_required
 def adventure_choice(request, player, choice_id):
@@ -152,24 +151,6 @@ def skip(request, player):
 
 @login_required
 @player_required
-def reset(request, player):
-    player.punches = game_settings.DAILY_PUNCHES
-    player.current_health = player.total_health
-    player.current_energy = player.total_energy
-    player.save()
-
-    return redirect(reverse("game:play"))
-
-
-@player_required
-def perform_daily_reset(request, player):
-    daily_reset(player)
-
-    return redirect(reverse("game:play"))
-
-
-@login_required
-@player_required
 def perform_level_up(request, player):
     level_up(player)
 
@@ -209,8 +190,8 @@ def cheat_code(request, player):
         code = request.POST["code"]
 
         cheat_added = add_cheatcode(player, code)
-        if cheat_added:
-            add_game_message(player, "Cheat code {} unlocked!".format(code))
+        if not cheat_added:
+            add_game_message(player, "Cheaters never win...")
     else:
         form = CheatCodeForm()
 
