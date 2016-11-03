@@ -4,7 +4,8 @@ from django.template import RequestContext
 from django.template.response import TemplateResponse
 
 from pixelpuncher.game.utils.message import add_game_message
-from pixelpuncher.item.utils import purchase_item
+from pixelpuncher.item.models import Item
+from pixelpuncher.item.utils import purchase_item, sell_item
 from pixelpuncher.location.models import Location, LocationItem, LocationService
 from pixelpuncher.location.utils import purchase_service, perform_service
 from pixelpuncher.npc.utils.conversation import get_merchant_greeting
@@ -73,6 +74,18 @@ def purchase(request, player, location_id, locationitem_id):
     location_item = get_object_or_404(LocationItem, pk=locationitem_id)
 
     result = purchase_item(player, location_item.item_type, location_item.price, location_item.currency)
+    add_game_message(player, result)
+
+    return redirect("location:visit", location_id)
+
+
+@login_required
+@player_required
+def sell(request, player, location_id, item_id):
+    item = get_object_or_404(Item, pk=item_id)
+    amount = item.item_type.sell_price
+
+    result = sell_item(player, item, amount)
     add_game_message(player, result)
 
     return redirect("location:visit", location_id)

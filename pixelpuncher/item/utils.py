@@ -141,6 +141,24 @@ def get_combat_items(player):
     return player.items.filter(item_type__combat_usable=True).order_by("item_type__name")
 
 
+def sell_item(player, item, amount):
+    if item.item_type.sellable:
+        player.pixels += amount
+        player.save()
+
+        if item.item_type.stackable:
+            item.remaining_uses -= 1
+
+            if item.remaining_uses <= 0:
+                item.delete()
+            else:
+                item.save()
+        else:
+            item.delete()
+
+        return "You sell the {} for {} pixels.".format(item.item_type.name, amount)
+
+
 def purchase_item(player, item_type, price, currency):
     if currency == 'P':
         currency_name = "Pixels"

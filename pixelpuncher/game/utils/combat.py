@@ -85,7 +85,6 @@ def perform_skill_in_combat(player, player_skill):
 
         if player.is_defeated:
             enemy.active = False
-            print "defeated!"
 
         player.save()
         enemy.save()

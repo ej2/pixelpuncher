@@ -1,3 +1,4 @@
+from chatterbot.trainers import ListTrainer
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse
@@ -85,3 +86,92 @@ def talk_json(request, player, location_id):
 #         return HttpResponse(json.dumps({'name': name}), content_type="application/json")
 #     else :
 #         return render_to_response('ajax_test.html', locals())
+
+
+
+@login_required
+@player_required
+def chatter(request, player, location_id, npc_id):
+    location = get_object_or_404(Location, pk=location_id)
+    npc = get_object_or_404(NPC, id=npc_id)
+    relationship = get_relationship(player, npc)
+
+    from chatterbot import ChatBot
+    chatbot = ChatBot(npc.name, read_only=True,
+        storage_adapter="chatterbot.adapters.storage.MongoDatabaseAdapter",
+        database='chatterbot-database',
+        trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
+    )
+
+    if request.method == "POST":
+        player_input = request.POST["playerinput"]
+
+        response = chatbot.get_response(player_input)
+        add_game_message(player, '{} says {}'.format(npc.name, response.text))
+
+    else:
+        response = chatbot.get_response("Good morning!")
+        add_game_message(player, npc_says(npc, response.text))
+
+    context = {
+        "user": player.user,
+        "player": player,
+        "npc": npc,
+        "relationship": relationship,
+        "location": location,
+    }
+
+    return TemplateResponse(
+        request, "game/talk.html", RequestContext(request, context))
+
+
+@login_required
+@player_required
+def train(request, player, location_id, npc_id):
+    location = get_object_or_404(Location, pk=location_id)
+    npc = get_object_or_404(NPC, id=npc_id)
+    relationship = get_relationship(player, npc)
+
+    from chatterbot import ChatBot
+
+    chatbot = ChatBot(
+        npc.name,  # read_only=True,
+        storage_adapter="chatterbot.adapters.storage.MongoDatabaseAdapter",
+        database='chatterbot-database',
+        trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
+    )
+
+    import os
+    from django.conf import settings
+
+    fname = os.path.join(settings.ROOT_DIR.__str__(), 'roommate.corpus.json')
+
+    with open(fname) as f:
+        content = f.readlines()
+
+    chatbot.set_trainer(ListTrainer)
+    chatbot.train(content)
+
+    #chatbot.train("chatterbot.corpus.english")
+
+    if request.method == "POST":
+        player_input = request.POST["playerinput"]
+
+        response = chatbot.get_response(player_input)
+        add_game_message(player, npc_says(npc, response.text))
+
+    else:
+        response = chatbot.get_response("Good morning!")
+
+        add_game_message(player, npc_says(npc, response.text))
+
+    context = {
+        "user": player.user,
+        "player": player,
+        "npc": npc,
+        "relationship": relationship,
+        "location": location,
+    }
+
+    return TemplateResponse(
+        request, "game/talk.html", RequestContext(request, context))

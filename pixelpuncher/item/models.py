@@ -79,6 +79,12 @@ class ItemType(models.Model):
     # This layer is unlocked when item is acquired
     layer = models.ForeignKey(AvatarLayer, related_name="+", null=True, blank=True)
 
+    sellable = models.BooleanField(default=True)
+    sell_price = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['name']
+
     def __unicode__(self):
         return "{0} ({1})".format(self.name, self.level_requirement)
 
@@ -90,6 +96,9 @@ class Item(models.Model):
     date_created = fields.CreationDateTimeField(editable=True)
     date_updated = fields.ModificationDateTimeField(editable=True)
     container = models.ForeignKey(PlayerContainer, related_name="items", null=True, blank=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = ['item_type__name']
 
     def __unicode__(self):
         return self.item_type.name

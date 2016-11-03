@@ -1,0 +1,31 @@
+<div class="page-header">Buy</div>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th style="text-align: right;">Sell Price</th>
+      <th style="text-align: right;"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in player.items.all %}
+      {% if item.item_type.sellable %}
+      <tr>
+        <td>
+          {{ item.item_type.name }}
+          {% if item.remaining_uses > 0 %}
+            (x{{ item.remaining_uses }})
+          {% endif %}
+        </td>
+        <td style="text-align: right;">
+          {{ item.item_type.sell_price }}
+          <i class="mdi mdi-coin text-success" data-toggle="tooltip" title="Pixels" data-placement="right"></i>
+        </td>
+        <td style="text-align: right;">
+          <a class="btn btn-sm btn-success" href="{% url "location:sell" location.pk item.pk %}">Sell</a>
+        </td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
+</table>

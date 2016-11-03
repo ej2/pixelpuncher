@@ -11,6 +11,7 @@ LOCATION_TYPE = (
     ("ADV", "Adventure",),
     ("MED", "Medical",),
     ("SHP", "Shop",),
+    ("PWN", "Pawn",),
     ("CAS", "Casino",),
     ("TRN", "Training",),
     ("HOM", "Home",),

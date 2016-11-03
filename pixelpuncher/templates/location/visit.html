@@ -35,6 +35,10 @@
         {% include "location/_casino.html" %}
       {% endif %}
 
+      {% if location.location_type == 'PWN' %}
+        {% include "location/_pawn.html" %}
+      {% endif %}
+
       <a href="{% url "game:map" %}" class="btn btn-primary btn-sm pull-right">Return to the city</a>
     </div>
 

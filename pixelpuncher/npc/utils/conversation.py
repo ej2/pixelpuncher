@@ -165,3 +165,5 @@ def get_last_response(player, trigger):
         return logs[0].response
     else:
         return None
+
+
