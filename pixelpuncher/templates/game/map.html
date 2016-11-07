@@ -10,6 +10,8 @@
     </div>
     <div class="col-md-9">
       <div class="row">
+        {% show_messages player %}
+
         {% for location in locations %}
         <div class="col-lg-4">
           {% include "location/_mapcard.html" %}
