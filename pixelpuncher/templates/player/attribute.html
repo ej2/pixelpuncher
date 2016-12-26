@@ -13,39 +13,49 @@
               <h3 style="padding-bottom: 20px;">Spend Attribute Points</h3>
               <form action="" method="post" class="form-horizontal">
               {% csrf_token %}
+               <input id="id_points" type="hidden" value="{{ player.attribute_points }}">
 
-                <div class="form-group">
-                  <label for="id_attribute_points" class="col-sm-4 control-label form-text">Points remaining:</label>
-                  <div class="col-sm-1">
+              <div class="col-lg-6">
+                <div class="alert alert-danger">
+                  <h4 class="text-center">
+                    <input type="button" class="btn" onclick="decrease('id_power', {{ player.power }})" value="-">
+                    <input type="text" class="form-attribute-field" readonly id="id_power" name="power" value="{{ form.power.value }}">
+                    <input type="button" class="btn" onclick="increase('id_power')" value="+">
+                  </h4>
+                  <div class="text-center">Power</div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="alert alert-info">
+                  <h4 class="text-center">
+                    <input type="button" class="btn" onclick="decrease('id_technique', {{ player.technique }})" value="-">
+                    <input type="text" class="form-attribute-field" readonly id="id_technique" name="technique" value="{{ form.technique.value }}">
+                    <input type="button" class="btn" onclick="increase('id_technique')" value="+">
+                  </h4>
+                  <div class="text-center">Technique</div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="alert alert-warning">
+                  <h4 class="text-center">
+                    <input type="button" class="btn" onclick="decrease('id_endurance', {{ player.endurance }})" value="-">
+                    <input type="text" class="form-attribute-field" readonly id="id_endurance" name="endurance" value="{{ form.endurance.value }}">
+                    <input type="button" class="btn" onclick="increase('id_endurance')" value="+">
+                  </h4>
+                  <div class="text-center">Endurance</div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="alert alert-success">
+                  <h4 class="text-center">
                     <input id="id_attribute_points" class="form-attribute-field" disabled=""  type="text" value="{{ player.attribute_points }}">
-                  </div>
+                  </h4>
+                  <div class="text-center">Points Remaining</div>
                 </div>
-                <div class="form-group">
-                  <label for="power" class="col-sm-4 control-label form-text">Power</label>
-                  <div class="col-sm-6">
-                  {{ form.power }}
-                    <input type="button" onclick="increase('id_power')" value="+">
-                    <input type="button" onclick="decrease('id_power', {{ player.power }})" value="-">
-                  </div>
-                </div>
-                 <div class="form-group">
-                  <label for="endurance" class="col-sm-4 control-label form-text">Endurance</label>
-                  <div class="col-sm-6">
-                  {{ form.endurance }}
-                    <input type="button" onclick="increase('id_endurance')" value="+">
-                    <input type="button" onclick="decrease('id_endurance', {{ player.endurance }})" value="-">
-                  </div>
-                </div>
-                 <div class="form-group">
-                  <label for="technique" class="col-sm-4 control-label form-text">Technique</label>
-                  <div class="col-sm-6">
-                  {{ form.technique }}
-                    <input type="button" onclick="increase('id_technique')" value="+">
-                    <input type="button" onclick="decrease('id_technique', {{ player.technique }})" value="-">
-                  </div>
-
-                   <input id="id_points" type="hidden" value="{{ player.attribute_points }}">
-                </div>
+              </div>
 
               <input type="submit" value="Save" class="btn btn-success" />
                 <a class="btn btn-danger" href="{% url "player:detail" player.id %}">Cancel</a>

@@ -4,7 +4,7 @@ from pixelpuncher.location.models import Location, LocationItem, Service, Locati
 
 
 class LocationModelAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "location_type",)
+    list_display = ("id", "name", "location_type", "order", "active",)
     search_fields = ("id", "name", "location_type",)
     raw_id_fields = ("players",)
     list_per_page = 50

@@ -55,6 +55,10 @@ class Location(models.Model):
     starting_location = models.BooleanField(default=False)  # Player starts with these locations unlocked
     npc = models.ForeignKey(NPC, null=True, blank=True)
     adventure_rate = models.IntegerField(default=50)
+    order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
 
     def __unicode__(self):
         return self.name

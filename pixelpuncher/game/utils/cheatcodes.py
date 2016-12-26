@@ -49,6 +49,16 @@ class CheatFullHealth(CheatBase):
         return "Health restored!"
 
 
+class CheatAPGain(CheatBase):
+    def unlock(self, player):
+        return "Gain AP cheat unlocked!"
+
+    def cheat(self, player):
+        player.attribute_points += 1
+        player.save()
+        return "You gained an attribute point!"
+
+
 class CheatFullEnergy(CheatBase):
     def unlock(self, player):
         return "Full energy cheat unlocked!"

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles i18n %}
 {% load apps_player %}
 {% load apps_enemy %}
 {% load apps_game %}
@@ -9,15 +10,20 @@
       {% mini_profile request.user %}
     </div>
     <div class="col-md-9">
-      <div class="row">
         {% show_messages player %}
 
         {% for location in locations %}
-        <div class="col-lg-4">
-          {% include "location/_mapcard.html" %}
-        </div>
+          <div class="row">
+            <div class="col-lg-10">
+            <h3><img src="{% static location.icon %}" align="left" width="96">
+              {{ location.name }}</h3>
+              {{ location.description }}<br>
+              <a href="{% url "location:visit" location.pk %}" class="btn btn-primary btn-xs">Visit
+            {% if location.location_type == 'ADV' %} (1 AP){% endif %}</a>
+            </div>
+
+          </div>
         {% endfor %}
-      </div>
     </div>
   </div>
 {% endblock content %}
