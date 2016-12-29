@@ -41,6 +41,7 @@ def card_game(request, player, locationservice_id):
         "cards": match_game.cards.order_by('position'),
         "locationservice_id": locationservice_id,
         "location": location,
+        "location_service": location_service,
         "relationship": relationship,
     }
 

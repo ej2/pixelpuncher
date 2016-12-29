@@ -3,67 +3,86 @@
 
 {% block content %}
 
- <section class="" id="create">
+  <section class="" id="create">
     <div class="container-fluid">
-        <div class="row">
+      <div class="row">
 
-          {% include "player/_avatar_profile.html" %}
+        {% include "player/_avatar_profile.html" %}
 
-            <div class="col-md-6">
-              <h3 style="padding-bottom: 20px;">Spend Attribute Points</h3>
-              <form action="" method="post" class="form-horizontal">
-              {% csrf_token %}
-               <input id="id_points" type="hidden" value="{{ player.attribute_points }}">
-
-              <div class="col-lg-6">
-                <div class="alert alert-danger">
-                  <h4 class="text-center">
-                    <input type="button" class="btn" onclick="decrease('id_power', {{ player.power }})" value="-">
-                    <input type="text" class="form-attribute-field" readonly id="id_power" name="power" value="{{ form.power.value }}">
-                    <input type="button" class="btn" onclick="increase('id_power')" value="+">
-                  </h4>
-                  <div class="text-center">Power</div>
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="alert alert-info">
-                  <h4 class="text-center">
-                    <input type="button" class="btn" onclick="decrease('id_technique', {{ player.technique }})" value="-">
-                    <input type="text" class="form-attribute-field" readonly id="id_technique" name="technique" value="{{ form.technique.value }}">
-                    <input type="button" class="btn" onclick="increase('id_technique')" value="+">
-                  </h4>
-                  <div class="text-center">Technique</div>
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="alert alert-warning">
-                  <h4 class="text-center">
-                    <input type="button" class="btn" onclick="decrease('id_endurance', {{ player.endurance }})" value="-">
-                    <input type="text" class="form-attribute-field" readonly id="id_endurance" name="endurance" value="{{ form.endurance.value }}">
-                    <input type="button" class="btn" onclick="increase('id_endurance')" value="+">
-                  </h4>
-                  <div class="text-center">Endurance</div>
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="alert alert-success">
-                  <h4 class="text-center">
-                    <input id="id_attribute_points" class="form-attribute-field" disabled=""  type="text" value="{{ player.attribute_points }}">
-                  </h4>
-                  <div class="text-center">Points Remaining</div>
-                </div>
-              </div>
-
-              <input type="submit" value="Save" class="btn btn-success" />
-                <a class="btn btn-danger" href="{% url "player:detail" player.id %}">Cancel</a>
-            </form>
-
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="mdi mdi-account-plus"></i> Spend Attribute Points</h3>
             </div>
+            <div class="panel-body">
+              <form action="" method="post" class="form-horizontal">
+                {% csrf_token %}
+                <input id="id_points" type="hidden" value="{{ player.attribute_points }}">
+
+                <div class="col-lg-6">
+                  <div class="alert alert-danger">
+                    <h4 class="text-center">
+                      <input type="button" class="form-attribute-button" onclick="decrease('id_power', {{ player.power }})" value="-">
+                      <input type="text" class="form-attribute-field" readonly id="id_power" name="power" value="{{ form.power.value }}">
+                      <input type="button" class="form-attribute-button" onclick="increase('id_power')" value="+">
+                    </h4>
+                    <div class="text-center">Power</div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="alert alert-info">
+                    <h4 class="text-center">
+                      <input type="button" class="form-attribute-button" onclick="decrease('id_technique', {{ player.technique }})" value="-">
+                      <input type="text" class="form-attribute-field" readonly id="id_technique" name="technique" value="{{ form.technique.value }}">
+                      <input type="button" class="form-attribute-button" onclick="increase('id_technique')" value="+">
+                    </h4>
+                    <div class="text-center">Technique</div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="alert alert-warning">
+                    <h4 class="text-center">
+                      <input type="button" class="form-attribute-button" onclick="decrease('id_endurance', {{ player.endurance }})" value="-">
+                      <input type="text" class="form-attribute-field" readonly id="id_endurance" name="endurance" value="{{ form.endurance.value }}">
+                      <input type="button" class="form-attribute-button" onclick="increase('id_endurance')" value="+">
+                    </h4>
+                    <div class="text-center">Endurance</div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="alert alert-success">
+                    <h4 class="text-center">
+                      <input id="id_attribute_points" class="form-attribute-field" disabled=""  type="text" value="{{ player.attribute_points }}">
+                    </h4>
+                    <div class="text-center">Points Remaining</div>
+                  </div>
+                </div>
+
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a class="btn btn-danger" href="{% url "player:detail" player.id %}">Cancel</a>
+              </form>
+            </div>
+          </div>
         </div>
+
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="mdi mdi-help-circle"></i> Attribute Help</h3>
+            </div>
+            <div class="panel-body">
+              <ul>
+                <li><span class="text-danger">Power</span> - Increases damage.</li>
+                <li><span class="text-info">Technique</span> - Increase skill success and critical hit chance.</li>
+                <li><span class="text-warning">Endurance</span> - Increases health and energy.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
-
 {% endblock content %}

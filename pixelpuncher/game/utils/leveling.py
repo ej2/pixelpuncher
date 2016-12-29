@@ -6,8 +6,8 @@ from pixelpuncher.game.utils.skills import add_skills, level_skill
 
 def level_up(player):
     player.level += 1
-    player.total_energy += game_settings.ENERGY_GAINED_PER_LEVEL
-    player.total_health += game_settings.HEALTH_GAINED_PER_LEVEL
+    player.total_energy += calculate_energy_gain(player)
+    player.total_health += calculate_health_gain(player)
     player.attribute_points += game_settings.ATTRIBUTE_POINTS_PER_LEVEL
     player.current_energy = player.total_energy
     player.current_health = player.total_health
@@ -18,6 +18,14 @@ def level_up(player):
 
     add_game_message(player, player_level_up_message())
     add_skills(player, player.level)
+
+
+def calculate_energy_gain(player):
+    return game_settings.ENERGY_GAINED_PER_LEVEL + player.effective_endurance
+
+
+def calculate_health_gain(player):
+    return game_settings.HEALTH_GAINED_PER_LEVEL + player.effective_endurance
 
 
 def can_level_up(player):

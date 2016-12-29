@@ -35,7 +35,6 @@
                 {% else %}
                   <img src="{% static card.image %}">
                 {% endif %}
-
               {% endif %}
             </td>
             {% if forloop.last %}
@@ -51,8 +50,10 @@
       </div>
       {% if match_game.state != 'PLAY' %}
         <a href="{% url "location:visit" location.id %}" class="btn btn-primary btn-sm pull-right">Return to {{ location.name }}</a>
-        <a href="{% url "game:pickfour:start-game" locationservice_id %}" class="btn btn-info btn-sm pull-right">Play Again</a>
+        <a href="{% url "game:pickfour:start-game" locationservice_id %}" class="btn btn-info btn-sm pull-right">
+          Play Again ${{ location_service.price }} </a>
       {% endif %}
+      <br><br>
     </div>
 
     {% if location.npc %}

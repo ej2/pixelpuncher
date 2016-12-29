@@ -21,7 +21,13 @@ def calculate_damage(player, player_skill):
 
 
 def calculate_enemy_hit(player, enemy):
-    chance_of_hit = enemy.attack - player.effective_armor - player.endurance
+    """
+    Basic calculation to see if the enemy hits.
+    :param player:
+    :param enemy:
+    :return:
+    """
+    chance_of_hit = enemy.attack - player.effective_armor
     return percentage_roll(chance_of_hit)
 
 

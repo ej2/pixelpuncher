@@ -163,10 +163,19 @@
 
 .form-attribute-field {
   width: 30px;
-  height: 30px;
-  text-align: right;
+  height: 40px;
+  text-align: center;
   font-size: larger;
-  background-color: #2b3e50;
+  color: white;
+  background-color: transparent;
+  border: none;
+}
+
+.form-attribute-button {
+  color: white;
+  background-color: transparent;
+  border: none;
+  font-size: larger;
 }
 
 .numeric {

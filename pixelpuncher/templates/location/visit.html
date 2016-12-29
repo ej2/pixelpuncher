@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles i18n %}
 {% load apps_player %}
 {% load apps_npc %}
 {% load apps_enemy %}
@@ -11,8 +12,12 @@
     </div>
 
     <div class="col-md-6">
+      <div>
+          <img src="{% static location.icon %}" align="left">
+      </div>
       <div class="page-header">
-        <h1><i class="text-info mdi {{ location.icon }}"></i>{{ location.name }}</h1>
+        <h1>
+          <i class="text-info mdi {{ location.icon }}"></i>{{ location.name }}</h1>
 
         <p>{{ location.description }}</p>
       </div>

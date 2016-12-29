@@ -1,6 +1,7 @@
 import random
 
-from pixelpuncher.game.utils.message import GameMessageManager, get_random_attack_verbs, get_random_pain_word
+from pixelpuncher.game.utils.message import GameMessageManager, get_random_attack_verbs, get_random_pain_word, \
+    get_random_defeat_message
 
 DANGER_WORDS = ["treacherous", "formidable", "deadly", "troublesome", "lethal"]
 
@@ -57,7 +58,7 @@ def out_of_punches_message():
 
 
 def out_of_health_message():
-    return "Your hands hurt too much right now to punch stuff. Maybe you should have a refreshing sports drink."
+    return get_random_defeat_message()
 
 
 def battle_message(enemy):

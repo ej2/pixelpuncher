@@ -8,12 +8,23 @@ from braces.views import LoginRequiredMixin
 
 from .models import User
 
+from annoying.functions import get_object_or_None
+from pixelpuncher.player.models import Player
+
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = "username"
     slug_url_kwarg = "username"
+
+    def get_context_data(self, **kwargs):
+        context = super(UserDetailView, self).get_context_data(**kwargs)
+        user = self.request.user
+        player = get_object_or_None(Player, user=user)
+
+        context['player'] = player
+        return context
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):

@@ -17,15 +17,6 @@ LOCATION_TYPE = (
     ("HOM", "Home",),
 )
 
-SERVICE_TYPE = (
-    ("HEAL", "Healing",),
-    ("REST", "Rest",),
-    ("HEALMAX", "Restore Health",),
-    ("RESTMAX", "Restore Energy",),
-    ("GMB", "Gambling",),
-    ("PICK4", "Pick 4",),
-)
-
 CURRENCY = (
     ("P", "Pixels",),
     ("M", "MegaPixels",),
@@ -43,6 +34,26 @@ ENCOUNTER_FREQUENCY = (
     ("RARE", "Rare",),
     ("ULTRA", "Ultra Rare",),
 )
+
+
+class ServiceType(object):
+    HEALING = 'HEAL'
+    REST = 'REST'
+    RESTORE_HEALTH = 'HEALMAX'
+    RESTORE_ENERGY = 'RESTMAX'
+    GAMBLING = 'GMB'
+    SLEEP = 'SLEEP'
+    PICK_4 = 'PICK4'
+
+    SERVICE_TYPE = (
+        ("HEAL", "Healing",),
+        ("REST", "Rest",),
+        ("HEALMAX", "Restore Health",),
+        ("RESTMAX", "Restore Energy",),
+        ("GMB", "Gambling",),
+        ("PICK4", "Pick 4",),
+        ("SLEEP", "Sleep",),
+    )
 
 
 class Location(models.Model):
@@ -76,7 +87,7 @@ class LocationItem(models.Model):
 
 class Service(models.Model):
     name = models.CharField(max_length=20)
-    service_type = models.CharField(max_length=7, choices=SERVICE_TYPE)
+    service_type = models.CharField(max_length=7, choices=ServiceType.SERVICE_TYPE)
     icon = models.CharField(max_length=20, blank=True, null=True)
     description = models.CharField(max_length=200, blank=True, null=True)
     min_amount = models.IntegerField(default=1)

@@ -12,7 +12,7 @@ TAUNTS = (
     "Your mother was a hamster and your father smelt of elderberries!",
     "Have a knuckle sandwich!",
     "I fart in your general direction!",
-
+    "Is that all you got?",
 )
 
 VICTORY_QUOTES = (
@@ -33,7 +33,18 @@ VICTORY_QUOTES = (
     "You are not a warrior, you're a beginner.",
     "Awesome fight! I'm on top of my game today!",
     "No one compares to my beauty. Nor my strength.",
+    "You did quite well, but you need more training to defeat me!",
+    "To live is to punch, to punch is to live!"
 )
+
+DEFEAT_MESSAGES = (
+    "Your hands hurt too much right now to punch stuff. Maybe you should have a refreshing sports drink.",
+    "Your hands hurt too much right now to punch stuff. Maybe you should take a nap.",
+    "Your hands hurt too much right now to punch stuff. Maybe you should train more.",
+    "You are too tired too punch stuff right now.",
+    "You lost, go home kid...",
+)
+
 
 def add_game_message(player, message):
     game_message = GameMessage()
@@ -54,6 +65,10 @@ def get_game_messages(player):
 
 def get_random_victory_quote():
     return random.choice(VICTORY_QUOTES)
+
+
+def get_random_defeat_message():
+    return random.choice(DEFEAT_MESSAGES)
 
 
 def get_random_attack_verbs():

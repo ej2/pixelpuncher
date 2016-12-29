@@ -1,7 +1,7 @@
 import random
 
 from pixelpuncher.game.utils.message import add_game_message
-from pixelpuncher.location.models import Location
+from pixelpuncher.location.models import Location, ServiceType
 
 
 def assign_starting_locations(player):
@@ -37,15 +37,22 @@ def perform_service(player, service):
     if successful <= service.success_rate:
         amount = random.randint(service.min_amount, service.max_amount)
 
-        if service.service_type == 'HEALMAX':
+        if service.service_type == ServiceType.RESTORE_HEALTH:
             result = player.adjust_to_max_health()
-        elif service.service_type == 'RESTMAX':
+
+        elif service.service_type == ServiceType.RESTORE_ENERGY:
             result = player.adjust_to_max_energy()
-        elif service.service_type == 'HEAL':
+
+        elif service.service_type == ServiceType.HEALING:
             result = player.adjust_health(amount)
-        elif service.service_type == 'REST':
+
+        elif service.service_type == ServiceType.REST:
             result = player.adjust_energy(amount)
-        elif service.service_type == 'GMB':
+
+        elif service.service_type == ServiceType.SLEEP:
+            result = "{} {}".format(player.adjust_to_max_energy(), player.adjust_health(player.effective_endurance))
+
+        elif service.service_type == ServiceType.GAMBLING:
             player.pixels += amount
             result = "You win {} pixels!".format(amount)
 

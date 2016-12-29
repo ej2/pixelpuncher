@@ -69,6 +69,17 @@ class CheatFullEnergy(CheatBase):
         return "Energy restored!"
 
 
+class CheatXPBonus(CheatBase):
+    def unlock(self, player):
+        return "XP Bonus cheat unlocked!"
+
+    def cheat(self, player):
+        gain_xp = player.level * 1000
+        player.xp += gain_xp
+        player.save()
+        return "You receive {} XP!".format(gain_xp)
+
+
 def add_cheatcode(player, code):
     cheat_code = get_object_or_None(CheatCode, code=code, admin_only=False)
 
